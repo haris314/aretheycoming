@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %} {% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'styles/mainStyle.css' %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    </head>
+    
+
+    <body>
+        <div class="logo">
+            <div class="left">aretheycoming</div>
+            <div class="right">menu</div>
+        </div>
+
+        <!--Diplay user information if the user is logged in-->
+        {% if True %}
+            <div class="dropdown">
+                <button class="dropbtn">
+                    
+                    <span class="caret"></span>
+                </button>
+                <div class="dropdown-content" >
+                    <span class="dropdown-item">Logged in</span>
+                    <span class="dropdown-item"><b>username</b></span>
+                    <br>
+                    <a href="">Log out</a>
+                </div>
+            </div>
+        {% endif %}
+
+        {% block body %} 
+        {% endblock %}
+        
+        <!-- The section to be displayed on the bottom of the page -->
+        <div style="margin:10%; text-align:center;">
+                <hr>
+                I don't know what to write here but I must write something because it will make the website look a little cooler. So stop reading now. Just stop!
+                I need at least 2 lines. Wait did just wrote 2 instead of two? I should have wrote two so that it would have taken more space.
+                <br><br>
+                © Mohd Haris                
+                <span style="font-size: 8px;"><br>Just wrote all this to make the website look cooler</span>
+        </div>
+        
+        
+    
+
+        
+    </body>
+</html>

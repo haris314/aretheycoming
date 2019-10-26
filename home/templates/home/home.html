@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>aretheycoming</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'styles/mainStyle.css' %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="home-logo" >aretheycoming</div>
+                
+                <div class="centered">
+                    <h1>A platform to organise events</h1>
+                    <h3>Especially designed for school/college students to manage bunks and decide whether to go or not</h3>
+                    <a href="{% url 'login' %}"><button class="wide-btn btn">Login/Register</button></a>
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+</html>
