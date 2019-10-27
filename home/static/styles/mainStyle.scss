@@ -10,118 +10,175 @@ $backgroundLighter: rgba(66,17,17,1);
 /*A good color: #5c0627
 */
 
-.home-logo{
-    height: 500px;
-    background: $themeBackground;
-    color: white;
-    font-size: 10vw;
-    text-align: center;
-    line-height: 500px;
-}
-
-
-::selection{
-    background-color: rgba(136, 135, 135, 0.226);
-    color: black;
-}
-
-.logo{
-    color: white;
-    font-size: 30px;
-    height: 50px;
-    background: $themeBackground;
-    .left{
-        padding-top: 5px;
-        margin-left: 20px;
-        text-align: left;
+//Universal
+    ::selection{
+        background-color: rgba(187, 187, 187, 0.404);
+        color: black;
     }
-    .right{
-        position: absolute;
-        right: 60px;
-        top: 5px;
-        text-align: right;
-    }
-}
 
-.navigation{
-    margin:0px;
-    margin-top: -40px;
-    margin-right:45px;
-    text-align: right;
-    //background-image: linear-gradient(to top right, $backgroundDark, $backgroundLight);
-    background-color: #ffffff00;
     .btn{
-        margin: 0px;
-
-        font-size: 15px;
+        font-size: 20px;
+        background-color: $backgroundLight;
+        color: $textColorLight;
         width: 100px;
-        background-color: rgba(255, 255, 255, 0);
+    }
+
+    .wide-btn{
+        width: 160px;
+    }
+    .btn:focus{
+        background-color: $backgroundLighter;
+        color: $textColorLight;
     }
     .btn:hover{
-        background-color: rgba(255, 255, 255, 0.103);
-    }    
-}
+        background-color: $backgroundDark;
+        color: white;
+    }
+
+    .centered{    
+        margin-top:100px;
+        text-align: center;   
+        padding-left: 30px; 
+        padding-right: 30px;
+    }
+
+    .large-text{
+        font-size: 100px;
+        color: $backgroundLight;
+    }
+    .medium-text{
+        font-size: 30px;
+        color: $backgroundLight;
+    }
+    .small-text{
+        font-size:20px;
+        color: $backgroundLight;
+    }
+
+//Universal end
 
 
-/* Dropdown Button */
-.dropbtn {
-    background-color: rgba(143, 143, 143, 0.274);
-    height: 40px;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-  }
-  
-  /* The container <div> - needed to position the dropdown content */
-  .dropdown {
-    position: absolute;
-    top: 5px;
-    right: 0px;
-    display: inline-block;
-  }
-  
-  /* Dropdown Content (Hidden by Default) */
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0px;
-    background-color: $backgroundDark;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-  }
-  
-  /* Links inside the dropdown */
-  .dropdown-content a {
-    color: white;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-  }
-  .dropdown-content {
-      .dropdown-item{
-          color: white;
-          padding: 12px 16px;
-          text-decoration: none;
-          display: block;
-      }
-  }
-  
-  /* Change color of dropdown links on hover */
-  .dropdown-content a:hover {background-color: rgba(129, 129, 129, 0.582);}
-  
-  /* Show the dropdown menu on hover */
-  .dropdown:hover .dropdown-content {display: block;}
-  
-  /* Change the background color of the dropdown button when the dropdown content is shown */
-  .dropdown:hover .dropbtn {background-color: rgba(255, 255, 255, 0.555)}
-  
-  
+//home.html without login 
+    .home-logo{
+        height: 500px;
+        background: $themeBackground;
+        color: white;
+        font-size: 10vw;
+        text-align: center;
+        line-height: 500px;
+    }
+
+//home.html without login end
 
 
 
-.login{
+//parent_layout.html
+    .logo{
+        color: white;
+        font-size: 30px;
+        height: 50px;
+        background: $themeBackground;
+        .left{
+            padding-top: 5px;
+            margin-left: 20px;
+            text-align: left;
+        }
+        .right{
+            position: absolute;
+            right: 60px;
+            top: 5px;
+            text-align: right;
+        }
+    }
+
+    .navigation{
+        margin:0px;
+        margin-top: -40px;
+        margin-right:45px;
+        text-align: right;
+        //background-image: linear-gradient(to top right, $backgroundDark, $backgroundLight);
+        background-color: #ffffff00;
+        .btn{
+            margin: 0px;
+
+            font-size: 15px;
+            width: 100px;
+            background-color: rgba(255, 255, 255, 0);
+        }
+        .btn:hover{
+            background-color: rgba(255, 255, 255, 0.103);
+        }    
+    }
+
+    /* Dropdown Button */
+    .dropbtn {
+        background-color: rgba(143, 143, 143, 0.274);
+        height: 40px;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+    }
+    
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+        position: absolute;
+        top: 5px;
+        right: 0px;
+        display: inline-block;
+    }
+    
+    /* Dropdown Content (Hidden by Default) */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0px;
+        background-color: $backgroundDark;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+    
+    /* Links inside the dropdown */
+    .dropdown-content a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+    .dropdown-content {
+        .dropdown-item{
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+    }
+    
+    /* Change color of dropdown links on hover */
+    .dropdown-content a:hover {background-color: rgba(129, 129, 129, 0.582);}
+    
+    /* Show the dropdown menu on hover */
+    .dropdown:hover .dropdown-content {display: block;}
+    
+    /* Change the background color of the dropdown button when the dropdown content is shown */
+    .dropdown:hover .dropbtn {background-color: rgba(255, 255, 255, 0.555)}
+
+
+    a.nostyle:link {
+        text-decoration: inherit;
+        color: inherit;
+    }
+
+    a.nostyle:visited {
+        text-decoration: inherit;
+        color: inherit;
+    }
+
+//parent_layout.html end
+
+//login.html
+.login-form{
     margin-right: 15%;
     text-align: right;
     font-size: 20px;
@@ -130,44 +187,14 @@ $backgroundLighter: rgba(66,17,17,1);
     }
 }
 
-.btn{
-    font-size: 20px;
-    background-color: $backgroundLight;
-    color: $textColorLight;
-    width: 100px;
+.red-text{
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
 }
 
-.wide-btn{
-    width: 160px;
-}
-.btn:focus{
-    background-color: $backgroundLighter;
-    color: $textColorLight;
-}
-.btn:hover{
-    background-color: $backgroundDark;
-    color: white;
-}
+//login.html end
 
-.centered{    
-    margin-top:100px;
-    text-align: center;   
-    padding-left: 30px; 
-    padding-right: 30px;
-}
-
-.large-text{
-    font-size: 100px;
-    color: $backgroundLight;
-}
-.medium-text{
-    font-size: 30px;
-    color: $backgroundLight;
-}
-.small-text{
-    font-size:20px;
-    color: $backgroundLight;
-}
 
 .search{
     width: 70%;

@@ -1,0 +1,13 @@
+{% extends 'parent_layout.html' %}
+
+
+{% block body %}
+
+    <div class="hero-unit centered" style="margin: 20px;">
+        <h1 class="large-text">Success</h1>
+        <p class="medium-text">Congratulations! You have been succesffylly registered.
+            Please click <a href="{% url 'login_view' %}">here</a> to login. I hope you have a pleasurable experience.
+        </p>
+    </div>
+
+{% endblock %}

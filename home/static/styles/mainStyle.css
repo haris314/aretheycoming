@@ -1,6 +1,54 @@
 /*New colors*/
 /*A good color: #5c0627
 */
+::selection {
+  background-color: rgba(187, 187, 187, 0.404);
+  color: black;
+}
+
+.btn {
+  font-size: 20px;
+  background-color: #421111;
+  color: white;
+  width: 100px;
+}
+
+.wide-btn {
+  width: 160px;
+}
+
+.btn:focus {
+  background-color: #421111;
+  color: white;
+}
+
+.btn:hover {
+  background-color: #0a0039;
+  color: white;
+}
+
+.centered {
+  margin-top: 100px;
+  text-align: center;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.large-text {
+  font-size: 100px;
+  color: #421111;
+}
+
+.medium-text {
+  font-size: 30px;
+  color: #421111;
+}
+
+.small-text {
+  font-size: 20px;
+  color: #421111;
+}
+
 .home-logo {
   height: 500px;
   background: linear-gradient(90deg, #421111 0%, #0a0039 89%, #040017 100%);
@@ -8,11 +56,6 @@
   font-size: 10vw;
   text-align: center;
   line-height: 500px;
-}
-
-::selection {
-  background-color: rgba(136, 135, 135, 0.226);
-  color: black;
 }
 
 .logo {
@@ -109,56 +152,29 @@
   background-color: rgba(255, 255, 255, 0.555);
 }
 
-.login {
+a.nostyle:link {
+  text-decoration: inherit;
+  color: inherit;
+}
+
+a.nostyle:visited {
+  text-decoration: inherit;
+  color: inherit;
+}
+
+.login-form {
   margin-right: 15%;
   text-align: right;
   font-size: 20px;
 }
-.login .small {
+.login-form .small {
   font-size: 19px;
 }
 
-.btn {
-  font-size: 20px;
-  background-color: #421111;
-  color: white;
-  width: 100px;
-}
-
-.wide-btn {
-  width: 160px;
-}
-
-.btn:focus {
-  background-color: #421111;
-  color: white;
-}
-
-.btn:hover {
-  background-color: #0a0039;
-  color: white;
-}
-
-.centered {
-  margin-top: 100px;
-  text-align: center;
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
-.large-text {
-  font-size: 100px;
-  color: #421111;
-}
-
-.medium-text {
-  font-size: 30px;
-  color: #421111;
-}
-
-.small-text {
-  font-size: 20px;
-  color: #421111;
+.red-text {
+  color: red;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .search {

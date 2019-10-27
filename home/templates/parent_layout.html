@@ -11,12 +11,14 @@
 
     <body>
         <div class="logo">
-            <div class="left">aretheycoming</div>
-            <div class="right">menu</div>
+            <div class="left">
+                    <a href="{% url 'home' %}" class="nostyle">aretheycoming</a>
+            </div>
+            <div class="right"></div>
         </div>
 
         <!--Diplay user information if the user is logged in-->
-        {% if True %}
+        {% if request.user.is_authenticated %}
             <div class="dropdown">
                 <button class="dropbtn">
                     
@@ -24,9 +26,9 @@
                 </button>
                 <div class="dropdown-content" >
                     <span class="dropdown-item">Logged in</span>
-                    <span class="dropdown-item"><b>username</b></span>
+                    <span class="dropdown-item"><b>{{request.user.username}}</b></span>
                     <br>
-                    <a href="">Log out</a>
+                    <a href="{% url 'logout_view' %}">Log out</a>
                 </div>
             </div>
         {% endif %}
@@ -38,7 +40,7 @@
         <div style="margin:10%; text-align:center;">
                 <hr>
                 I don't know what to write here but I must write something because it will make the website look a little cooler. So stop reading now. Just stop!
-                I need at least 2 lines. Wait did just wrote 2 instead of two? I should have wrote two so that it would have taken more space.
+                I need at least 2 lines. Wait did I just write 2 instead of two? I should have wrote two so that it had taken more space.
                 <br><br>
                 © Mohd Haris                
                 <span style="font-size: 8px;"><br>Just wrote all this to make the website look cooler</span>
