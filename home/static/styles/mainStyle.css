@@ -49,6 +49,10 @@
   color: #421111;
 }
 
+.align-right {
+  text-align: right;
+}
+
 .home-logo {
   height: 500px;
   background: linear-gradient(90deg, #421111 0%, #0a0039 89%, #040017 100%);
@@ -74,23 +78,6 @@
   right: 60px;
   top: 5px;
   text-align: right;
-}
-
-.navigation {
-  margin: 0px;
-  margin-top: -40px;
-  margin-right: 45px;
-  text-align: right;
-  background-color: #ffffff00;
-}
-.navigation .btn {
-  margin: 0px;
-  font-size: 15px;
-  width: 100px;
-  background-color: rgba(255, 255, 255, 0);
-}
-.navigation .btn:hover {
-  background-color: rgba(255, 255, 255, 0.103);
 }
 
 /* Dropdown Button */
@@ -177,17 +164,6 @@ a.nostyle:visited {
   font-weight: bold;
 }
 
-.search {
-  width: 70%;
-  height: 50px;
-  font-size: 30px;
-}
-
-.star {
-  width: 30px;
-  height: 30px;
-}
-
 .radio-label {
   margin-left: 5px;
   /* IMAGE STYLES */
@@ -249,6 +225,51 @@ a.nostyle:visited {
 
 .normal-page {
   margin: 10%;
+}
+
+.group-card {
+  background: linear-gradient(90deg, black 0%, #270039 89%, #060022 100%);
+  color: #a5a5a5;
+  padding: 20px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  box-shadow: -5px 5px 30px #888888;
+  font-size: 20px;
+  line-height: 30px;
+}
+.group-card .name {
+  font-size: 40px;
+  color: white;
+}
+.group-card b {
+  color: white;
+}
+.group-card .college-details {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+  font-size: 17px;
+  background: rgba(255, 255, 255, 0.116);
+}
+.group-card .btn {
+  background: rgba(255, 255, 255, 0.068);
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+.navigation {
+  text-align: right;
+  font-size: 17px;
+  line-height: 50px;
+}
+.navigation .btn {
+  color: rgba(179, 179, 179, 0.925);
+  background: rgba(255, 255, 255, 0.03);
+  height: 35px;
+  margin-top: 10px;
+}
+.navigation .btn:hover {
+  background: rgba(255, 255, 255, 0.103);
 }
 
 @media (max-width: 1200px) {

@@ -1,0 +1,36 @@
+<div class="group-card">
+    <!--Group name and other essential details-->
+    <span class="name">{{group.name}}</span>
+    <br>
+    <b>#: </b> {{group.id}} <br>
+    <b>Description: </b> {{group.description}} <br>
+    <b>Members: </b> {{ group.members.all.count }} <br>
+
+    <!--
+        Division for college details
+        Print only if specific college details are present
+    -->
+    <div class="college-details">
+        {% if group.college is not None %}
+            <b>College: </b> {{group.college}} <br>
+        {% endif %}
+
+        {% if group.graduation_year is not None %}
+            <b>Graduation year: </b> {{group.graduation_year}} <br>
+        {% endif %}
+
+        {% if group.section is not None %}
+            <b>Section: </b> {{group.section}} <br>
+        {% endif %}
+
+        {% if group.batch is not None %}
+            <b>Batch: </b> {{group.batch}} <br>
+        {% endif %}
+    </div>
+
+
+    <!--Buttons-->
+    <button class="btn">Details</button>
+    <button class="wide-btn btn">Request Join</button>
+
+</div>

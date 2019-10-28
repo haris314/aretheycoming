@@ -5,7 +5,19 @@
 {% endblock %}
 
 {% block body %}
+
+    {% include 'groups/navigation.html' %}
+
     <div class="normal-page">
-        <span class="medium-text">All groups</span>
+        <!--Heading-->
+        <div class="large-text align-right">All groups</div>
+        <hr>
+
+        <!--Display the groups-->
+        {% for group in groups %}
+            {% include 'groups/group_card.html' with group=group %}
+        {% endfor %}
+    
     </div>
+
 {% endblock %}
