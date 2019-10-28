@@ -10,7 +10,7 @@ class Group(models.Model):
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    description = models.TextField(blank=True)
+    description = models.TextField(default="No description", blank=True)
 
     #college details
     college = models.CharField(max_length=100, blank=True, null=True)

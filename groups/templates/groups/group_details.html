@@ -1,0 +1,117 @@
+{% extends 'parent_layout.html' %}
+
+{% block title %}
+    {{group.name}}
+{% endblock %}
+
+
+{% block body %}
+
+    <!--Include the navigation bar-->
+    {% include 'groups/navigation.html' %}
+
+    <br><br>
+    <!--Display the Group details-->
+    <div class="container"> 
+            <div class="row">   
+                <div class="col-lg-8 col-xs-12">
+                    <span class="medium-text" style="font-size: 40px; margin-top:30px">{{group.name}}</span>
+    
+                    <table class="table table-hover ">
+                        <tr>
+                            <td><b>#</b></td>
+                            <td>{{group.id}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Members</b></td>
+                            <td>{{group.members.all.count}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Date created</b></td>
+                            <td>{{group.date_created}}</td>
+                        </tr>
+
+
+                        {% if group.college is not None %}
+                            <tr>
+                                <td><b>College</b></td>
+                                <td>{{group.college}}</td>
+                            </tr>
+                        {% endif %}
+
+                        {% if group.graduation_year is not None %}
+                        <tr>
+                            <td><b>Graduation year</b></td>
+                            <td>{{group.graduation_year}}</td>
+                        </tr>
+                        {% endif %}
+
+                        {% if group.section is not None %}
+                        <tr>
+                            <td><b>Section</b></td>
+                            <td>{{group.section}}</td>
+                        </tr>
+                        {% endif %}
+
+                        {% if group.batch is not None %}
+                        <tr>
+                            <td><b>Batch</b></td>
+                            <td>{{group.batch}}</td>
+                        </tr>
+                        {% endif %}               
+                        
+                    </table>
+
+                    {% if group.description != "No description" %}                        
+                        <b>Description</b><br>
+                        <pre class="pre">{{group.description}}</pre>                    
+                    {% endif %}
+
+                </div>  
+            </div>  
+        </div>
+    </div>      
+
+    <br><br>
+    <!--Display Members and group requests-->
+    <div class="container">
+        <div class="row">
+            <!--Members-->
+            <div class="col-sm-12 col-lg-6">
+                <div class="vertically-scrollable bg-light">
+
+                    <div class="head"><h2>Members</h2></div>               
+                    
+                    <div class="body">
+                        <h4>
+                            {% for member in members %}
+                                <b>{{member.first_name}} {{member.last_name}}</b> ({{member.username}})  <hr>                        
+                            {% endfor %}
+                        </h4>
+                            
+                    </div>
+                </div>
+            </div>
+
+            <!--Requests-->
+            <div class="col-sm-12 col-lg-6">
+                <div class="vertically-scrollable bg-dark">
+
+                    <div class="head"><h2>Requests</h2></div>
+
+                    <div class="body">                    
+                        {% for join_request in requests %}
+                            <h4>
+                                <b>{{join_request.user.first_name}} {{join_request.user.last_name}}</b> ({{join_request.user.username}})  <hr>                        
+                            </h4>
+                        {% endfor %}
+                            
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}

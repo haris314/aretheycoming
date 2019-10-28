@@ -8,16 +8,22 @@
 
     {% include 'groups/navigation.html' %}
 
-    <div class="normal-page">
-        <!--Heading-->
-        <div class="large-text align-right">All groups</div>
-        <hr>
 
-        <!--Display the groups-->
-        {% for group in groups %}
-            {% include 'groups/group_card.html' with group=group %}
-        {% endfor %}
-    
+    <!--Display the groups-->
+    <div class="container">
+            <!--Heading-->
+            <div class="large-text col-sm-12 col-lg-12">All groups</div>
+           
+        <div class="row flex-row">
+            
+            {% for group in groups %}
+                <div class= "col-sm-12 col-lg-6">
+                    {% include 'groups/group_card.html' with group=group %}
+                </div>
+            {% endfor %}
+        </div>
     </div>
+    
+    
 
 {% endblock %}

@@ -9,6 +9,8 @@ $backgroundLighter: rgba(66,17,17,1);
 
 $backgroundGreyOnRight: linear-gradient(90deg, rgba(255, 255, 255, 0) 22%, rgba(130, 130, 130, 0.301) 100%); 
 
+$veryLightGreyBackground: rgba(223, 223, 223, 0.2);
+
 /*A good color: #5c0627
 */
 
@@ -23,6 +25,7 @@ $backgroundGreyOnRight: linear-gradient(90deg, rgba(255, 255, 255, 0) 22%, rgba(
         background-color: $backgroundLight;
         color: $textColorLight;
         width: 100px;
+        box-shadow: 0px 5px 10px grey;
     }
 
     .wide-btn{
@@ -59,6 +62,10 @@ $backgroundGreyOnRight: linear-gradient(90deg, rgba(255, 255, 255, 0) 22%, rgba(
     .align-right{
         text-align: right;
     }
+    //to disable shadow on buttons
+    .no-shadow{
+        box-shadow: none;
+    }
 
 //Universal end
 
@@ -71,6 +78,7 @@ $backgroundGreyOnRight: linear-gradient(90deg, rgba(255, 255, 255, 0) 22%, rgba(
         font-size: 10vw;
         text-align: center;
         line-height: 500px;
+        box-shadow: 0px 5px 10px black;
     }
 
 //home.html without login end
@@ -83,6 +91,8 @@ $backgroundGreyOnRight: linear-gradient(90deg, rgba(255, 255, 255, 0) 22%, rgba(
         font-size: 30px;
         height: 50px;
         background: $themeBackground;
+        //box-shadow: 0px 10px 20px black;
+        box-shadow: 0px 5px 10px black;
         .left{
             padding-top: 5px;
             margin-left: 20px;
@@ -123,7 +133,8 @@ $backgroundGreyOnRight: linear-gradient(90deg, rgba(255, 255, 255, 0) 22%, rgba(
         right: 0px;
         background-color: $backgroundDark;
         min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        //box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        box-shadow: -10px 10px 20px black;
         z-index: 1;
     }
     
@@ -185,93 +196,32 @@ $backgroundGreyOnRight: linear-gradient(90deg, rgba(255, 255, 255, 0) 22%, rgba(
 
 
 
-.radio-label{
-    margin-left: 5px;
-    [type=radio] { 
-        position: absolute;
-        opacity: 0;
-        width: 0;
-        height: 0;
-     }
-      
-     /* IMAGE STYLES */
-    [type=radio] + img {
-        cursor: pointer;
-     }
-      
-    /* CHECKED STYLES */
-    [type=radio]:checked + img {
-        height: 50px;
-        box-shadow: -5px 0px 0px 0px $backgroundLight;
-    }
 
-    .btn{
-        font-size: 15px;
-        width: 80px;
-        margin-left:-5px;
-        margin-right:-5px;
-        background-color: rgba(131, 131, 131, 0);
-        color: black;
-        border-left: rgba(124, 124, 124, 0.384) solid 1px;
-        border-right: rgba(124, 124, 124, 0.384) solid 1px;
-    }
-    .btn:hover{
-        background-color: #9b9b9b5e;
-    }
-    [type=radio] + .btn {
-        cursor: pointer;
-     }
-    [type=radio]:checked + .btn{
-        background-color: $backgroundDark;
-        color: white;
-    }
-}
-
-
-
-
-
-.list-item{
-    background-color: $backgroundLight;    
-    width:10px;
-}
-
-.col-container{
-    display:table;
-    width:100%;
-}
-
-.col{
-    display: table-cell;
-    padding-right:5px;
-    padding-left: 5px;
-}
-
-.rating-select{
-    font-size: 20px;
-}
 
 
 
 //Style for a normal page. Like the api documentation page
 .normal-page{
-    margin:10%;
+    margin-top:5%;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 
 //Groups
-    $groupBackgroundColor: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(39,0,57,1) 89%, rgba(6,0,34,1) 100%);
+    $groupBackgroundColor: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(10,0,57,1) 89%, rgba(6,0,34,1) 100%);
     .group-card{
         background: $groupBackgroundColor;
         color: rgb(165, 165, 165);
         padding: 20px;
-        margin-top: 40px;
-        margin-bottom: 40px;
-        box-shadow: -5px 5px 30px #888888;
+        margin: 20px;
+        box-shadow: -5px 5px 30px black;
 
         font-size: 20px;
         line-height: 30px;
 
+        //for boostrap
+    
         .name{
             font-size: 40px;
             color: white;
@@ -286,33 +236,110 @@ $backgroundGreyOnRight: linear-gradient(90deg, rgba(255, 255, 255, 0) 22%, rgba(
             margin-bottom: 10px;
             padding: 5px;
             font-size: 17px;
-            background: rgba(255, 255, 255, 0.116);
+            background: rgba(255, 255, 255, 0.041);
         }
 
         .btn{
-            background: rgba(255, 255, 255, 0.068);
+            background: rgba(255, 255, 255, 0.0);
+            text-align: left;
             font-size: 15px;
-            margin-right: 10px;
+            margin: 5px;
+            box-shadow: none;
+        }
+        .btn:hover{
+            background: rgba(255, 255, 255, 0.103);
+        }
+        .btn:focus{
+            color: white;
+            outline: solid white 1px;
+        }
+        //tables
+        .table{
+            td{
+                width:200px;
+            }
         }
 
+        .table>tbody>tr>td, .table>tbody>tr>th {
+            border-top: none;
+        }
     }
+
+    //make the pre-formatted text look normal
+    .pre{
+        background: $veryLightGreyBackground;
+        border: none;
+        font-family: Helvetica, sans-serif;
+        font-size: 14px;
+        padding-left: 0px;
+        white-space: pre-wrap;
+    }
+
+    //the scrollable members and requests
+    .vertically-scrollable{
+        color:rgb(233, 233, 233);
+        margin-top:40px;
+        margin-bottom: 40px;
+        height: 400px;
+        padding: 20px;
+        
+        background: $veryLightGreyBackground;
+        box-shadow: 0px 5px 10px grey;
+        
+        .body{
+            overflow-y: scroll;
+            height:300px
+        }   
+    }
+
+    .bg-light{
+        background-color: $backgroundLight;
+    }
+    .bg-dark{
+        background-color: $backgroundDark;
+    }
+
+    //To make the height of all rows equal
+    @media only screen and (min-width : 1200px) {
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .flex-row > [class*='col-'] {
+            display: flex;
+            flex-direction: column;
+        }
+        .flex-row.row:after, 
+        .flex-row.row:before {
+            display: flex;
+        }
+    }
+
+
+    
+
 //Groups end
 
 //navigation bar
     .navigation{
        text-align: right;
-       font-size: 17px;
+       font-size: 15px;
        line-height: 50px;
         .btn{
-            color: rgba(179, 179, 179, 0.925);
+            color: rgb(255, 255, 255);
             background: rgba(255, 255, 255, 0.03); 
             height: 35px;
             margin-top:10px;
+            font-size: 15px;
             
         }
 
         .btn:hover{
             background: rgba(255, 255, 255, 0.103);
+        }
+        .btn:focus{
+            color: white;
+            outline: solid white 1px;
         }
         
     }

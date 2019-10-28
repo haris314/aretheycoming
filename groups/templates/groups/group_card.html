@@ -2,35 +2,52 @@
     <!--Group name and other essential details-->
     <span class="name">{{group.name}}</span>
     <br>
-    <b>#: </b> {{group.id}} <br>
-    <b>Description: </b> {{group.description}} <br>
-    <b>Members: </b> {{ group.members.all.count }} <br>
+    <table class="table">
+        <tr>
+            <td><b>#: </b></td> <td>{{group.id}} </td>
+        </tr>
+        <tr>
+            <td><b>Members: </b></td> <td>{{ group.members.all.count }} </td>
+        </tr>
+        {% if group.description != "No description" %}
+            <tr>
+                <td><b>Description: </b></td> <td>{{group.description}} </td>
+            </tr>
+        {% endif %}
+    </table>
 
     <!--
         Division for college details
         Print only if specific college details are present
     -->
     <div class="college-details">
-        {% if group.college is not None %}
-            <b>College: </b> {{group.college}} <br>
-        {% endif %}
-
-        {% if group.graduation_year is not None %}
-            <b>Graduation year: </b> {{group.graduation_year}} <br>
-        {% endif %}
-
-        {% if group.section is not None %}
-            <b>Section: </b> {{group.section}} <br>
-        {% endif %}
-
-        {% if group.batch is not None %}
-            <b>Batch: </b> {{group.batch}} <br>
-        {% endif %}
+        <table class="table">
+            <tr>
+                {% if group.college is not None %}
+                    <td><b>College: </b></td> <td>{{group.college}} </td>
+                {% endif %}
+            </tr>
+            <tr>
+                {% if group.graduation_year is not None %}
+                    <td><b>Graduation year: </b></td> <td>{{group.graduation_year}} </td>
+                {% endif %}
+            </tr>
+            <tr>
+                {% if group.section is not None %}
+                    <td><b>Section: </b></td> <td>{{group.section}} </td>
+                {% endif %}
+            </tr>
+            <tr>
+                {% if group.batch is not None %}
+                    <td><b>Batch: </b></td> <td>{{group.batch}} </td>
+                {% endif %}
+          </tr>
+        </table>
     </div>
 
 
     <!--Buttons-->
-    <button class="btn">Details</button>
-    <button class="wide-btn btn">Request Join</button>
+    <a href="{% url 'group_details' group.id %}"><button class="btn">Details</button></a>
+    <a href="{% url 'join_request' group.id %}"><button class="wide-btn btn">Request Join</button></a>
 
 </div>
