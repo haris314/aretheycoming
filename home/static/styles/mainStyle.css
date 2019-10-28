@@ -183,20 +183,6 @@ a.nostyle:visited {
   font-size: 30px;
 }
 
-/*.logged_in{
-    position: absolute;
-    right:10px;
-    top:18px;
-    text-align: right;
-    color: $textColorLight;
-    font-size: 23px;
-    button{
-        color:$textColorLight;
-        background-color: hsla(0, 0%, 100%, 0.13);
-        border: 0px;
-    }
-}
-*/
 .star {
   width: 30px;
   height: 30px;
