@@ -1,0 +1,14 @@
+ <div style="
+    background: rgba(255, 255, 255, 0.062);
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-right: 10px;
+    ">   
+    <button class="circular">
+        {{user.first_name|make_list|first}}{{user.last_name|make_list|first}}
+    </button>
+    <b>{{user.first_name}} {{user.last_name}}</b> 
+    <span style="font-size:12px">
+        {{user.username}}
+    </span>
+</div>

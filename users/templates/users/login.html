@@ -3,57 +3,68 @@
     Login/Register
 {% endblock %}
 
+
+
+{% block scripts %} 
+    {% load staticfiles %}
+    <script src="{% static 'users/login.js' %}"></script>
+{% endblock %}
+
 {%block body %}
 
 <div class="container">
         <div class="row">
+
+            <!--Login form-->
             <div class="col-lg-6 col-sm-12 ">
-                <form class="login-form" action="{% url 'login_view' %}" method="POST">
+                <form class="login-form" action="{% url 'login_view' %}" method="POST" id="loginForm">
                     {% csrf_token %}
                     <h1>Login</h1>
                     <h4>As an existing user</h4><hr><br>
                     Username: 
-                    <input type="text" name="username">
+                    <input type="text" name="username" autofocus id="loginUsername">
                     <br><br>
                     Password: 
                     <input type="password" name="password">
                     <br>
-                    <div id="login-message" class="red-text"></div>
+                    <div id="loginMessage" class="red-text"></div>
                     <br>
                     <button class="btn">Log in</button>
                 </form>
             </div>
+
+            <!--Registration form-->
             <div class="col-lg-6 col-sm-12" >
-                <form class="login-form" action="{% url 'sign_up' %}" method="POST">
+                <form class="login-form" action="{% url 'sign_up' %}" method="POST" id="submit">
                     {% csrf_token %}
                     <h1>Register</h1>
                     <h4>As a new user</h4><hr><br>
                     Username: 
-                    <input type="text" name="username">
+                    <input type="text" name="username" id="username" autocomplete="off">
                     <br>
-                    <div id="username-message" class="red-text"></div>
+                    <div id="usernameMessage" class="red-text"></div>
                     <br>
 
                     Password: 
-                    <input type="password" name="password">
+                    <input type="password" name="password" id="password">
                     <br>
-                    <div id="password-message" class="red-text"></div>
+                    <div id="passwordMessage" class="red-text"></div>
                     <br>
 
                     <span class="small">Confirm password: </span>
-                    <input type="password" name="confirm_password">
+                    <input type="password" name="confirm_password" id="confirmPassword">
                     <br> 
-                    <div id="confirm-password-message" class="red-text"></div>
+                    <div id="confirmPasswordMessage" class="red-text"></div>
                     <br>
 
                     First name
-                    <input type="text" name="first_name">
+                    <input type="text" name="first_name" id="firstName">
                     <br>
-                    <div id="first-name-message" class="red-text"></div>
+                    <div id="firstNameMessage" class="red-text"></div>
                     <br>
 
                     Last name
-                    <input type="text" name="last_name">
+                    <input type="text" name="last_name" id="lastName">
                     <br> <br>
 
                     <button class="btn">Sign up</button>

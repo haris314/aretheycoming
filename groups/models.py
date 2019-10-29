@@ -56,4 +56,4 @@ class Request(models.Model):
         unique_together = {'group', 'user'}
 
     def __str__(self):
-        return f"{self.id}. {self.user.username} requested to join {self.group.name}"
+        return f"{self.id}. {self.user} requested to join {self.group}"

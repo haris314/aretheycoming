@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse, Http404
 
 # Create your views here.
 
@@ -50,8 +50,8 @@ def sign_up(request):
     username = request.POST["username"].lower()
     password = request.POST["password"]
     confirm_password = request.POST["confirm_password"]
-    first_name = request.POST["first_name"]
-    last_name = request.POST["last_name"]
+    first_name = request.POST["first_name"].capitalize()
+    last_name = request.POST["last_name"].capitalize()
 
     #If something is still not right even after checks at frontend
     if (User.objects.filter(username=username).first() is not None) or (password != confirm_password) or (len(password) < 1) or (len(first_name) < 1):
@@ -69,7 +69,37 @@ def sign_up(request):
 
     return render(request, 'users/successfully_registered.html')
 
+
 #When someone clicks logout
 def logout_view(request):
     logout(request)
     return redirect('/login')
+
+
+#AJAX request to check if a user exists
+def check_username_ajax(request):
+    if(request.method is 'GET'):
+        return HttpResponse(status=404)
+
+    #get username
+    try:
+        username = request.POST["username"].lower()
+    except Exception:
+        return HttpResponse(status=404)
+
+    #If somehow someone sends a blank request
+    if len(username) < 1:
+        return JsonResponse({'exists': False, 'invalid': True})
+
+    #Set exists = true if username exists else false
+    if (User.objects.filter(username=username).first() is None):
+        exists = False
+    else:
+        exists = True
+    data = {
+        'exists': exists
+    }
+    print(f"Returning {exists}")
+    return JsonResponse(data)
+    
+

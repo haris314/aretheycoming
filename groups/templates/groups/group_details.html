@@ -83,11 +83,16 @@
                     <div class="head"><h2>Members</h2></div>               
                     
                     <div class="body">
-                        <h4>
+                        
                             {% for member in members %}
-                                <b>{{member.first_name}} {{member.last_name}}</b> ({{member.username}})  <hr>                        
+                                <h4>
+                                    {% include 'users/dp.html' with user=member %}        
+                                </h4>   
+                            {% empty %}
+                                This group has no members. <br>
+                                This group is so bad that even the admin left :v
                             {% endfor %}
-                        </h4>
+                        
                             
                     </div>
                 </div>
@@ -102,8 +107,11 @@
                     <div class="body">                    
                         {% for join_request in requests %}
                             <h4>
-                                <b>{{join_request.user.first_name}} {{join_request.user.last_name}}</b> ({{join_request.user.username}})  <hr>                        
+                                {% include 'users/dp.html' with user=join_request.user %}
                             </h4>
+                        {% empty %}
+                            No pending join requests. <br>
+                            Nobody wants to join this group :(
                         {% endfor %}
                             
                     </div>

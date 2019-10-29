@@ -47,7 +47,8 @@
 
 
     <!--Buttons-->
-    <a href="{% url 'group_details' group.id %}"><button class="btn">Details</button></a>
-    <a href="{% url 'join_request' group.id %}"><button class="wide-btn btn">Request Join</button></a>
+    <div class="align-right">
+        <a href="{% url 'join_request' group.id %}"><button class="wide-btn btn">Send a join request</button></a>
+    </div>
 
 </div>

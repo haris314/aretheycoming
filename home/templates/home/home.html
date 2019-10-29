@@ -11,11 +11,13 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="home-logo" >aretheycoming</div>
+
                 
                 <div class="centered">
                     <h1>A platform to organise events</h1>
                     <h3>Especially designed for school/college students to manage bunks and decide whether to go or not</h3>
                     <a href="{% url 'login_view' %}"><button class="wide-btn btn">Login/Signup</button></a>
+                    <a href="{% url 'groups' %}"><button class=" btn">Groups</button></a>
                 </div>
 
             </div>
@@ -26,10 +28,15 @@
             <hr>
             I don't know what to write here but I must write something because it will make the website look a little cooler. So stop reading now. Just stop!
             I need at least 2 lines. Wait did I just write 2 instead of two? I should have wrote two so that it had taken more space.
-            <br><br>
+            <!--Insert the logo image-->        
+            <div class="home-logo-image" >
+                <img src="{% static 'logo.png' %}">
+            </div>
             © Mohd Haris                
             <span style="font-size: 8px;"><br>Just wrote all this to make the website look cooler</span>
+
         </div>
+        
 
     </body>
 </html>

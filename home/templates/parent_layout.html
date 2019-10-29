@@ -8,6 +8,7 @@
         {% load staticfiles %}
         <link rel="stylesheet" href="{% static 'styles/mainStyle.css' %}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        {% block scripts %} {% endblock %}
     </head>
     
 
@@ -22,14 +23,14 @@
         <!--Diplay user information if the user is logged in-->
         {% if request.user.is_authenticated %}
             <div class="dropdown">
-                <button class="dropbtn">
+                <button class="dropbtn circular">
                     
-                    <span class="caret"></span>
+                    {{user.first_name|make_list|first}}{{user.last_name|make_list|first}}
                 </button>
                 <div class="dropdown-content" >
                     <span class="dropdown-item">Logged in</span>
                     <span class="dropdown-item"><b>{{request.user.username}}</b></span>
-                    <br>
+                    
                     <a href="{% url 'logout_view' %}">Log out</a>
                 </div>
             </div>
@@ -43,7 +44,10 @@
                 <hr>
                 I don't know what to write here but I must write something because it will make the website look a little cooler. So stop reading now. Just stop!
                 I need at least 2 lines. Wait did I just write 2 instead of two? I should have wrote two so that it had taken more space.
-                <br><br>
+                <!--Insert the logo image-->        
+                <div class="home-logo-image" >
+                        <img src="{% static 'logo.png' %}">
+                    </div>
                 © Mohd Haris                
                 <span style="font-size: 8px;"><br>Just wrote all this to make the website look cooler</span>
         </div>

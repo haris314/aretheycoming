@@ -8,17 +8,28 @@
 
     {% include 'groups/navigation.html' %}
 
-
+    <br><br>
     <!--Display the groups-->
     <div class="container">
-            <!--Heading-->
-            <div class="large-text col-sm-12 col-lg-12">All groups</div>
+
+            <div class="row">
+                <!--Heading-->
+                <div class="large-text col-sm-12 col-lg-12 align-right">
+                    Groups
+                </div>
+                <br>
+                <!--Filter Groups bar-->
+                <input id="filter_keyword" type="text" class="form-control search_bar" placeholder="Filter groups">
+                
+            </div>
            
         <div class="row flex-row">
             
             {% for group in groups %}
                 <div class= "col-sm-12 col-lg-6">
-                    {% include 'groups/group_card.html' with group=group %}
+                    <a href="{% url 'group_details' group.id %}" class="nostyle">
+                        {% include 'groups/group_card.html' with group=group %}
+                    </a>
                 </div>
             {% endfor %}
         </div>

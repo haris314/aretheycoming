@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from .models import Group, Membership, Request
 
 # Create your views here.
@@ -42,6 +42,11 @@ def group_details(request, id):
 
 #Wehn someone requests to join a gorup
 def join_request(request, id):
+
+    #If user is not logged in, redirect to login page
+    if(not request.user.is_authenticated):
+        return redirect("login_view")
+
     group = Group.objects.get(id=id)
 
     new_request = Request(group=group, user=request.user)
