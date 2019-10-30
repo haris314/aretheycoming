@@ -99,7 +99,6 @@ def check_username_ajax(request):
     data = {
         'exists': exists
     }
-    print(f"Returning {exists}")
     return JsonResponse(data)
     
 

@@ -1,6 +1,10 @@
 /*New colors*/
 /*A good color: #5c0627
 */
+html {
+  scroll-behavior: smooth;
+}
+
 ::selection {
   background-color: rgba(187, 187, 187, 0.404);
   color: black;
@@ -180,17 +184,26 @@ a.nostyle:visited {
 
 .red-text {
   color: #ee2020;
+  background-color: rgba(238, 32, 32, 0.158);
 }
 
 .green-text {
   color: #35a55b;
+  background-color: rgba(53, 165, 91, 0.158);
 }
 
-.red-text, .green-text {
-  width: 200px;
-  font-weight: bold;
+.white-text {
+  background: rgba(255, 255, 255, 0);
+}
+
+.red-text, .green-text, .white-text {
+  text-align: center;
   font-size: 16px;
-  float: right;
+  width: 250px;
+  height: 20px;
+  margin-left: auto;
+  margin-right: 0px;
+  margin-top: 5px;
 }
 
 .normal-page {
@@ -207,6 +220,9 @@ a.nostyle:visited {
   box-shadow: -5px 5px 30px black;
   font-size: 20px;
   line-height: 30px;
+  animation-name: fadein;
+  animation-duration: 500ms;
+  animation-fill-mode: forwards;
 }
 .group-card .name {
   font-size: 40px;
@@ -370,6 +386,14 @@ a.nostyle:visited {
 @media (max-width: 650px) {
   .login {
     margin-right: 5%;
+  }
+}
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 

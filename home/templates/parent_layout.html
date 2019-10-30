@@ -8,6 +8,8 @@
         {% load staticfiles %}
         <link rel="stylesheet" href="{% static 'styles/mainStyle.css' %}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+        <script src="{% static 'common_script.js' %}"></script>
         {% block scripts %} {% endblock %}
     </head>
     
@@ -40,7 +42,7 @@
         {% endblock %}
         
         <!-- The section to be displayed on the bottom of the page -->
-        <div style="margin:10%; text-align:center;">
+        <div style="margin:10%; text-align:center;" id="footer">
                 <hr>
                 I don't know what to write here but I must write something because it will make the website look a little cooler. So stop reading now. Just stop!
                 I need at least 2 lines. Wait did I just write 2 instead of two? I should have wrote two so that it had taken more space.

@@ -4,10 +4,19 @@
     Groups
 {% endblock %}
 
+{% block scripts %}
+    {% load staticfiles %}
+    <script src="{% static 'groups/groups.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script> <script></script>
+{% endblock %}
+
+
 {% block body %}
 
     {% include 'groups/navigation.html' %}
 
+    <!--Include the group card template-->
+    {% include 'groups/group_card.html' %}
     <br><br>
     <!--Display the groups-->
     <div class="container">
@@ -23,15 +32,8 @@
                 
             </div>
            
-        <div class="row flex-row">
-            
-            {% for group in groups %}
-                <div class= "col-sm-12 col-lg-6">
-                    <a href="{% url 'group_details' group.id %}" class="nostyle">
-                        {% include 'groups/group_card.html' with group=group %}
-                    </a>
-                </div>
-            {% endfor %}
+        <div class="row flex-row" id="groupList">
+            <!--Groups will be inserted AJAXically here-->
         </div>
     </div>
     

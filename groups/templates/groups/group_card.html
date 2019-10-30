@@ -1,54 +1,64 @@
-<div class="group-card">
-    <!--Group name and other essential details-->
-    <span class="name">{{group.name}}</span>
-    <br>
-    <table class="table">
-        <tr>
-            <td><b>#: </b></td> <td>{{group.id}} </td>
-        </tr>
-        <tr>
-            <td><b>Members: </b></td> <td>{{ group.members.all.count }} </td>
-        </tr>
-        {% if group.description != "No description" %}
-            <tr>
-                <td><b>Description: </b></td> <td>{{group.description}} </td>
-            </tr>
-        {% endif %}
-    </table>
+<script id="groupCardTemplate" type="text/x-handlebars-template">
+    <div class = "col-sm-12 col-lg-6"> <a href="{% verbatim %}{{group.id}}{% endverbatim %}" class="nostyle">
+        <div class="group-card" id="{% verbatim %}{{group.id}}{% endverbatim %}">
+            <!--Group name and other essential details-->
+            <span class="name" >
+                {% verbatim %}{{group.name}}{% endverbatim %}
+            </span>
+            <br>
+            <table class="table">
+                <tr>
+                    <td><b>#: </b></td> <td>{% verbatim %}{{group.id}}{% endverbatim %} </td>
+                </tr>
+                <tr>
+                    <td><b>Members: </b></td> <td>{% verbatim %}{{ group.membersCount }}{% endverbatim %} </td>
+                </tr>
+                {% verbatim %} {{#if group.description  }} {% endverbatim %}
+                    <tr>
+                        <td><b>Description: </b></td> <td>{% verbatim %}{{group.description}}{% endverbatim %} </td>
+                    </tr>
+                {% verbatim %} {{/if}} {% endverbatim %}
+            </table>
 
-    <!--
-        Division for college details
-        Print only if specific college details are present
-    -->
-    <div class="college-details">
-        <table class="table">
-            <tr>
-                {% if group.college is not None %}
-                    <td><b>College: </b></td> <td>{{group.college}} </td>
-                {% endif %}
-            </tr>
-            <tr>
-                {% if group.graduation_year is not None %}
-                    <td><b>Graduation year: </b></td> <td>{{group.graduation_year}} </td>
-                {% endif %}
-            </tr>
-            <tr>
-                {% if group.section is not None %}
-                    <td><b>Section: </b></td> <td>{{group.section}} </td>
-                {% endif %}
-            </tr>
-            <tr>
-                {% if group.batch is not None %}
-                    <td><b>Batch: </b></td> <td>{{group.batch}} </td>
-                {% endif %}
-          </tr>
-        </table>
+            <!--
+                Division for college details
+                Print only if specific college details are present
+            -->
+            <div class="college-details">
+                <table class="table">
+                    <tr>
+                        {% verbatim %}{{#if group.college }} {% endverbatim %}
+                            <td><b>College: </b></td> <td>{% verbatim %}{{group.college}}{% endverbatim %} </td>
+                        {% verbatim %} {{/if}} {% endverbatim %}
+                    </tr>
+                    <tr>
+                        {% verbatim %}{{#if group.graduationYear }} {% endverbatim %}
+                            <td><b>Graduation year: </b></td> <td>{% verbatim %}{{group.graduationYear}}{% endverbatim %} </td>
+                        {% verbatim %} {{/if}} {% endverbatim %}
+                    </tr>
+                    <tr>
+                        {% verbatim %}{{#if group.section }} {% endverbatim %}
+                            <td><b>Section: </b></td> <td>{% verbatim %}{{group.section}}{% endverbatim %} </td>
+                        {% verbatim %} {{/if}} {% endverbatim %}
+                    </tr>
+                    <tr>
+                        {% verbatim %}{{#if group.batch }} {% endverbatim %}
+                            <td><b>Batch: </b></td> <td>{% verbatim %}{{group.batch}}{% endverbatim %} </td>
+                        {% verbatim %} {{/if}} {% endverbatim %}
+                </tr>
+                </table>
+            </div></a>
+
+
+            <!--Buttons-->
+            <div class="align-right">
+                <button class="wide-btn btn" onclick="sendRequest({% verbatim %} {{group.id}} {% endverbatim %})"
+                        id="btn{% verbatim %}{{group.id}}{% endverbatim %}">
+                    Send a join request
+                </button>
+            </div>
+
+        </div>
+
     </div>
-
-
-    <!--Buttons-->
-    <div class="align-right">
-        <a href="{% url 'join_request' group.id %}"><button class="wide-btn btn">Send a join request</button></a>
-    </div>
-
-</div>
+</script>

@@ -43,16 +43,14 @@ function checkForm(){
    //check if password and confirm passwrod match
    if(confirmPassword.value.length >= 1 || letItBe==true){
       if(password.value == confirmPassword.value){
-         confirmPasswordMessage.innerHTML = "Passwords match";
-         confirmPasswordMessage.className = "green-text";
+         setHTML(confirmPasswordMessage, "Passwords match", "green");
       }
       else{
-         confirmPasswordMessage.innerHTML = "Passwords don't match";
-         confirmPasswordMessage.className = "red-text";
+         setHTML(confirmPasswordMessage, "Passwords don't match", "red");
       }
    }
    else{
-      confirmPasswordMessage.innerHTML = "";
+      setHTML(confirmPasswordMessage, "", "white");
    }
 
 }
@@ -63,29 +61,30 @@ function checkFormOnSubmit(){
 
    //check username
    if (username.value.length < 1){
-      usernameMessage.innerHTML = "Username can't be empty";
+      setHTML(usernameMessage, "Username can't be empty", "red");
       return false;
    }
    else{
-      usernameMessage.innerHTML = "";
+      setHTML(usernameMessage, "", "white");
    }
+   checkRegisterationUserName();
 
    //check password
    if (password.value.length < 1){
-      passwordMessage.innerHTML = "Password can't be empty";
+      setHTML(passwordMessage, "Password can't be empty", "red");
       return false;
    }
    else{
-      passwordMessage.innerHTML = "";
+      setHTML(passwordMessage, "", "white");
    }
 
-   //check passwrod
+   //check first name
    if (firstName.value.length < 1){
-      firstNameMessage.innerHTML = "First name can't be empty";
+      setHTML(firstNameMessage, "First name can't be empty", "red");
       return false;
    }
    else{
-      firstNameMessage.innerHTML = "";
+      setHTML(firstNameMessage, "", "white");
    }
 
    //check confirm password
@@ -113,11 +112,11 @@ function checkRegisterationUserName(){
 function checkUsername(textField, messageField, isLogin){
 
    //clear the messageField
-   messageField.innerHTML = ""
+   setHTML(messageField, "", "white");
 
    //If username is empty, just clear the message
    if(textField.value.length < 1){
-      messageField.innerHTML = "";
+      setHTML(messageField, "", "white");
       return;     
    }
 
@@ -131,8 +130,7 @@ function checkUsername(textField, messageField, isLogin){
    
    //do the check
    if(flag===false){
-      messageField.innerHTML = "Invalid username";
-      messageField.className = "red-text";   
+      setHTML(messageField, "Invalid username", "red");
 
       //If login has called, then false must be returned to prevent the form from submitting      
       if(isLogin){
@@ -168,8 +166,7 @@ function checkFromDb(usernameValue, messageField, isLogin){
       //if this is login,
       if(isLogin){
          if(response.exists == false){
-            messageField.innerHTML = "Username does not exist";
-   
+            setHTML(messageField, "Username does not exist", "red");   
             return false;
          }
          else{
@@ -180,14 +177,10 @@ function checkFromDb(usernameValue, messageField, isLogin){
       
       //Else handle the cases for registration
       if(response.exists){
-         messageField.innerHTML = "Username already exists";
-         messageField.className = "red-text";
-
+         setHTML(messageField, "Username already exists", "red");
       }
       else{
-         messageField.innerHTML = "Username is valid";
-         messageField.className = "green-text";
-
+         setHTML(messageField, "Username is valid", "green");
       }
    };
 
@@ -198,23 +191,11 @@ function checkFromDb(usernameValue, messageField, isLogin){
 }
 
 
-
-
-
-
-
-function getCookie(name) {
-   var cookieValue = null;
-   if (document.cookie && document.cookie !== '') {
-       var cookies = document.cookie.split(';');
-       for (var i = 0; i < cookies.length; i++) {
-           var cookie = cookies[i].trim();
-           // Does this cookie string begin with the name we want?
-           if (cookie.substring(0, name.length + 1) === (name + '=')) {
-               cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-               break;
-           }
-       }
-   }
-   return cookieValue;
+//helper function to set innerHTML of elements
+function setHTML(element, message, color){
+   className = color + "-" + "text";
+   element.innerHTML = message;
+   element.className = className;
+   
 }
+
