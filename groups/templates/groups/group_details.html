@@ -4,9 +4,13 @@
     {{group.name}}
 {% endblock %}
 
+{%block scripts %}
+    {% load staticfiles %}
+    <script src="{% static 'groups/group_details.js' %}"></script>
+{% endblock %}
+
 
 {% block body %}
-
     <!--Include the navigation bar-->
     {% include 'groups/navigation.html' %}
 
@@ -107,7 +111,7 @@
                     <div class="body">                    
                         {% for join_request in requests %}
                             <h4>
-                                {% include 'users/dp.html' with user=join_request.user %}
+                                {% include 'users/dp.html' with user=join_request.user request_id=join_request.id group_id=group.id%}
                             </h4>
                         {% empty %}
                             No pending join requests. <br>

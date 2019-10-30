@@ -5,4 +5,7 @@ urlpatterns = [
     path("", views.groups, name="groups"),
     path("<int:id>", views.group_details, name="group_details"),
     path("<int:id>/request", views.join_request, name="join_request"),
+    
+    #When someone accepts a join request
+    path("<int:group_id>/accept", views.accept, name="accept"),
 ]

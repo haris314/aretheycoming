@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from .models import Group, Membership, Request
 from django.http import JsonResponse, HttpResponse
+from .helper import *
 
 import time
 
@@ -73,11 +74,15 @@ def group_details(request, id):
         #get the requests to join the group
         requests = Request.objects.filter(group=group).all()
 
+        #Get whether the user is admin of this group or not
+        adminFlag = is_admin(request, group)
+
         #Create teh context object
         context = {
             "group": group,
             "members": members,
-            "requests": requests
+            "requests": requests,
+            "adminFlag": adminFlag,
         }
         return render(request, 'groups/group_details.html', context)
 
@@ -113,3 +118,50 @@ def join_request(request, id):
     new_request.save()
 
     return JsonResponse({'success': True})
+
+
+#To accept a join request
+def accept(request, group_id):
+    print(1);
+
+    #If someone tries to access it via unfair means
+    if request.method != "POST":
+        return JsonResponse({'success': False})
+    print(1);
+    
+
+    #If user is not even logged in
+    if not request.user.is_authenticated :
+        return JsonResponse({'success': False})
+    print(1);
+
+
+    #Get group and user's membership
+    group = Group.objects.get(id=group_id)
+    membership = Membership.objects.filter(group=group, user=request.user).first()
+
+    #If the given user is not admin of the group and still accesses it
+    if membership.admin is False:
+        return JsonResponse({'success':False})
+    print(1);
+
+
+    #If join request does not exist
+    request_id = request.POST['request_id']
+    join_request = Request.objects.filter(id = request_id).first()
+    if join_request is None:
+        return JsonResponse({'success': False})
+    print(1);
+
+
+    #Finally process the accept request
+    #Make membership and delete join request
+    membership = Membership(group=group, user=join_request.user, admin=False)
+    membership.save()
+    join_request.delete()
+
+    #Return success
+    return JsonResponse({'success': True})
+
+
+    

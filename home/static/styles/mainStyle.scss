@@ -411,6 +411,36 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
         }
     }
 
+    //Buttons to accept and reject aka right and wrong
+    .right_btn{
+        background: url("/static/right.png");
+    }
+    .wrong_btn{
+        background: url("/static/wrong.png");
+    }
+    .right_btn, .wrong_btn{
+        height: 40px;
+        width: 40px;
+        border: none;
+        float: right;
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+    .right_btn, .wrong_btn:on-hover{
+        background: $veryLightGreyBackground;
+        
+    }
+    .right_btn, .wrong_btn:focus{
+        //background: $veryLightGreyBackground;        
+    }
+
+    //For animation on delete of division
+    .on_delete{
+        animation-name: delete_animation;
+        animation-duration: 2s;
+        animation-fill-mode: forwards;
+        animation-play-state: paused;
+    }
 
     
 
@@ -481,4 +511,37 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
     100%{
         opacity: 1;
     }
+}
+
+@keyframes delete_animation{
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+    /*0%{
+        opacity: 1;
+        height: 100%;
+        line-height:100%;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        margin-right: 10px;    
+        
+    }
+    75%{
+        opacity: 0;
+        line-height:100%;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        margin-right: 10px;  
+        
+    }
+    100%{
+        opacity: 0;
+        height: 0px;
+        line-height: 0px;
+        margin: 0px;
+        padding: 0px;
+    }*/
 }
