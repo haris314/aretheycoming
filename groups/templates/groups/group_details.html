@@ -89,9 +89,9 @@
                     <div class="body">
                         
                             {% for member in members %}
-                                <h4>
+                                
                                     {% include 'users/dp.html' with user=member %}        
-                                </h4>   
+                                 
                             {% empty %}
                                 This group has no members. <br>
                                 This group is so bad that even the admin left :v
@@ -110,9 +110,9 @@
 
                     <div class="body">                    
                         {% for join_request in requests %}
-                            <h4>
+                            
                                 {% include 'users/dp.html' with user=join_request.user request_id=join_request.id group_id=group.id%}
-                            </h4>
+                            
                         {% empty %}
                             No pending join requests. <br>
                             Nobody wants to join this group :(

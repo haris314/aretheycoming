@@ -8,4 +8,7 @@ urlpatterns = [
     
     #When someone accepts a join request
     path("<int:group_id>/accept", views.accept, name="accept"),
+
+    #To create a new group
+    path("create_group", views.create_group, name="create_group"),
 ]

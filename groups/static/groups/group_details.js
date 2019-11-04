@@ -17,11 +17,11 @@ function accept(request_id, group_id){
         //If request was successful, get the correct html element and delete it
         if(response.success){
             div = document.getElementById(request_id);            
-            div = div.parentElement;
+            div = div.parentElement.parentElement;
 
             //animate
             div.style.animationPlayState = 'running';
-            div.addEventListener('animationed', () =>{
+            div.addEventListener('animationend', () =>{
                 div.remove();
             })
         }

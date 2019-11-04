@@ -3,6 +3,9 @@ from .models import Group, Membership, Request
 from django.http import JsonResponse, HttpResponse
 from .helper import *
 
+#To see exception details
+import sys
+
 import time
 
 # Create your views here.
@@ -32,7 +35,6 @@ def groups(request):
         start = int(request.POST['start'])
         count = int(request.POST['count'])
 
-        print(f"{start} {count}")
 
         groups = Group.objects.order_by('-id')[start: start+count];
         
@@ -122,18 +124,15 @@ def join_request(request, id):
 
 #To accept a join request
 def accept(request, group_id):
-    print(1);
 
     #If someone tries to access it via unfair means
     if request.method != "POST":
         return JsonResponse({'success': False})
-    print(1);
     
 
     #If user is not even logged in
     if not request.user.is_authenticated :
         return JsonResponse({'success': False})
-    print(1);
 
 
     #Get group and user's membership
@@ -143,7 +142,6 @@ def accept(request, group_id):
     #If the given user is not admin of the group and still accesses it
     if membership.admin is False:
         return JsonResponse({'success':False})
-    print(1);
 
 
     #If join request does not exist
@@ -151,7 +149,6 @@ def accept(request, group_id):
     join_request = Request.objects.filter(id = request_id).first()
     if join_request is None:
         return JsonResponse({'success': False})
-    print(1);
 
 
     #Finally process the accept request
@@ -164,4 +161,68 @@ def accept(request, group_id):
     return JsonResponse({'success': True})
 
 
-    
+#To create a new group
+def create_group(request):
+
+    #If the user is not logged in
+    if request.user.is_authenticated is False:
+        return render(request, 'error.html', {'message': "You are not logged in"})
+
+    #If the method is get, just give the create group page
+    if(request.method == "GET"):
+        return render(request, 'groups/create_group.html')
+
+    #If method is post, this means someone has submitted the form
+    if(request.method == 'POST'):
+
+        #Get the details
+        name = request.POST['name']
+        college = request.POST['college']
+        graduation_year = request.POST['graduation_year']
+        section = request.POST['section']
+        batch = request.POST['batch']
+        description = request.POST['description']
+
+        #Because I treat the string "No description" as empty description :(
+        if description is '':
+            description = "No description"
+        
+        if graduation_year is '':
+            graduation_year = None
+
+        #Do the checks
+        #Group name must not be empty
+        if name is '':
+            return render(request, 'error.html', {'message': "Empty group name"})
+        
+        #If batch or section is not empty then college and passing year must not be empty
+        if (batch is not '') or (section is not ''):
+            if (college is '') or (graduation_year is ''):
+                return render(request, 'error.html', {'message': "If batch or section is not empty then college and passing year must not be empty"})
+        
+        #Section must be 1 character and batch must be at most 2 long
+        if (len(section) > 1) or (len(batch) > 2):
+            return render(request, 'error.html', {'message': "Section must be 1 character and batch must be at most 2 long"})
+        
+        #Name must be at most 50 chars
+        if len(name) > 50:
+            return render(request, 'error.html', {'message': "Name must be at most 50 chars"})
+
+        #Finally do the insertion in the database
+        try:
+             #Make the group
+            new_group = Group(name=name, description=description, college=college, graduation_year=graduation_year, section=section, batch=batch)
+            new_group.save()
+
+            #Make the current user the admin of this new group
+            new_member = Membership(group=new_group, user=request.user, admin=True)
+            new_member.save()
+
+        except (Exception):
+            print("Oops!", sys.exc_info()[0], "occurred.")
+            return render(request, 'error.html', {'message': "Something went wrong. Are you sure you are putting the right details? If yes then please contact admin"})
+        
+        #Successfully added
+        return render(request, 'success.html', {"message": "Successfully created new group"})
+
+

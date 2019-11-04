@@ -1,34 +1,33 @@
- <div id="{{ user.username }}" class="on_delete" style="
-    background: rgba(255, 255, 255, 0.062);
-    margin-top: 15px;
-    margin-bottom: 15px;
-    margin-right: 10px;    
-    ">   
+<div id="{{ user.username }}" class="element" >   
 
-    <!--Adding the dp-->
-    <button class="circular">
-        {{user.first_name|make_list|first}}{{user.last_name|make_list|first}}
-    </button>
+    <div class="dp_content">
+        <!--Adding the dp-->
+        <button class="circular" >
+            {{user.first_name|make_list|first}}{{user.last_name|make_list|first}}
+        </button>
 
-    <!--Adding the display name and username-->
-    <b>{{user.first_name}} {{user.last_name}}</b> 
-    <span style="font-size:12px">
-        {{user.username}}
-    </span>
+        <!--Adding the display name and username-->
+        <b>{{user.first_name}} {{user.last_name}}</b> 
+        <span style="font-size:12px">
+            {{user.username}}
+        </span>
+    </div>
 
     <!--If it is a join request-->
     <!--Add the accept and reject button if the user is admin-->
     {% if adminFlag %}
         {% load staticfiles %}
         {% if request_id %}
-            <button class="wrong_btn" id="{{ request_id }}" onclick="reject({{ request_id }})">
-                <img src = "{% static 'wrong.png' %}" height="40px">
+        <div class="dp_icons">
+            <button class="wrong_btn" id="{{ request_id }}" onclick="reject({{ request_id }})" ">
+                <img src = "{% static 'wrong.png' %}" style="height:inherit">
             </button>
-            <button class="right_btn" id="{{ request_id }}" onclick="accept({{ request_id }}, {{ group_id}})">
-                <img src = "{% static 'right.png' %}" height="40px">
+            <button class="right_btn" id="{{ request_id }}" onclick="accept({{ request_id }}, {{ group_id}})" >
+                <img src = "{% static 'right.png' %}" style="height:inherit">
             </button>
+        </div>
         {% endif %}
     {% endif %}
-    
+
 </div>
 
