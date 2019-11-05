@@ -202,7 +202,7 @@ def create_group(request):
         
         #Section must be 1 character and batch must be at most 2 long
         if (len(section) > 1) or (len(batch) > 2):
-            return render(request, 'error.html', {'message': "Section must be 1 character and batch must be at most 2 long"})
+            return render(request, 'error.html', {'message': "Section must be 1 character and batch must be at most 2 characters long"})
         
         #Name must be at most 50 chars
         if len(name) > 50:
