@@ -11,7 +11,7 @@ import time
 # Create your views here.
 
 #index view to find groups
-#Shows all groups and let's search for more specific groups
+#Shows all groups
 def groups(request):
 
      #If the method is GET, this means just return the html page
@@ -41,26 +41,40 @@ def groups(request):
         if(groups is None):
             pass
 
-        #Shrink description length of lengthy descriptions
-        for group in groups:
-            if len(group.description) > 68:
-                group.description = group.description[0 : 66] + ". ."       
-                    
-        data = []
-        for group in groups:
-            data.append({
-                'name' : group.name,
-                'id' : group.id,
-                'membersCount' : group.members.count(),
-                'description' : group.description,
-    
-                'college': group.college,
-                'graduationYear': group.graduation_year,
-                'section': group.section,
-                'batch': group.batch,
-            })
-        time.sleep(1)
+        data = get_json_groups([groups])
+
+        #time.sleep(1)
         return JsonResponse(data, safe=False);
+
+
+#To filter groups (Only AJAX request)
+def filter_groups(request):
+
+    #Housekeeping
+    if(request.method != "POST"):
+        return HttpResponse(status=404)
+
+    #Get the filter keyword from the request
+    keyword = request.POST['keyword']
+
+    group_list = []
+
+    #If it matches the id of some group
+    try:
+        id = int(keyword)
+        groups = Group.objects.filter(id=id).all()
+        group_list.append(groups)
+    except:
+        #If exception occurs, keyword is not a valid id candidate
+        pass
+    
+    #Search the keyword in names
+    groups = Group.objects.filter(name__icontains= f'{keyword}').all()
+    print(groups.count())
+    group_list.append(groups)
+
+    return JsonResponse(get_json_groups(group_list), safe=False)
+
 
 
 #Shows details of a specific group

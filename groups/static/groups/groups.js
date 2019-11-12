@@ -5,8 +5,11 @@ var groupTemplate;
 
 //set start and more variables for number of groups
 var start = 0;
-var count = 4;
+var count = 8;
 var getMoreFlag = true;
+
+//To prevent from loading groups on scrolling when the user has filtered groups
+var loadFlag = true;
 
 //When the dom content is loaded
 document.addEventListener("DOMContentLoaded", () => {
@@ -14,11 +17,19 @@ document.addEventListener("DOMContentLoaded", () => {
     //set the template
     groupTemplate = Handlebars.compile(document.querySelector('#groupCardTemplate').innerHTML);
 
+    //Get the filter_keyword filed and set the event listener
+    filter_keyword = document.querySelector('#filter_keyword');
+    filter_keyword.onkeyup = filterGroups;
+
+    //Get groups for the first time
     getGroups();
 });
 
 //Get more groups when at the end of page
 window.onscroll = () =>{
+    if (loadFlag == false){
+        return
+    }
     if(window.scrollY + window.innerHeight >= document.querySelector('#footer').offsetTop){ //
         getGroups();
     }
@@ -141,6 +152,54 @@ function sendRequest(id){
 }
 
         
-    
+//Function to Filter groups
+filterGroups = () => {
+
+    //Get the keyword
+    keyword = filter_keyword.value;
+
+    //If the length is 0 then do nothing
+    if(keyword.length === 0){
+        document.querySelector('#groupList').innerHTML = "";
+
+        //Set start = 0 to start loading from the beginning
+        start = 0;
+
+        //loadFlag = true to allow loading more groups when hitting the bottom while scrolling
+        loadFlag = true;
+        
+        getGroups();
+        return;
+    }
+
+    //Open the request
+    request = new XMLHttpRequest();
+    request.open('POST', 'filter');
+    csrftoken = getCookie('csrftoken');
+    request.setRequestHeader('X-CSRFToken', csrftoken);
+
+    //When the response comes, clear the group list and add the new groups
+    request.onload = () =>{
+
+        loadFlag = false;
+
+        if(request.status != 200){
+            console.log("Something went wrong while sending the request");
+            return;            
+        }
+
+        //Clear the current groups from the group list
+        document.querySelector('#groupList').innerHTML = '';
+
+        //Get response and add them
+        response = JSON.parse(request.responseText);
+        addGroups(response);
+    }
+
+    //Send the request
+    data = new FormData();
+    data.append('keyword', keyword);
+    request.send(data);
+}    
         
 

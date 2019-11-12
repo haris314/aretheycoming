@@ -29,6 +29,9 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
         color: $textColorLight;
         width: 100px;
         box-shadow: 0px 5px 10px grey;
+
+        //border-radius: 50px 50px 50px 50px;
+
     }
 
     .wide-btn{
@@ -37,6 +40,7 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
     .btn:focus{
         background-color: $backgroundLighter;
         color: $textColorLight;
+        outline: none;
     }
     .btn:hover{
         background-color: $backgroundDark;
@@ -417,8 +421,8 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
 
         font-size: 20px;
         box-shadow: 0px 0px 3px grey;
-        
 
+        border-radius: 100px 100px 100px 100px;
     }
 
 

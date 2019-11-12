@@ -2,7 +2,12 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+
+    #To display all groups
     path("", views.groups, name="groups"),
+
+    #To display the filtered groups (Only an AJAX request)
+    path("filter", views.filter_groups, name="filter_groups"),
 
     #To show the details of a group
     path("<int:id>", views.group_details, name="group_details"),
