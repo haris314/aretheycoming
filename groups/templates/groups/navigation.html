@@ -8,6 +8,10 @@
         <button class="btn no-shadow">Groups</button>
     </a>
 
+    <a href="{% url 'my_groups' %}">
+        <button class="btn no-shadow">My groups</button>
+    </a>
+
     <!--These links must only be visible if the user is already logged in-->
     {% if request.user.is_authenticated %}
         <a href="{% url 'create_group' %}">

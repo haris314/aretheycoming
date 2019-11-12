@@ -3,6 +3,8 @@ from . import views
 
 urlpatterns = [
     path("", views.groups, name="groups"),
+
+    #To show the details of a group
     path("<int:id>", views.group_details, name="group_details"),
     path("<int:id>/request", views.join_request, name="join_request"),
     
@@ -11,4 +13,7 @@ urlpatterns = [
 
     #To create a new group
     path("create_group", views.create_group, name="create_group"),
+
+    #To show the current user his/her groups
+    path("my_groups", views.my_groups, name="my_groups"),
 ]

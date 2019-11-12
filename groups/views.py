@@ -127,13 +127,12 @@ def accept(request, group_id):
 
     #If someone tries to access it via unfair means
     if request.method != "POST":
-        return JsonResponse({'success': False})
+        #return JsonResponse({'success': False})
+        return HttpResponse(status=404)
     
-
     #If user is not even logged in
     if not request.user.is_authenticated :
         return JsonResponse({'success': False})
-
 
     #Get group and user's membership
     group = Group.objects.get(id=group_id)
@@ -142,7 +141,6 @@ def accept(request, group_id):
     #If the given user is not admin of the group and still accesses it
     if membership.admin is False:
         return JsonResponse({'success':False})
-
 
     #If join request does not exist
     request_id = request.POST['request_id']
@@ -226,3 +224,39 @@ def create_group(request):
         return render(request, 'success.html', {"message": "Successfully created new group"})
 
 
+#To display the groups which the user is part of
+def my_groups(request):
+
+    #If the user is not logged in, redirect to login page
+    if not request.user.is_authenticated:
+        return redirect('/login')
+
+    #Get groups and render
+    #First we get the user's memberships
+    memberships = Membership.objects.filter(user=request.user).all()
+
+    #Filter them in appropriate lists
+    admin_groups = []
+    member_groups = []
+    for membership in memberships:
+
+        #Get the data
+        group = membership.group
+        to_append = {
+            'id': group.id,
+            'name': group.name,
+            'members_count': group.members.count(),
+        }
+
+        #Add the group in the admin list if user is admin of this group else in member list
+        if(membership.admin):
+            admin_groups.append(to_append)
+        else:
+            member_groups.append(to_append)
+    
+    #Prepare the context and render
+    context = {
+        'admin_groups': admin_groups,
+        'member_groups': member_groups,
+    }
+    return render(request, 'groups/my_groups.html', context)

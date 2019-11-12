@@ -1,0 +1,58 @@
+{% extends "parent_layout.html" %}
+
+{% block title %}
+    My groups
+{% endblock %}
+
+{% block scripts %}
+    {% load staticfiles %}
+    <script src='{% static "groups/my_groups.js" %}'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+{% endblock %}
+
+{% block body %}
+
+    {% include 'groups/navigation.html' %}
+
+    <!--Include the group card template-->
+    {% include 'groups/group_card.html' %}
+
+    <div class="normal-page">
+        
+        <div class="large-text">My groups</div>
+
+        <!--Groups which are created by this user-->
+        <div class="medium-text">Admin of</div>
+        <table id="admin_of" class='table table-hover'>
+            <tr>
+                <th>Name</th>
+                <th>#</th>
+                <th>Members</th>
+            </tr>
+            {% for group in admin_groups %}
+            <tr>
+                <td><a href="{% url 'group_details' id=group.id %}">{{group.name}}</a></td>
+                <td>{{group.id}}</td>
+                <td>{{group.members_count}}</td>
+            </a></tr>
+            {% endfor %}
+        </table>
+
+        <div class="medium-text">Member of</div>
+        <table id="member_of" class='table table-hover'>
+                </a><tr>
+                    <th>Name</th>
+                    <th>#</th>
+                    <th>Members</th>
+                </tr>
+                {% for group in member_groups %}
+                <tr>
+                    <td><a href="{% url 'group_details' id=group.id %}">{{group.name}}</a></td>
+                    <td>{{group.id}}</td>
+                    <td>{{group.members_count}}</td>
+                </a></tr>
+                {% endfor %}
+            </table>
+    </div>
+
+{% endblock %}
