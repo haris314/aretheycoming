@@ -1,3 +1,6 @@
+//Global Variables
+var color_admin_background = "rgba(53, 140, 81, .8)";
+
 //helper function to get cookies
 function getCookie(name) {
     var cookieValue = null;

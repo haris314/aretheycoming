@@ -1,4 +1,4 @@
-<div id="{{ user.username }}" class="element" >   
+<div id="{{ user.username }}" class="element" data-admin="{{ membership.admin }}">   
 
     <div class="dp_content">
         <!--Adding the dp-->
@@ -13,18 +13,38 @@
         </span>
     </div>
 
-    <!--If it is a join request-->
-    <!--Add the accept and reject button if the user is admin-->
+    <!--Add the extra buttons if the user is admin-->
     {% if adminFlag %}
         {% load staticfiles %}
+
+        <!--If request_id exists, this means this profile belongs to the join requests section.
+            So, show accept and reject buttons-->
         {% if request_id %}
         <div class="dp_icons">
-            <button class="wrong_btn" id="{{ request_id }}" onclick="reject({{ request_id }})" ">
+            <button class="wrong_btn" id="{{ request_id }}" onclick="accept({{ request_id }}, {{ group_id}}, 0)" >
                 <img src = "{% static 'wrong.png' %}" style="height:inherit">
             </button>
-            <button class="right_btn" id="{{ request_id }}" onclick="accept({{ request_id }}, {{ group_id}})" >
+            <button class="right_btn" id="{{ request_id }}" onclick="accept({{ request_id }}, {{ group_id}}, 1)" >
                 <img src = "{% static 'right.png' %}" style="height:inherit">
             </button>
+        </div>
+
+        <!--This profile belongs to a person who is already a member. So show promote and remove buttons-->
+        {% else %}
+        <div class="dp_icons" id="{{ membership.id }}">
+            <!--If this person is already an admin then don't show the buttons-->
+            {% if membership.admin %}
+
+            {% else %}
+            <button class="adminify_btn" onclick="member_action( {{membership.id}}, 'adminify' )">
+                <img src = "{% static 'adminify.png' %}" style="height:inherit;" >
+            </button>
+
+            <button class="wrong_btn" onclick="member_action( {{membership.id}}, 'remove' )">
+                <img src = "{% static 'wrong.png' %}" style="height:inherit">
+            </button>
+            {% endif %}
+
         </div>
         {% endif %}
     {% endif %}

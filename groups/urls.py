@@ -13,8 +13,11 @@ urlpatterns = [
     path("<int:id>", views.group_details, name="group_details"),
     path("<int:id>/request", views.join_request, name="join_request"),
     
-    #When someone accepts a join request
+    #When someone accepts/rejects a join request
     path("<int:group_id>/accept", views.accept, name="accept"),
+
+    #When a group admin takes action on a group member
+    path("member_action", views.member_action, name="member_action"),
 
     #To create a new group
     path("create_group", views.create_group, name="create_group"),

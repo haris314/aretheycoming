@@ -78,14 +78,13 @@ def filter_groups(request):
 
 
 #Shows details of a specific group
-#Let's admins accept people into the group
 def group_details(request, id):
 
         #get group
         group = Group.objects.get(id=id)
 
-        #get the members in the group
-        members = group.members.all()
+        #get the memberships in the group
+        memberships = Membership.objects.filter(group=group).all()
 
         #get the requests to join the group
         requests = Request.objects.filter(group=group).all()
@@ -93,10 +92,10 @@ def group_details(request, id):
         #Get whether the user is admin of this group or not
         adminFlag = is_admin(request, group)
 
-        #Create teh context object
+        #Create the context object
         context = {
             "group": group,
-            "members": members,
+            "memberships": memberships,
             "requests": requests,
             "adminFlag": adminFlag,
         }
@@ -136,12 +135,11 @@ def join_request(request, id):
     return JsonResponse({'success': True})
 
 
-#To accept a join request
+#To accept/reject a join request
 def accept(request, group_id):
 
     #If someone tries to access it via unfair means
     if request.method != "POST":
-        #return JsonResponse({'success': False})
         return HttpResponse(status=404)
     
     #If user is not even logged in
@@ -162,15 +160,55 @@ def accept(request, group_id):
     if join_request is None:
         return JsonResponse({'success': False})
 
-
-    #Finally process the accept request
-    #Make membership and delete join request
-    membership = Membership(group=group, user=join_request.user, admin=False)
-    membership.save()
-    join_request.delete()
+    #Delete the join request from database if the action is 0. 0 means reject
+    
+    if request.POST['action'] == '0':
+        join_request.delete()
+    
+    else:
+        #Finally process the accept request
+        #Make membership and delete join request
+        membership = Membership(group=group, user=join_request.user, admin=False)
+        membership.save()
+        join_request.delete()
 
     #Return success
     return JsonResponse({'success': True})
+
+
+#When a group admin takes action on a group member
+def member_action(request):
+    #If someone tries to access it via unfair means
+    if request.method != "POST":
+        return HttpResponse(status=404)
+    
+    #If user is not even logged in
+    if not request.user.is_authenticated :
+        return JsonResponse({'success': False})
+
+    #Get membership
+    membership = Membership.objects.filter(id=request.POST['membership_id']).first()
+
+    #Get the membership of the user who took action
+    actioner = Membership.objects.filter(user=request.user).first().admin
+
+    # If membership id is invalid or 
+    # the action taker is not an admin of the group to which the membership of the member belong to or
+    # The user on whom the action was taken was hirself an admin
+    if (membership is None) or (Membership.objects.filter(user=request.user, group=membership.group).first().admin is False) or (membership.admin):
+        return JsonResponse({'success':False})
+
+    #Take care of actions
+    if request.POST['action'] == 'remove':
+        membership.delete()
+        return JsonResponse({'success': True})
+
+    if request.POST['action'] == 'adminify':
+        membership.admin = True;
+        membership.save()
+        return JsonResponse({'success': True})
+
+
 
 
 #To create a new group

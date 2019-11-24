@@ -275,7 +275,7 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
         animation-duration: 500ms;
         animation-fill-mode: forwards;
 
-        //for boostrap
+        //for bootstrap
     
         .name{
             font-size: 40px;
@@ -366,12 +366,14 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
             
             .element{
                 height: 50px;
-                line-height: 50px;
-                background: rgba(255, 255, 255, 0.062);
+                line-height:100%;
                 margin-top: 15px;
                 margin-bottom: 15px;
-                margin-right: 10px;  
-                padding: 10px;  
+                margin-right: 10px;
+                padding: 5px;
+                
+                background: rgba(255, 255, 255, 0.062);
+                border-radius: 20px 20px 20px 20px;                 
 
                 animation-name: delete_animation;
                 animation-duration: 2s;
@@ -383,6 +385,20 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
                 .dp_content{
                     width: 75%;
                     float: left;
+                }
+
+                //Buttons to accept and reject aka right and wrong
+                .dp_icons{
+                    position: relative;
+                    text-align: right;
+                    height: 40px;
+                    width:25%;
+                    float:right;
+
+                    animation-name: delete_animation;
+                    animation-duration: 2s;
+                    animation-fill-mode: forwards;
+                    animation-play-state: paused;
                 }
             }
         }   
@@ -402,7 +418,8 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
         width: 40px;
         height: 40px;
 
-        
+        box-shadow: -5px 5px 20px rgba(0, 0, 0, 0.692);
+
         font-size: 16px;
         font-weight: bold;        
     }
@@ -442,20 +459,8 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
         }
     }
 
-    //Buttons to accept and reject aka right and wrong
-    .dp_icons{
-        position: relative;
-        height: inherit;
-        width:25%;
-        float:right;
-    }
-    .right_btn{
-        background: url("/static/right.png");
-    }
-    .wrong_btn{
-        background: url("/static/wrong.png");
-    }
-    .right_btn, .wrong_btn{
+    .right_btn, .wrong_btn, .adminify_btn{
+        background: none;
         height: inherit;
         width: 40px;
         border: none;
@@ -554,22 +559,22 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
     }*/
     0%{
         opacity: 1;
-        height: 50px;
+        /*height: 50px;
         line-height:100%;
         margin-top: 15px;
         margin-bottom: 15px;
-        margin-right: 10px;    
-        padding: 10px;
+        margin-right: 10px; */   
+        //padding: 10px;
         
     }
     75%{
         opacity: 0;
-        height: 50px;
+        /*height: 50px;
         line-height:100%;
         margin-top: 15px;
         margin-bottom: 15px;
-        margin-right: 10px;  
-        padding: 10px;
+        margin-right: 10px; */ 
+        //padding: 10px;
         
     }
     100%{

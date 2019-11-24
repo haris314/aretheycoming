@@ -80,6 +80,7 @@
     <!--Display Members and group requests-->
     <div class="container">
         <div class="row">
+
             <!--Members-->
             <div class="col-sm-12 col-lg-6">
                 <div class="vertically-scrollable bg-light">
@@ -88,9 +89,9 @@
                     
                     <div class="body">
                         
-                            {% for member in members %}
+                            {% for membership in memberships %}
                                 
-                                    {% include 'users/dp.html' with user=member %}        
+                                    {% include 'users/dp.html' with membership=membership user=membership.user %}        
                                  
                             {% empty %}
                                 This group has no members. <br>
