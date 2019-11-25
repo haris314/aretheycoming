@@ -57,3 +57,31 @@ class Request(models.Model):
 
     def __str__(self):
         return f"{self.id}. {self.user} requested to join {self.group}"
+
+
+#The Event relation
+class Event(models.Model):
+    name = models.CharField(max_length=50)
+
+    create_time = models.DateTimeField(default=datetime.now)
+    creator = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='created_events')
+
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+
+    description = models.TextField()
+
+    # Relation 'has' between Group and Event
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='events')
+
+    # Relation 'Votes in' between User and Event
+    voters = models.ManyToManyField(User, through='Vote')
+
+
+# The Vote relation
+class Vote(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='votes')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='votes')
+
+    vote = models.CharField(max_length=20)
+    time = models.DateTimeField(default=datetime.now)
