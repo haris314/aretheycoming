@@ -4,13 +4,21 @@ document.addEventListener('DOMContentLoaded', () =>{
     set_admins();    
 
     //Make clicking on add event button display the event maker menu
+    event_maker = document.querySelector('#event_maker')
     document.querySelector('#add_event').onclick = ()=>{
-        document.querySelector('#event_maker').style.display = 'block';
+        event_maker.style.display = 'block';
+        event_maker.style.animationName = 'come_down';
+        event_maker.style.animationPlayState = 'running';
     }
 
     //Make clicking on close_event_maker button to close the menu
     document.querySelector('#close_event_maker').onclick = ()=>{
-        document.querySelector('#event_maker').style.display = 'none';
+        event_maker.style.animationName = 'go_up';
+        event_maker.style.animationPlayState = 'running';
+        event_maker.addEventListener('animationend', () => {
+            if(event_maker.style.animationName === 'go_up')
+                event_maker.style.display = 'none';
+        })
     }
 })
 
@@ -46,10 +54,7 @@ function accept(request_id, group_id, action){
             div = div.parentElement.parentElement;
 
             //animate
-            div.style.animationPlayState = 'running';
-            div.addEventListener('animationend', () =>{
-                div.remove();
-            })
+            animate_and_remove(div);
         }
     }
 
@@ -86,10 +91,7 @@ function member_action(membership_id, action){
             }
 
             //animate
-            div.style.animationPlayState = 'running';
-            div.addEventListener('animationend', () =>{
-                div.remove();
-            });
+            animate_and_remove(div);
         }
         else{
             console.log(response.success);
@@ -102,4 +104,36 @@ function member_action(membership_id, action){
     data.append('membership_id', membership_id);
     data.append('action', action);    
     request.send(data);
+}
+
+
+//Function to animate and remove the requests and members
+function animate_and_remove(div){
+
+    //First run the fadeout animation
+    div.style.animationName = 'fadeout';
+    div.style.animationPlayState = 'running';
+
+    //When fadeout is done
+    div.addEventListener('animationend', ()=>{
+
+        //Make a dummy division physically similar to the element division which has to be removed
+        div2 = "<div class='element circular-corners' id='dummy_div'></div>";
+
+        //Insert the dummy division after the element which has to be removed and remove element div
+        div.insertAdjacentHTML('afterend', div2);
+        div.remove();
+
+        //Get the dummy division which was added, play the animation and remove the dummy div
+        div2 = document.querySelector('#dummy_div');
+        div2.style.opacity = '0';
+        
+        div2.style.animation = 'shrink 0.2s forwards running';
+        div2.addEventListener('animationend', ()=>{
+            div2.remove();
+        })
+        
+    
+        
+    });
 }

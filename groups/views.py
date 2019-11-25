@@ -137,6 +137,8 @@ def join_request(request, id):
 
 #To accept/reject a join request
 def accept(request, group_id):
+    return JsonResponse({'success': True})
+
 
     #If someone tries to access it via unfair means
     if request.method != "POST":
