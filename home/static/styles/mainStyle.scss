@@ -78,6 +78,10 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
         box-shadow: none;
     }
 
+    .circular-corners{
+        border-radius: 100px 100px 100px 100px;
+    }
+
 
 //Universal end
 
@@ -340,24 +344,6 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
         
         background: $veryLightGreyBackground;
         box-shadow: 0px 5px 10px grey;
-    
-        //better scroll-bar
-        /* width */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }    
-        /* Track */
-        ::-webkit-scrollbar-track {
-            background: #00000000; 
-        }    
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 252, 252, 0.2); 
-        }    
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.555); 
-        }
 
         .body{
             overflow-y: scroll;
@@ -402,6 +388,28 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
                 }
             }
         }   
+    }
+
+    
+    //better scroll-bar
+    .better_scroll_bar{
+        /* width */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }    
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #00000000; 
+        }    
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 252, 252, 0.2); 
+        }    
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.555); 
+        }
+
     }
 
     .bg-light{
@@ -473,6 +481,49 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
     }
     .right_btn, .wrong_btn:focus{
         //background: $veryLightGreyBackground;        
+    }
+
+
+    //The event maker
+    .event_maker{
+        display: none;
+        position: fixed;
+        z-index: 2;
+        left:50%;
+        top:50%;
+        transform: translate(-50%, -50%);
+        height: 50%;
+        width: 80%;
+
+        background-color: $backgroundDark;
+        color:white;
+        padding: 1% 8% 1% 4%;
+        font-size: 20px;
+
+        box-shadow: -20px 20px 30px black;
+        border: 1px solid $backgroundDark;
+
+        overflow-y:scroll;
+
+        .form-control{
+            font-size: 20px;
+            background-color: $veryLightGreyBackground;
+            color: white;
+            border: none;
+        }
+
+        .close-btn{
+            position: absolute;
+            z-index: 3;
+            right:0px;
+            top:0px;
+            background-color: transparent;
+            padding: 0px;
+            color: white;
+            font-size: 50px;
+            border: none;
+        }
+
     }
 
     
@@ -551,31 +602,11 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
 }
 
 @keyframes delete_animation{
-    /*0%{
-        opacity: 1;
-    }
-    100%{
-        opacity: 0;
-    }*/
     0%{
-        opacity: 1;
-        /*height: 50px;
-        line-height:100%;
-        margin-top: 15px;
-        margin-bottom: 15px;
-        margin-right: 10px; */   
-        //padding: 10px;
-        
+        opacity: 1;        
     }
     75%{
-        opacity: 0;
-        /*height: 50px;
-        line-height:100%;
-        margin-top: 15px;
-        margin-bottom: 15px;
-        margin-right: 10px; */ 
-        //padding: 10px;
-        
+        opacity: 0;        
     }
     100%{
         opacity: 0;

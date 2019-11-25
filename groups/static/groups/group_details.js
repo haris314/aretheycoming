@@ -1,6 +1,17 @@
 document.addEventListener('DOMContentLoaded', () =>{
-    console.log("Set");
+
+    //Change background color of admins
     set_admins();    
+
+    //Make clicking on add event button display the event maker menu
+    document.querySelector('#add_event').onclick = ()=>{
+        document.querySelector('#event_maker').style.display = 'block';
+    }
+
+    //Make clicking on close_event_maker button to close the menu
+    document.querySelector('#close_event_maker').onclick = ()=>{
+        document.querySelector('#event_maker').style.display = 'none';
+    }
 })
 
 //Function to change background color of admins

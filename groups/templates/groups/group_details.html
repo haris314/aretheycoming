@@ -17,64 +17,66 @@
     <br><br>
     <!--Display the Group details-->
     <div class="container"> 
-            <div class="row">   
-                <div class="col-lg-8 col-xs-12">
-                    <span class="medium-text" style="font-size: 40px; margin-top:30px">{{group.name}}</span>
-    
-                    <table class="table table-hover ">
-                        <tr>
-                            <td><b>#</b></td>
-                            <td>{{group.id}}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Members</b></td>
-                            <td>{{group.members.all.count}}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Date created</b></td>
-                            <td>{{group.date_created}}</td>
-                        </tr>
+        <div class="row">   
+            <div class="col-lg-8 col-xs-12">
+                <span class="medium-text" style="font-size: 40px; margin-top:30px">{{group.name}}</span>
+
+                <table class="table table-hover ">
+                    <tr>
+                        <td><b>#</b></td>
+                        <td>{{group.id}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Members</b></td>
+                        <td>{{group.members.all.count}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Date created</b></td>
+                        <td>{{group.date_created}}</td>
+                    </tr>
 
 
-                        {% if group.college is not None %}
-                            <tr>
-                                <td><b>College</b></td>
-                                <td>{{group.college}}</td>
-                            </tr>
-                        {% endif %}
-
-                        {% if group.graduation_year is not None %}
+                    {% if group.college is not None %}
                         <tr>
-                            <td><b>Graduation year</b></td>
-                            <td>{{group.graduation_year}}</td>
+                            <td><b>College</b></td>
+                            <td>{{group.college}}</td>
                         </tr>
-                        {% endif %}
-
-                        {% if group.section is not None %}
-                        <tr>
-                            <td><b>Section</b></td>
-                            <td>{{group.section}}</td>
-                        </tr>
-                        {% endif %}
-
-                        {% if group.batch is not None %}
-                        <tr>
-                            <td><b>Batch</b></td>
-                            <td>{{group.batch}}</td>
-                        </tr>
-                        {% endif %}               
-                        
-                    </table>
-
-                    {% if group.description != "No description" %}                        
-                        <b>Description</b><br>
-                        <pre class="pre">{{group.description}}</pre>                    
                     {% endif %}
 
-                </div>  
+                    {% if group.graduation_year is not None %}
+                    <tr>
+                        <td><b>Graduation year</b></td>
+                        <td>{{group.graduation_year}}</td>
+                    </tr>
+                    {% endif %}
+
+                    {% if group.section is not None %}
+                    <tr>
+                        <td><b>Section</b></td>
+                        <td>{{group.section}}</td>
+                    </tr>
+                    {% endif %}
+
+                    {% if group.batch is not None %}
+                    <tr>
+                        <td><b>Batch</b></td>
+                        <td>{{group.batch}}</td>
+                    </tr>
+                    {% endif %}               
+                    
+                </table>
+
+                {% if group.description != "No description" %}                        
+                    <b>Description</b><br>
+                    <pre class="pre">{{group.description}}</pre>                    
+                {% endif %}
+
             </div>  
-        </div>
-    </div>      
+        </div>  
+        <button class="btn wide-btn circular-corners" id="add_event">Add event <b>+</b></button>
+    </div>    
+    
+    
 
     <br><br>
     <!--Display Members and group requests-->
@@ -83,7 +85,7 @@
 
             <!--Members-->
             <div class="col-sm-12 col-lg-6">
-                <div class="vertically-scrollable bg-light">
+                <div class="vertically-scrollable bg-light better_scroll_bar">
 
                     <div class="head"><h2>Members</h2></div>               
                     
@@ -105,7 +107,7 @@
 
             <!--Requests-->
             <div class="col-sm-12 col-lg-6">
-                <div class="vertically-scrollable bg-dark">
+                <div class="vertically-scrollable bg-dark better_scroll_bar">
 
                     <div class="head"><h2>Requests</h2></div>
 
@@ -125,6 +127,9 @@
 
         </div>
     </div>
+
+    <!--Include the event maker-->
+    {% include 'groups/event_maker.html' with id=group.id%}
 
 
 {% endblock %}

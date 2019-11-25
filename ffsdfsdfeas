@@ -1,0 +1,99 @@
+[33mcommit d227aaf541e9529b7e3fbf7bc6042b530cbac56c[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Mohd Haris <harisisbatlam@gmail.com>
+Date:   Sun Nov 24 23:53:14 2019 +0530
+
+    Admins can reject, adminify, and remove people
+
+[33mcommit 3b8d34838dae71537be3be5f3b3c837d02fb90d7[m
+Author: Mohd Haris <harisisbatlam@gmail.com>
+Date:   Tue Nov 12 21:36:22 2019 +0530
+
+    Filter groups now work
+    Searches by group name and id
+
+[33mcommit 87dfc905258b6e367a2ed0d595fe174e372a9f25[m
+Author: Mohd Haris <harisisbatlam@gmail.com>
+Date:   Tue Nov 12 18:59:37 2019 +0530
+
+    Users can now see the groups they are a member/admin of
+
+[33mcommit 566ed86fa36f6a976c29b1b13ace6cfda4acaa06[m
+Author: Mohd Haris <harisisbatlam@gmail.com>
+Date:   Tue Nov 5 21:15:11 2019 +0530
+
+    Added javascript on create group page
+
+[33mcommit 10f788508d77630690aa3d0a32cb4ad5b442ea4c[m
+Author: Mohd Haris <harisisbatlam@gmail.com>
+Date:   Tue Nov 5 00:08:47 2019 +0530
+
+    Users can now create groups
+    Still need to add some javascript
+
+[33mcommit 3fb913537afa099cb7d8b43d773fa2fe05e448e6[m
+Author: Mohd Haris <harisisbatlam@gmail.com>
+Date:   Thu Oct 31 02:41:55 2019 +0530
+
+    Group admins can now accept requests
+
+[33mcommit c431c172c2e58cabb6a8a418405dcda962ce013f[m
+Author: Mohd Haris <harisisbatlam@gmail.com>
+Date:   Wed Oct 30 22:11:14 2019 +0530
+
+    Javascript added to groups
+    Groups are loaded dynamically using AJAX
+    Requests can be sent now using AJAX
+
+[33mcommit c6f4e50c5970ed2f1cc4723417fe9fee2f2cd72e[m
+Author: Mohd Haris <harisisbatlam@gmail.com>
+Date:   Wed Oct 30 01:20:19 2019 +0530
+
+    Added javascript in login page
+
+[33mcommit b184dd96115a18d5a06aa9a31bdcc364eefa8f5d[m
+Author: Mohd Haris <harisisbatlam@gmail.com>
+Date:   Mon Oct 28 21:50:27 2019 +0530
+
+    UI improvements and some progress on groups
+    groups details are added
+    people can request to join a group but AJAX required and right now, any user can request any number of times
+
+[33mcommit f39fa48d5288b15ebb327ccbbea9632a931d437c[m
+Author: Mohd Haris <harisisbatlam@gmail.com>
+Date:   Mon Oct 28 15:19:22 2019 +0530
+
+    Groups introduced
+    All groups are displayed on all gorups page
+    Navigation bar added
+
+[33mcommit a365b47494ccaa9eaa6994aa28e5171e68c51f6f[m
+Author: Mohd Haris <harisisbatlam@gmail.com>
+Date:   Mon Oct 28 11:11:50 2019 +0530
+
+    Gotta commit before resetting migrations
+
+[33mcommit 7dd1d74c32053c9e6389b7ddd8ded212dd7ea525[m
+Author: Mohd Haris <harisisbatlam@gmail.com>
+Date:   Mon Oct 28 00:36:23 2019 +0530
+
+    Login/register implemented
+
+[33mcommit d7d7ce02e5f86a540f96584dc2f4590e8ae24cb0[m
+Author: Mohd Haris <harisisbatlam@gmail.com>
+Date:   Sun Oct 27 01:20:59 2019 +0530
+
+    Home page and login page html added
+
+[33mcommit 42f6ee47f2634846dc6dd853d2c67a74f5f37829[m
+Author: Mohd Haris <harisisbatlam@gmail.com>
+Date:   Sat Oct 26 17:31:00 2019 +0530
+
+    Setting up
+    Made apps
+    setup local database
+
+[33mcommit ffd668131f33c503931f47849b3455e825bd51ef[m
+Author: Mohd Haris <55744494+haris314@users.noreply.github.com>
+Date:   Thu Oct 17 18:07:39 2019 +0530
+
+    Initial commit

@@ -67,6 +67,10 @@ html {
   box-shadow: none;
 }
 
+.circular-corners {
+  border-radius: 100px 100px 100px 100px;
+}
+
 .home-logo {
   height: 500px;
   background: linear-gradient(90deg, #421111 0%, #0a0039 89%, #040017 100%);
@@ -276,22 +280,6 @@ a.nostyle:visited {
   padding: 20px;
   background: rgba(223, 223, 223, 0.2);
   box-shadow: 0px 5px 10px grey;
-  /* width */
-  /* Track */
-  /* Handle */
-  /* Handle on hover */
-}
-.vertically-scrollable ::-webkit-scrollbar {
-  width: 8px;
-}
-.vertically-scrollable ::-webkit-scrollbar-track {
-  background: #00000000;
-}
-.vertically-scrollable ::-webkit-scrollbar-thumb {
-  background: rgba(255, 252, 252, 0.2);
-}
-.vertically-scrollable ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.555);
 }
 .vertically-scrollable .body {
   overflow-y: scroll;
@@ -325,6 +313,25 @@ a.nostyle:visited {
   animation-duration: 2s;
   animation-fill-mode: forwards;
   animation-play-state: paused;
+}
+
+.better_scroll_bar {
+  /* width */
+  /* Track */
+  /* Handle */
+  /* Handle on hover */
+}
+.better_scroll_bar ::-webkit-scrollbar {
+  width: 8px;
+}
+.better_scroll_bar ::-webkit-scrollbar-track {
+  background: #00000000;
+}
+.better_scroll_bar ::-webkit-scrollbar-thumb {
+  background: rgba(255, 252, 252, 0.2);
+}
+.better_scroll_bar ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.555);
 }
 
 .bg-light {
@@ -390,6 +397,41 @@ a.nostyle:visited {
   background: rgba(223, 223, 223, 0.2);
 }
 
+.event_maker {
+  display: none;
+  position: fixed;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 50%;
+  width: 80%;
+  background-color: #0a0039;
+  color: white;
+  padding: 1% 8% 1% 4%;
+  font-size: 20px;
+  box-shadow: -20px 20px 30px black;
+  border: 1px solid #0a0039;
+  overflow-y: scroll;
+}
+.event_maker .form-control {
+  font-size: 20px;
+  background-color: rgba(223, 223, 223, 0.2);
+  color: white;
+  border: none;
+}
+.event_maker .close-btn {
+  position: absolute;
+  z-index: 3;
+  right: 0px;
+  top: 0px;
+  background-color: transparent;
+  padding: 0px;
+  color: white;
+  font-size: 50px;
+  border: none;
+}
+
 .navigation {
   text-align: center;
   font-size: 15px;
@@ -445,27 +487,11 @@ a.nostyle:visited {
   }
 }
 @keyframes delete_animation {
-  /*0%{
-      opacity: 1;
-  }
-  100%{
-      opacity: 0;
-  }*/
   0% {
     opacity: 1;
-    /*height: 50px;
-    line-height:100%;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    margin-right: 10px; */
   }
   75% {
     opacity: 0;
-    /*height: 50px;
-    line-height:100%;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    margin-right: 10px; */
   }
   100% {
     opacity: 0;
