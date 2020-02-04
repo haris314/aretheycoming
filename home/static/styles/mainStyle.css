@@ -71,6 +71,26 @@ html {
   border-radius: 100px 100px 100px 100px;
 }
 
+.loader {
+  border: 16px solid #black;
+  /* Light grey */
+  border-top: 16px solid lightpink;
+  /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  margin: 20px;
+  animation: spin 0.3s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .home-logo {
   height: 500px;
   background: linear-gradient(90deg, #421111 0%, #0a0039 89%, #040017 100%);
@@ -206,6 +226,7 @@ a.nostyle:visited {
 }
 
 .red-text, .green-text, .white-text {
+  border-radius: 100px 100px 100px 100px;
   text-align: center;
   font-size: 16px;
   width: 250px;
@@ -228,7 +249,6 @@ a.nostyle:visited {
   margin: 20px;
   box-shadow: -5px 5px 30px black;
   font-size: 20px;
-  line-height: 30px;
   animation-name: fadein;
   animation-duration: 500ms;
   animation-fill-mode: forwards;
@@ -250,17 +270,26 @@ a.nostyle:visited {
   margin: 5px;
   box-shadow: none;
 }
-.group-card .btn:hover {
-  background: rgba(255, 255, 255, 0.103);
-}
-.group-card .btn:focus {
-  outline: solid white 1px;
-}
 .group-card .table td {
   width: 200px;
 }
 .group-card .table > tbody > tr > td, .group-card .table > tbody > tr > th {
   border-top: none;
+}
+.group-card .vote-table td, .group-card .vote-table th {
+  width: 40%;
+}
+.group-card .vote-btn {
+  text-align: left;
+  width: 30%;
+  font-size: 30px;
+  background-color: rgba(223, 223, 223, 0.2);
+}
+.group-card .btn.vote-btn:hover {
+  background: rgba(255, 255, 255, 0.103);
+}
+.group-card .btn.vote-btn:focus {
+  outline: solid white 1px;
 }
 
 .pre {
@@ -429,6 +458,20 @@ a.nostyle:visited {
   color: white;
   font-size: 50px;
   border: none;
+}
+
+.faded-text {
+  color: rgba(255, 255, 255, 0.603);
+  font-size: 15px;
+}
+
+.event_card {
+  background-color: black;
+  color: white;
+  margin: 20px;
+  padding: 20px;
+  height: 300px;
+  box-shadow: -5px 5px 30px black;
 }
 
 .navigation {

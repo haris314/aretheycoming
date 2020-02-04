@@ -82,6 +82,21 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
         border-radius: 100px 100px 100px 100px;
     }
 
+    .loader {
+        border: 16px solid #black; /* Light grey */
+        border-top: 16px solid lightpink; /* Blue */
+        //border-bottom: 16px solid lightpink;
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        margin: 20px;
+        animation: spin 0.3s linear infinite;
+    }
+        
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 
 //Universal end
 
@@ -236,6 +251,8 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
 }
 
 .red-text, .green-text, .white-text{
+    border-radius: 100px 100px 100px 100px;
+
     text-align: center;
     font-size: 16px;
     width: 250px;
@@ -264,7 +281,9 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
 
 
 //s
-    $groupBackgroundColor: linear-gradient(90deg, rgb(0, 0, 0, 1) 0%, rgba(10,0,57,1) 89%, rgba(6,0,34,1) 100%);
+    //$groupBackgroundColor: linear-gradient(90deg, rgb(0, 0, 0, 1) 0%, rgba(10,0,57,1) 89%, rgba(6,0,34,1) 100%);
+    $groupBackgroundColor: radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),
+    radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%);
     .group-card{
         background: black;
         color: white;
@@ -273,7 +292,7 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
         box-shadow: -5px 5px 30px black;
 
         font-size: 20px;
-        line-height: 30px;
+        //line-height: 30px;
 
         animation-name: fadein;
         animation-duration: 500ms;
@@ -305,13 +324,7 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
             margin: 5px;
             box-shadow: none;
         }
-        .btn:hover{
-            background: rgba(255, 255, 255, 0.103);
-        }
-        .btn:focus{
-            //color: white;
-            outline: solid white 1px;
-        }
+        
         //tables
         .table{
             td{
@@ -322,7 +335,30 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
         .table>tbody>tr>td, .table>tbody>tr>th {
             border-top: none;
         }
+
+        //Added for event_card
+        .vote-table{
+            td, th{
+                width: 40%;
+            }
+        }
+
+        .vote-btn{
+            text-align: left;
+            width: 30%;
+            font-size: 30px;
+            background-color: $veryLightGreyBackground;
+        }
+
+        .btn.vote-btn:hover{
+            background: rgba(255, 255, 255, 0.103);
+        }
+        .btn.vote-btn:focus{
+            //color: white;
+            outline: solid white 1px;
+        }
     }
+    
 
     //make the pre-formatted text look normal
     .pre{
@@ -529,6 +565,24 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
     
 
 //Groups end
+
+.faded-text{
+    color: rgba(255, 255, 255, 0.603);
+    font-size: 15px;
+    
+}
+//For event card and event container
+    .event_card{
+        background-color: black;
+        color: white;
+
+        margin:20px;
+        padding: 20px;
+        height: 300px;
+
+        box-shadow: -5px 5px 30px black;
+
+    }
 
 //navigation bar
     .navigation{

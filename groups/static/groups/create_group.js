@@ -45,7 +45,7 @@ function do_the_checks() {
         return false
     }
 
-    return false;
+    return true;
 }
 
 

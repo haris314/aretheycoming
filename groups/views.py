@@ -137,8 +137,6 @@ def join_request(request, id):
 
 #To accept/reject a join request
 def accept(request, group_id):
-    return JsonResponse({'success': True})
-
 
     #If someone tries to access it via unfair means
     if request.method != "POST":
@@ -271,7 +269,7 @@ def create_group(request):
             new_member.save()
 
         except (Exception):
-            print("Oops!", sys.exc_info()[0], "occurred.")
+            print("Oops! Something went wrong when creating a new group", sys.exc_info()[0], "occurred.")
             return render(request, 'error.html', {'message': "Something went wrong. Are you sure you are putting the right details? If yes then please contact admin"})
         
         #Successfully added

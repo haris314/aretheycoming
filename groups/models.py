@@ -34,7 +34,7 @@ class Membership(models.Model):
 
     date_joined = models.DateTimeField(default=datetime.now)
     admin = models.BooleanField(default=False)
-
+    
     class meta:
         #make sure group and user are unique together
         unique_together = {'group', 'user'}

@@ -6,7 +6,17 @@
 
 {%block scripts %}
     {% load staticfiles %}
-    <script src="{% static 'groups/group_details.js' %}"></script>
+
+    <!--Scripts for react-->
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script src="{% static 'groups/event_card.js' %}" type="text/babel"></script>
+    <script src="{%static 'groups/event_container.js' %}" type="text/babel"></script>
+
+    <script src="{% static 'groups/group_details.js' %}" type="text/babel"></script>
+
 {% endblock %}
 
 
@@ -74,7 +84,21 @@
             </div>  
         </div>  
         <button class="btn wide-btn circular-corners" id="add_event">Add event <b>+</b></button>
-    </div>    
+        <br><br>
+
+        <span class="medium-text">Active Events</span>
+
+     </div>   
+    
+   <!--To show the active events using event_container-->
+   <div id="active_events_container">
+        <div class="loader"></div>
+    </div>
+            
+            
+        
+        
+      
     
     
 
@@ -126,6 +150,8 @@
             </div>
 
         </div>
+        <div class="medium-text">Past events</div>
+        <div class="loader"></div>
     </div>
 
     <!--Include the event maker-->
