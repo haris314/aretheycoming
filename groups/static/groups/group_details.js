@@ -2,24 +2,108 @@
 ReactDOM.render(<EventsContainer />, document.querySelector("#active_events_container"));
 
 //Change background color of admins
-set_admins();    
+set_admins();   
+
+//Get group id
+const groupId = document.querySelector("#data-items").dataset.group_id;
+
+//Set onclick listener for make event button
+document.querySelector("#make_event").onclick = () =>{
+    //Get the message div in a variable. Used for setMessage function
+    const message = document.querySelector("#event_maker_message");
+
+    //Name of the event must not be empty
+    if (document.querySelector("#name").value.length == 0){
+        setMessage(message, "Name can't be empty!", "red");
+        return false;
+    }
+    else{
+        setMessage(message, "", "white");
+    }
+
+    //Date and time must not be empty
+    if(document.querySelector("#start_date").value === "" || document.querySelector("#start_time").value === ""){
+        setMessage(message, "Please provide proper start date and time", "red");
+        return false
+    }
+    else{
+        setMessage(message, "", "white");
+    }
+
+    //Disable the create event button
+    document.querySelector("#make_event").disabled = true;
+
+    //Send request to the server to create event
+    const request = new XMLHttpRequest();
+    request.open('POST', `/groups/${groupId}/create_event`);
+    const csrftoken = getCookie('csrftoken');
+    request.setRequestHeader('X-CSRFToken', csrftoken);
+
+    //Get the division to show the message. Below "add event+" button
+    const eventMakerMessage = document.querySelector("#add_event_message");
+
+    request.onload = () =>{
+        
+        const response = JSON.parse(request.responseText);
+        
+        if(request.status != 200 || response.success === false){
+            setMessage(eventMakerMessage, "There was problem while creating event :(", "red");
+        }
+        else{
+            //If request was successful, set message that the event was successfully created                  
+            setMessage(eventMakerMessage, "Event created successfully", "green");                
+        }
+        eventMakerGoUp();
+    }
+
+    //setup the request and send
+    const data = new FormData();
+
+    data.append('name', document.querySelector("#name").value);
+    data.append('start_date', document.querySelector("#start_date").value);
+    data.append('start_time', document.querySelector("#start_time").value);
+    data.append('end_date', document.querySelector("#end_date").value);
+    data.append('end_time', document.querySelector("#end_time").value);
+    data.append('description', document.querySelector("#description").value);
+
+    request.send(data);
+    
+    return false; // So that the page doesn't refresh because of form submission
+}
+
+//Function to set the message
+function setMessage(message, message_value, color){
+    console.log(message);
+    message.innerHTML = message_value;
+    message.style.color = color;
+    
+}
 
 //Make clicking on add event button display the event maker menu
 const event_maker = document.querySelector('#event_maker')
-document.querySelector('#add_event').onclick = ()=>{
+
+function eventMakerComeDown(){
     event_maker.style.display = 'block';
     event_maker.style.animationName = 'come_down';
     event_maker.style.animationPlayState = 'running';
 }
 
-//Make clicking on close_event_maker button to close the menu
-document.querySelector('#close_event_maker').onclick = ()=>{
+function eventMakerGoUp(){
     event_maker.style.animationName = 'go_up';
     event_maker.style.animationPlayState = 'running';
     event_maker.addEventListener('animationend', () => {
         if(event_maker.style.animationName === 'go_up')
             event_maker.style.display = 'none';
     })
+}
+
+document.querySelector('#add_event').onclick = ()=>{
+    eventMakerComeDown();
+}
+
+//Make clicking on close_event_maker button to close the menu
+document.querySelector('#close_event_maker').onclick = ()=>{
+    eventMakerGoUp();
 }
 
 

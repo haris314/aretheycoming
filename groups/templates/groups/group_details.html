@@ -21,6 +21,10 @@
 
 
 {% block body %}
+
+    <!--To hold some important data items that will be required by javascript-->
+    <span id="data-items" data-group_id="{{group.id}}"></span>
+    
     <!--Include the navigation bar-->
     {% include 'groups/navigation.html' %}
 
@@ -84,7 +88,9 @@
             </div>  
         </div>  
         <button class="btn wide-btn circular-corners" id="add_event">Add event <b>+</b></button>
-        <br><br>
+        <br>
+        <div id="add_event_message"></div>
+        <br>
 
         <span class="medium-text">Active Events</span>
 
@@ -92,7 +98,11 @@
     
    <!--To show the active events using event_container-->
    <div id="active_events_container">
-        <div class="loader"></div>
+        <div class="container">
+            <div class="row">
+                <div class="loader"></div>
+            </div>
+        </div>
     </div>
             
             
@@ -150,6 +160,8 @@
             </div>
 
         </div>
+
+        <!--Pass events-->
         <div class="medium-text">Past events</div>
         <div class="loader"></div>
     </div>

@@ -5,6 +5,13 @@ class EventsContainer extends React.Component{
 
     constructor(props){
         super(props);
+
+        //To simulate the effect of loading
+        //Replace this with fetching the events from the backend
+        let tmp=0;
+        for(let i=0; i<=1e9; i++){
+            tmp += 2;
+        }
     }
 
     render(){

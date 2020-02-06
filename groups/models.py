@@ -61,21 +61,27 @@ class Request(models.Model):
 
 #The Event relation
 class Event(models.Model):
-    name = models.CharField(max_length=50)
 
-    create_time = models.DateTimeField(default=datetime.now)
+    id = models.AutoField(primary_key=True)
+
+    name = models.CharField(max_length=50, null=False, blank=False) # Can't be null or blank
+
+    create_time = models.DateTimeField(default=datetime.now, null=False, blank=False) # Can't be null or blank
     creator = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='created_events')
 
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(null=False, blank=False) # Can't be null or blank
+    end_time = models.DateTimeField(null=True, blank=True)
 
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
 
     # Relation 'has' between Group and Event
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='events')
 
     # Relation 'Votes in' between User and Event
     voters = models.ManyToManyField(User, through='Vote')
+
+    def __str__(self):
+        return f"{self.name}({self.group.name}), id={self.id}"
 
 
 # The Vote relation

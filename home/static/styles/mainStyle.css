@@ -280,16 +280,39 @@ a.nostyle:visited {
   width: 40%;
 }
 .group-card .vote-btn {
-  text-align: left;
-  width: 30%;
+  text-align: center;
+  width: 25%;
+  min-width: 70px;
+  height: 70px;
   font-size: 30px;
   background-color: rgba(223, 223, 223, 0.2);
+}
+.group-card .vote-btn-activated {
+  text-align: center;
+  background: #082e14;
+  background: linear-gradient(90deg, #082e14 0%, #2c604b 32%, #55b169 100%);
+  font-size: 30px;
+  width: 30%;
+  min-width: 75px;
+  height: 80px;
+  border: solid white 3px;
+}
+@media (max-width: 600px) {
+  .group-card .vote-btn {
+    height: 40px;
+    font-size: 15px;
+  }
+  .group-card .vote-btn-activated {
+    height: 50px;
+    font-size: 17px;
+  }
 }
 .group-card .btn.vote-btn:hover {
   background: rgba(255, 255, 255, 0.103);
 }
 .group-card .btn.vote-btn:focus {
-  outline: solid white 1px;
+  background-color: #1b6330;
+  outline: solid #3ef007 1px;
 }
 
 .pre {
