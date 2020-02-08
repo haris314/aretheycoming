@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from django.utils import timezone
 
 from django.contrib.auth.models import User
 
@@ -66,7 +67,7 @@ class Event(models.Model):
 
     name = models.CharField(max_length=50, null=False, blank=False) # Can't be null or blank
 
-    create_time = models.DateTimeField(default=datetime.now, null=False, blank=False) # Can't be null or blank
+    create_time = models.DateTimeField(default=timezone.now(), null=False, blank=False) # Can't be null or blank
     creator = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='created_events')
 
     start_time = models.DateTimeField(null=False, blank=False) # Can't be null or blank

@@ -22,6 +22,9 @@ urlpatterns = [
     # When some user creates an event in a group
     path("<int:group_id>/create_event", views.create_event, name="create_event"),
 
+    # For AJAX requests to get events of a group
+    path("<int:group_id>/get_events", views.get_events, name="get_events"),
+
     # To create a new group
     path("create_group", views.create_group, name="create_group"),
 

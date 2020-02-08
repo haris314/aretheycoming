@@ -3,10 +3,11 @@ from .models import *
 from django.http import JsonResponse, HttpResponse
 from .helper import *
 
-# To see exception details
-import sys
+import sys # To see exception details
 
 import time
+from django.utils.timezone import make_aware
+from datetime import datetime
 
 # Create your views here.
 
@@ -211,6 +212,7 @@ def member_action(request):
 # To create a new event
 def create_event(request, group_id):
 
+    print("request obtianed")
     # If someone tries to access it via unfair means
     if request.method != "POST":
         return HttpResponse(status=404)
@@ -221,26 +223,22 @@ def create_event(request, group_id):
 
     # Get the data
     event_name = request.POST['name']
-    start_date = request.POST['start_date']
-    start_time = request.POST['start_time']
-    end_date = request.POST['end_date']
-    end_time = request.POST['end_time']
+    start_datetime = (request.POST['start_datetime'])
+    print(datetime)
+    end_datetime = (request.POST['end_datetime'])
     description = request.POST['description']
 
     # Concatenate dates and times to insert in database
     # But first,
     # If end date or end time was empty
-    if(end_date is "" or end_time is ""):
-        end_time = None
-    else:
-        end_time = end_date + " " + end_time
-    start_time = start_date + " " + start_time
+    if(end_datetime is ""):
+        end_datetime = None
 
     # Insert into the database
     try:
         creator = request.user 
         group = Group.objects.get(id=group_id)
-        new_event = Event(name=event_name, creator=creator, start_time=start_time, end_time=end_time, description=description, group=group)
+        new_event = Event(name=event_name, creator=creator, start_time=start_datetime, end_time=end_datetime, description=description, group=group)
         new_event.save()
     except Exception as e:
         print(e)
@@ -248,6 +246,27 @@ def create_event(request, group_id):
 
     return JsonResponse({'success': True})
 
+
+# To get events AJAXically
+def get_events(request, group_id):
+
+    time.sleep(1)
+    # If the request is not post
+    if request.method != 'POST':
+        return JsonResponse({'success': False})
+    
+    active = request.POST['active']
+
+    try:
+        if active: # Return the active events only
+            events = Group.objects.get(id=group_id).events.values()
+        
+        response = {'success':True, 'events': list(events)}
+    except Exception as e:
+        print(e)
+        response = {'success': False}
+
+    return JsonResponse(response)
 
 # To create a new group
 def create_group(request):

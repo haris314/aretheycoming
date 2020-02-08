@@ -25,7 +25,7 @@ class EventCard extends React.Component{
             
             <span className="faded-text">
                 Created <b> {this.props.createTime}  </b> <br />
-                Created by <b> {this.props.creator} </b> <br />
+                {/*Created by <b> {this.props.creator} </b> <br />*/}
             </span>
             <hr />
 

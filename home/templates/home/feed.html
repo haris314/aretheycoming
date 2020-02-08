@@ -4,16 +4,40 @@
     feed
 {% endblock %}
 
+{% block scripts %}
+    {% load staticfiles %}
+
+    <!--Scripts for react-->
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script src="{% static 'groups/event_card.js' %}" type="text/babel"></script>
+    <script src="{%static 'groups/event_container.js' %}" type="text/babel"></script>
+
+    <script src="{% static 'home/feed.js' %}" type="text/babel"></script>
+
+{% endblock %}
+
 {% block body %}
+
+    <span id="data-items" data-username="{{request.user.username}}"></span>
 
     {% include 'groups/navigation.html' %}
 
-    <div class="normal-page">
+    <div class="container">
 
-        <div class="align-right">
-            <div class="large-text">Feed</div>
+        <div class="row">
+            <div class="align-right">
+                <div class="large-text">Feed</div>
+            </div>
         </div>
 
-
+        <div class="row">
+            <div class="medium-text">Active Events</div>
+        </div>
     </div>
+
+    <!--Container for react app to show events-->
+    <div id="active_events_container"></div>
 {% endblock %}

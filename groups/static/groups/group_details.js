@@ -1,11 +1,12 @@
+//Get group id
+const groupId = document.querySelector("#data-items").dataset.group_id;
 
-ReactDOM.render(<EventsContainer />, document.querySelector("#active_events_container"));
+ReactDOM.render(<EventsContainer groupId={groupId} showGroupName={false}/>, document.querySelector("#active_events_container"));
 
 //Change background color of admins
 set_admins();   
 
-//Get group id
-const groupId = document.querySelector("#data-items").dataset.group_id;
+
 
 //Set onclick listener for make event button
 document.querySelector("#make_event").onclick = () =>{
@@ -22,7 +23,7 @@ document.querySelector("#make_event").onclick = () =>{
     }
 
     //Date and time must not be empty
-    if(document.querySelector("#start_date").value === "" || document.querySelector("#start_time").value === ""){
+    if(document.querySelector("#start_datetime").value === "" ){
         setMessage(message, "Please provide proper start date and time", "red");
         return false
     }
@@ -60,10 +61,8 @@ document.querySelector("#make_event").onclick = () =>{
     const data = new FormData();
 
     data.append('name', document.querySelector("#name").value);
-    data.append('start_date', document.querySelector("#start_date").value);
-    data.append('start_time', document.querySelector("#start_time").value);
-    data.append('end_date', document.querySelector("#end_date").value);
-    data.append('end_time', document.querySelector("#end_time").value);
+    data.append('start_datetime', document.querySelector("#start_datetime").value);
+    data.append('end_datetime', document.querySelector("#end_datetime").value);
     data.append('description', document.querySelector("#description").value);
 
     request.send(data);
