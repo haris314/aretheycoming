@@ -41,10 +41,14 @@ def get_events(request):
     print("Memberships")
     print(memberships)
 
+    events = Event.objects.none() # Empty query set
     for membership in memberships:
-        events = membership.group.events.order_by('-start_time').all()
-        for event in events:
-            events_to_send.append(event)
+        events = events | membership.group.events.all()
+
+    # Sort all the events in ascending order by start_time
+    events = events.order_by('start_time')
+    for event in events:
+        events_to_send.append(event)
     
     events_to_send = get_json_events(events_to_send)
     return JsonResponse({'success': True, 'events': events_to_send})

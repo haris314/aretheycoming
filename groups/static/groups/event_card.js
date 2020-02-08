@@ -5,34 +5,55 @@ class EventCard extends React.Component{
 
     constructor(props){
         super(props);
+        
+        const str = 'startTime'
+        //console.log(this.props[str]);
+
+        // Convert the datetime in the appropriate format
+        const startTime = this.convertDatetime(this.props.startTime);
+        const endTime = this.convertDatetime(this.props.endTime);
+        const timing = this.getFormattedTiming(startTime, endTime);
+        const createTime = this.convertDatetimeToString(this.convertDatetime(this.props.createTime));
         this.state = {
             yes: this.props.yes,
             no: this.props.no,
             maybe: this.props.maybe,
             activated: 0,
+            createTime,
+            timing,
         }
+        
+        
+
     }
+
+    
+    
 
     render(){
         const total = parseInt(this.state.yes) + parseInt(this.state.no) + parseInt(this.state.maybe);
 
         return (
-        <div className="group-card">
+        <div className="card event-card">
             {/* If groupName is undefined, this means the user is already accessing an event in a particular group
               * In this case, we leave the group name empty */}
             {this.props.groupName !== undefined? this.props.groupName : "" } <br />
+
+            {/* Event's name */}
             <span className="name">{this.props.eventName}</span> <br />
             
-            <span className="faded-text">
-                Created <b> {this.props.createTime}  </b> <br />
+            <span style={ {"color": "grey",}}>
+                Created on <b> {this.state.createTime}  </b> <br />
                 {/*Created by <b> {this.props.creator} </b> <br />*/}
             </span>
             <hr />
 
-            <span className="name">{this.props.startTime} to {this.props.endTime}</span> <br />
+            {/* Start and end time of the event */}
+            <span className="name">{this.state.timing}</span> <br />
             <span className="faded-text">{this.props.description}</span> 
             <hr />
             
+            {/* Votes */}
             <table className="vote-table">
                 <thead>
                     <tr>
@@ -74,5 +95,54 @@ class EventCard extends React.Component{
         this.setState(() => ({
             activated: number,
         }));
+    }
+
+    /* To convert a datetime into and array
+    * In returned array, ar[0] = year, ar[1] = month, .. and so on from greatest to smallest
+    */
+    convertDatetime(date){
+        
+        // Add the date first
+        let toReturn = [
+            date.slice(0, 4),
+            date.slice(5, 7),
+            date.slice(8,10)           
+        ];
+
+        //Convert time to 12 hour format
+        let hr = parseInt(date.slice(11, 13));
+        let min = date.slice(14,16);
+        let amOrPm = "";
+        if(hr > 12){
+            hr = hr % 12;
+            amOrPm = 'PM';
+        }
+        else if(hr === 12){
+            amOrPm = 'PM';
+        }
+        else{
+            amOrPm = 'AM';
+        }
+        
+        toReturn.push(hr, min, amOrPm);
+
+        return toReturn;
+    }
+
+    // Converts the sliced datetime to a string
+    convertDatetimeToString(dt){
+        return `${dt[2]}/${dt[1]}/${dt[0]}, ${dt[3]}:${dt[4]} ${dt[5]}`;
+    }
+
+    /* Takes the startTime and endTime in arrays and convert it into a string that has to be displayed
+    */
+    getFormattedTiming(st, et){ 
+        // If date is equal
+        if(st[0] === et[0] && st[1] === et[1] && st[2] === et[2]){
+            return `${st[3]}:${st[4]} ${st[5]}-${et[3]}:${et[4]} ${et[5]}, ${st[2]}/${st[1]}/${st[0]}`;
+        }
+        else{
+            return `${st[2]}/${st[1]}/${st[0]}, ${st[3]}:${st[4]} ${st[5]} to ${et[2]}/${et[1]}/${et[0]}, ${et[3]}:${et[4]} ${et[5]}`;
+        }
     }
 }

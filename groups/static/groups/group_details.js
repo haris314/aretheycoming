@@ -23,13 +23,14 @@ document.querySelector("#make_event").onclick = () =>{
     }
 
     //Date and time must not be empty
-    if(document.querySelector("#start_datetime").value === "" ){
-        setMessage(message, "Please provide proper start date and time", "red");
+    if(document.querySelector("#start_datetime").value === "" || document.querySelector("#end_datetime").value === ""){
+        setMessage(message, "Please provide proper date and time", "red");
         return false
     }
     else{
         setMessage(message, "", "white");
     }
+
 
     //Disable the create event button
     document.querySelector("#make_event").disabled = true;
@@ -52,7 +53,7 @@ document.querySelector("#make_event").onclick = () =>{
         }
         else{
             //If request was successful, set message that the event was successfully created                  
-            setMessage(eventMakerMessage, "Event created successfully", "green");                
+            setMessage(eventMakerMessage, "Event created successfully! Please reload to see the newly created event", "black");                
         }
         eventMakerGoUp();
     }

@@ -67,11 +67,11 @@ class Event(models.Model):
 
     name = models.CharField(max_length=50, null=False, blank=False) # Can't be null or blank
 
-    create_time = models.DateTimeField(default=timezone.now(), null=False, blank=False) # Can't be null or blank
+    create_time = models.DateTimeField(default=datetime.now(), null=False, blank=False) # Can't be null or blank
     creator = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='created_events')
 
     start_time = models.DateTimeField(null=False, blank=False) # Can't be null or blank
-    end_time = models.DateTimeField(null=True, blank=True)
+    end_time = models.DateTimeField(null=False, blank=False)
 
     description = models.TextField(null=True, blank=True)
 

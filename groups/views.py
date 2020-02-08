@@ -228,12 +228,6 @@ def create_event(request, group_id):
     end_datetime = (request.POST['end_datetime'])
     description = request.POST['description']
 
-    # Concatenate dates and times to insert in database
-    # But first,
-    # If end date or end time was empty
-    if(end_datetime is ""):
-        end_datetime = None
-
     # Insert into the database
     try:
         creator = request.user 
@@ -259,7 +253,7 @@ def get_events(request, group_id):
 
     try:
         if active: # Return the active events only
-            events = Group.objects.get(id=group_id).events.values()
+            events = Group.objects.get(id=group_id).events.order_by('start_time').values()
         
         response = {'success':True, 'events': list(events)}
     except Exception as e:
