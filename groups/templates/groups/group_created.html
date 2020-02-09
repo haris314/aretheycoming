@@ -1,0 +1,25 @@
+{% extends 'parent_layout.html' %}
+
+{% block title %}
+    Group created
+{% endblock %}
+
+
+{% block body %}
+
+    <!--Include the navigation bar-->    
+    {% include 'groups/navigation.html' %}
+
+    <script type="text/javascript">
+        setTimeout(() => {
+            window.location.href = "{% url 'groups' %}";
+        }, 3000);
+    </script>
+
+    <div class="normal-page">
+        <div class="large-text">Success</div>
+        <p class="medium-text">Group created successfully. <br>
+            You will be redirected to groups in 3 seconds or you can click <a href="{% url 'groups' %}">here</a>.</p>
+    </div>
+
+{% endblock %}

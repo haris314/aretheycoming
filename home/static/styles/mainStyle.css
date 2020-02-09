@@ -14,7 +14,7 @@ html {
   font-size: 20px;
   background-color: #421111;
   color: white;
-  width: 100px;
+  display: inline-block;
   box-shadow: 0px 5px 10px grey;
 }
 
@@ -256,8 +256,9 @@ a.nostyle:visited {
 }
 
 .group-card {
-  background: black;
+  background: linear-gradient(90deg, black 0%, #0a0039 89%, #060022 100%);
   color: white;
+  border: solid white 2px;
 }
 .group-card .college-details {
   margin-top: 10px;
@@ -455,6 +456,42 @@ a.nostyle:visited {
   border: none;
 }
 
+.red-btn {
+  background-color: #c73232;
+  color: white;
+  font-size: 15px;
+}
+
+#popup_message_frame {
+  display: none;
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  z-index: 4;
+  background-color: rgba(0, 0, 0, 0.308);
+}
+
+#popup_message {
+  position: fixed;
+  z-index: 5;
+  right: 30%;
+  left: 30%;
+  top: 40%;
+  background-color: white;
+  padding: 2%;
+  border: solid black 2px;
+  box-shadow: black -5px 5px 50px;
+}
+
+@media (max-width: 1000px) {
+  #popup_message {
+    left: 5%;
+    right: 5%;
+    padding: 5%;
+  }
+}
 .faded-text {
   color: rgba(255, 255, 255, 0.603);
   font-size: 15px;

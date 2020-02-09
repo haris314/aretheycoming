@@ -18,6 +18,20 @@ def is_admin(request, group):
     return membership.admin;
 
 
+# To check whether the given user is the member of the given group or not
+def is_member(request, group):
+
+    # If not even logged in, return false
+    if request.user.is_authenticated == False:
+        return False
+    
+    # Check
+    for user in group.members.all():
+        if request.user.username == user.username:
+            return True
+    
+    return False
+
 # Function to return JSON response from a list of (Group objects)s
 def get_json_groups(group_list):
 

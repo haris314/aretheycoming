@@ -35,6 +35,19 @@
             <div class="col-lg-8 col-xs-12">
                 <span class="medium-text" style="font-size: 40px; margin-top:30px">{{group.name}}</span>
 
+                <!--Display the 'delete group' and 'leave group' buttons-->
+                <div style="position:relative; float:right; text-align:right;">
+                    {% if admin_flag %} <!--Show delete group button if the user is admin-->
+                        <button id="delete_group_btn" class="btn red-btn">Delete</button>
+                    {% endif %}
+                    {% if member_flag %} <!--Show the leave group button if the user is a member-->
+                        <button id="leave_group_btn" class="btn red-btn">Leave</button>
+                    {% endif %}
+                    <br>
+                    <span id="delete_or_leave_message"></span>
+
+                </div>
+
                 <table class="table table-hover ">
                     <tr>
                         <td><b>#</b></td>
@@ -87,10 +100,14 @@
 
             </div>  
         </div>  
-        <button class="btn wide-btn circular-corners" id="add_event">Add event <b>+</b></button>
-        <br>
-        <div id="add_event_message"></div>
-        <br>
+
+        <!--If the user is the member of the group, add the add event button-->
+        {% if member_flag %}
+            <button class="btn wide-btn circular-corners" id="add_event">Add event <b>+</b></button>
+            <br>
+            <div id="add_event_message"></div>
+            <br>
+        {% endif %}
 
         <span class="medium-text">Active Events</span>
 
@@ -164,6 +181,8 @@
 
     <!--Include the event maker-->
     {% include 'groups/event_maker.html' with id=group.id%}
+    <!--Include the popup message-->
+    {% include 'popup_message.html' %}
 
 
 {% endblock %}

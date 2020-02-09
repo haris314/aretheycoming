@@ -1,11 +1,62 @@
-//Get group id
-const groupId = document.querySelector("#data-items").dataset.group_id;
+const groupId = document.querySelector("#data-items").dataset.group_id; //Get group id
+const csrftoken = getCookie('csrftoken');
 
 ReactDOM.render(<EventsContainer groupId={groupId} showGroupName={false}/>, document.querySelector("#active_events_container"));
 
-//Change background color of admins
+// Change background color of admins
 set_admins();   
 
+// Set onclick listener for delete group and leave group button
+const deleteOrLeaveMessage = document.querySelector('#delete_or_leave_message');
+
+const deleteHeading = "Delete this group permanently?";
+const deleteBody = "Deleting will remove all the group members and group requests permanently. This can't be reversed.";
+
+try{ // Gotta put this in try block because delete_group_btn may not always be present
+    document.querySelector('#delete_group_btn').onclick = () =>{
+        displayPopupMessage(deleteHeading, deleteBody, () =>{
+
+        });
+    }
+}
+catch(e){}
+
+const leaveHeading = "Leave this group?";
+const leaveBody = "You will no longer be a member of this group. You can request to join back as a new member later.";
+
+try{ // Gotta put this in try block because leave_group_btn may not always be present
+    document.querySelector('#leave_group_btn').onclick = () =>{
+
+        displayPopupMessage(leaveHeading, leaveBody, () => {
+            
+            /**Setup the AJAX request to send to leave the group */
+            const request = new XMLHttpRequest();
+            request.open('POST', `/groups/${groupId}/leave_group`);
+            request.setRequestHeader('X-CSRFToken', csrftoken);
+
+            request.onload = () => {
+
+                // If request's status was not 200 or if response had {success: false}, show error and return
+                if(request.status != 200){
+                    setMessage(deleteOrLeaveMessage, "Something went wrong. Please try again!", "red");
+                    return;
+                }
+                const response = JSON.parse(request.responseText);
+                if(response.success === false){
+                    setMessage(deleteOrLeaveMessage, "Something went wrong. Please try again!", "red");
+                    return;
+                }
+
+                // Reload the page otherwise
+                window.location.reload();
+
+            }
+
+            request.send();
+        });
+    }
+}
+catch(e){}
 
 
 //Set onclick listener for make event button
@@ -23,12 +74,20 @@ document.querySelector("#make_event").onclick = () =>{
     }
 
     //Date and time must not be empty
-    if(document.querySelector("#start_datetime").value === "" || document.querySelector("#end_datetime").value === ""){
+    const startDate = document.querySelector("#start_datetime").value;
+    const endDate = document.querySelector("#end_datetime").value;
+    if(startDate === "" || endDate === ""){
         setMessage(message, "Please provide proper date and time", "red");
-        return false
+        return false;
     }
     else{
         setMessage(message, "", "white");
+    }
+
+    //Start date must not be greater or equal to end date
+    if(Date(startDate) >= Date(endDate)){
+        setMessage(message, "Start date can't be same as or after the end date. How do you feel being stupider than a machine?", "red");
+        //return false;
     }
 
 
@@ -38,7 +97,6 @@ document.querySelector("#make_event").onclick = () =>{
     //Send request to the server to create event
     const request = new XMLHttpRequest();
     request.open('POST', `/groups/${groupId}/create_event`);
-    const csrftoken = getCookie('csrftoken');
     request.setRequestHeader('X-CSRFToken', csrftoken);
 
     //Get the division to show the message. Below "add event+" button
@@ -97,9 +155,13 @@ function eventMakerGoUp(){
     })
 }
 
-document.querySelector('#add_event').onclick = ()=>{
-    eventMakerComeDown();
+try{ // add_event button will not be present if the user is not a member of the group or is not logged in
+    document.querySelector('#add_event').onclick = ()=>{
+        eventMakerComeDown();
+    }
 }
+catch(e){}
+
 
 //Make clicking on close_event_maker button to close the menu
 document.querySelector('#close_event_maker').onclick = ()=>{
@@ -125,7 +187,6 @@ function accept(request_id, group_id, action){
     //Make the request
     const request = new XMLHttpRequest();
     request.open('POST', `/groups/${group_id}/accept`);
-    const csrftoken = getCookie('csrftoken');
     request.setRequestHeader('X-CSRFToken', csrftoken);
 
     //When the request is loaded

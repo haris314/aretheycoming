@@ -90,18 +90,20 @@ def group_details(request, id):
         requests = Request.objects.filter(group=group).all()
 
         # Get whether the user is admin of this group or not
-        adminFlag = is_admin(request, group)
+        admin_flag = is_admin(request, group)
+
+        # Get whether the user is a member of this group or not
+        member_flag = is_member(request, group)
 
         # Create the context object
         context = {
             "group": group,
             "memberships": memberships,
             "requests": requests,
-            "adminFlag": adminFlag,
+            "admin_flag": admin_flag,
+            "member_flag": member_flag,
         }
         return render(request, 'groups/group_details.html', context)
-
-
 
 
 # When someone requests to join a group
@@ -212,14 +214,13 @@ def member_action(request):
 # To create a new event
 def create_event(request, group_id):
 
-    print("request obtianed")
     # If someone tries to access it via unfair means
     if request.method != "POST":
         return HttpResponse(status=404)
     
-    # If user is not even logged in
-    if not request.user.is_authenticated :
-        return JsonResponse({'success': False})
+    # If user is not even logged in or if user is not a member of the group
+    if not request.user.is_authenticated or not is_member(request, group_id):
+        return JsonResponse({'success':False, 'message': 'Unfortunately, I am smart enough to have thought about people like you!'})
 
     # Get the data
     event_name = request.POST['name']
@@ -227,6 +228,10 @@ def create_event(request, group_id):
     print(datetime)
     end_datetime = (request.POST['end_datetime'])
     description = request.POST['description']
+
+    # start_datetime must be less than end_datetime
+    if start_datetime >= end_datetime:
+        return JsonResponse({'success': False})
 
     # Insert into the database
     try:
@@ -324,9 +329,29 @@ def create_group(request):
             return render(request, 'error.html', {'message': "Something went wrong. Are you sure you are putting the right details? If yes then please contact admin"})
         
         # Successfully added
-        return render(request, 'success.html', {"message": "Successfully created new group"})
+        return render(request, 'groups/group_created.html')
 
 
+# To leave a group (AJAX request)
+def leave_group(request, group_id):
+
+    if request.method != 'POST':
+        return JsonResponse({'success': False})
+    
+    try:
+        group = Group.objects.get(id=group_id)
+        # If user is not authenticated or not a member of the group
+        if request.user.is_authenticated is False or is_member(request, group) is False:
+            return JsonResponse({'success': False})
+
+        # Delete the user's membership for the given group
+        membership = Membership.objects.get(group=group, user=request.user)
+        membership.delete()
+
+        return JsonResponse({'success': True})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'success': False})
 
 # To display the groups which the user is part of
 def my_groups(request):

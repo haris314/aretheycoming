@@ -27,7 +27,7 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
         font-size: 20px;
         background-color: $backgroundLight;
         color: $textColorLight;
-        width: 100px;
+        display: inline-block;
         box-shadow: 0px 5px 10px grey;
 
         //border-radius: 50px 50px 50px 50px;
@@ -281,9 +281,7 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
 
 
 //s
-    //$groupBackgroundColor: linear-gradient(90deg, rgb(0, 0, 0, 1) 0%, rgba(10,0,57,1) 89%, rgba(6,0,34,1) 100%);
-    $groupBackgroundColor: radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),
-    radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%);
+    $groupBackgroundColor: linear-gradient(90deg, rgb(0, 0, 0, 1) 0%, rgba(10,0,57,1) 89%, rgba(6,0,34,1) 100%);
     .card{
         padding: 20px;
         margin: 20px;
@@ -301,8 +299,9 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
 
     }    
     .group-card{
-        background: black;
+        background: $groupBackgroundColor;
         color: white;
+        border: solid white 2px;
 
         .college-details{
             margin-top: 10px;
@@ -542,7 +541,45 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
         }
 
     }
+    
+    .red-btn{
+        background-color: rgb(199, 50, 50);
+        color: white;
+        font-size: 15px;        
+    }
 
+    #popup_message_frame{
+        display: none;
+        position: fixed;
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+
+        z-index: 4;
+        background-color: rgba(0, 0, 0, 0.308);
+    }
+    #popup_message{
+        position: fixed;
+        z-index: 5;
+        right:30%;
+        left:30%;
+        top:40%;
+
+        background-color: white;
+        padding: 2%;
+
+        border: solid black 2px;
+        box-shadow: black -5px 5px 50px;
+
+    }
+    @media(max-width: 1000px){
+        #popup_message{
+            left: 5%;
+            right: 5%;
+            padding: 5%;
+        }
+    }
     
 
 //Groups end
