@@ -63,28 +63,28 @@
                     </tr>
 
 
-                    {% if group.college is not None %}
+                    {% if group.college %}
                         <tr>
                             <td><b>College</b></td>
                             <td>{{group.college}}</td>
                         </tr>
                     {% endif %}
 
-                    {% if group.graduation_year is not None %}
+                    {% if group.graduation_year %}
                     <tr>
                         <td><b>Graduation year</b></td>
                         <td>{{group.graduation_year}}</td>
                     </tr>
                     {% endif %}
 
-                    {% if group.section is not None %}
+                    {% if group.section %}
                     <tr>
                         <td><b>Section</b></td>
                         <td>{{group.section}}</td>
                     </tr>
                     {% endif %}
 
-                    {% if group.batch is not None %}
+                    {% if group.batch %}
                     <tr>
                         <td><b>Batch</b></td>
                         <td>{{group.batch}}</td>
@@ -100,6 +100,14 @@
 
             </div>  
         </div>  
+
+        <!--If the user is logged in but is not a member of this group, show join button-->
+        {% if not member_flag and request.user.is_authenticated %}
+        <button id="join_group_btn" class="btn">Join</button>
+        <br>
+        <div id="join_group_message"></div>
+        <hr>
+        {% endif %}
 
         <!--If the user is the member of the group, add the add event button-->
         {% if member_flag %}

@@ -194,6 +194,52 @@ document.querySelector('#load_past_events').onclick = () => {
     );
 }
 
+// Set onclick listener for join group button only if that button is present
+if (document.querySelector("#join_group_btn") !== null){
+    document.querySelector("#join_group_btn").onclick = () =>{
+
+        // Get the button, disable it and change text to 'sending request'
+        const button = document.querySelector("#join_group_btn");
+        button.disabled = true;
+        button.innerHTML = "Sending request";
+
+        // Open request
+        const request = new XMLHttpRequest();
+        request.open('POST', `${groupId}/request`);
+        request.setRequestHeader('X-CSRFToken', csrftoken);
+
+        // What happens when the response comes
+        const message = document.querySelector('#join_group_message');
+        request.onload= () =>{
+            
+            if(request.status != 200){
+                console.log("Something went wrong while sending the request");
+                setMessage(message, "An error ocurred. Pleased reload the page and try again", "red");
+                button.innerHTML = "Can't send";
+                return;            
+            }
+
+            // Parse the response
+            const response = JSON.parse(request.responseText);
+
+            // If the request did not succeed
+            if(response.success == false){
+                setMessage(message, response.reason, "red");
+                button.innerHTML = "Can't send";
+                return;
+            }
+
+            // If the request succeeds
+            button.innerHTML = "Request sent";
+
+        }
+
+        // Send the request
+        request.send();
+    }
+}
+
+
 
 // Function to change background color of admins
 function set_admins(){
@@ -241,41 +287,46 @@ function accept(request_id, group_id, action){
 // Function to deal with member actions like adminify and removing
 function member_action(membership_id, action){
 
-    // Make the AJAX request
-    const request = new XMLHttpRequest();
-    request.open('POST', `/groups/member_action`);
-    const csrftoken = getCookie('csrftoken');
-    request.setRequestHeader('X-CSRFToken', csrftoken);
-    
-    request.onload = ()=>{
-        const response = JSON.parse(request.responseText);
+    displayPopupMessage(
+        action === 'adminify'? "Promote to admin?": "Remove group member?",
+        action === 'adminify'? "This member will be promoted to an admin of the group forever. This action can't be reversed.": 
+            "This member will be removed from group. This action can't be reversed.",
+            () => {
+                // Make the AJAX request
+                const request = new XMLHttpRequest();
+                request.open('POST', `/groups/member_action`);
+                const csrftoken = getCookie('csrftoken');
+                request.setRequestHeader('X-CSRFToken', csrftoken);
 
-        // If request was successful
-        if(response.success){
-            // If action was remove then get the correct html element and delete it
-            if(action==='remove'){
-                var div = document.getElementById(membership_id).parentElement;
-            }
-            // Action was adminify so hide the adminify button and change background color
-            else{
-                div = document.getElementById(membership_id);
-                div.parentElement.style.backgroundColor = color_admin_background;
-            }
+                request.onload = ()=>{
+                    const response = JSON.parse(request.responseText);
 
-            // Animate
-            animate_and_remove(div);
-        }
-        else{
-            console.log(response.success);
-            
-        }
-    }
+                    // If request was successful
+                    if(response.success){
+                        // If action was remove then get the correct html element and delete it
+                        if(action==='remove'){
+                            var div = document.getElementById(membership_id).parentElement;
+                        }
+                        // Action was adminify so hide the adminify button and change background color
+                        else{
+                            div = document.getElementById(membership_id);
+                            div.parentElement.style.backgroundColor = color_admin_background;
+                        }
 
-    // Setup request and send
-    const data = new FormData();
-    data.append('membership_id', membership_id);
-    data.append('action', action);    
-    request.send(data);
+                        // Animate
+                        animate_and_remove(div);
+                    }
+                    else{
+                        console.log(response.success);                        
+                    }
+                }
+                // Setup request and send
+                const data = new FormData();
+                data.append('membership_id', membership_id);
+                data.append('action', action);    
+                request.send(data);  
+            }  
+    );
 }
 
 

@@ -1,31 +1,31 @@
 
 
-//Get the group card template
+// Get the group card template
 var groupTemplate;
 
-//set start and more variables for number of groups
+// Set start and more variables for number of groups
 var start = 0;
 var count = 8;
 var getMoreFlag = true;
 
-//To prevent from loading groups on scrolling when the user has filtered groups
+// To prevent from loading groups on scrolling when the user has filtered groups
 var loadFlag = true;
 
-//When the dom content is loaded
+// When the dom content is loaded
 document.addEventListener("DOMContentLoaded", () => {
 
-    //set the template
+    // set the template
     groupTemplate = Handlebars.compile(document.querySelector('#groupCardTemplate').innerHTML);
 
-    //Get the filter_keyword filed and set the event listener
+    // Get the filter_keyword filed and set the event listener
     filter_keyword = document.querySelector('#filter_keyword');
     filter_keyword.onkeyup = filterGroups;
 
-    //Get groups for the first time
+    // Get groups for the first time
     getGroups();
 });
 
-//Get more groups when at the end of page
+// Get more groups when at the end of page
 window.onscroll = () =>{
     if (loadFlag == false){
         return
@@ -35,14 +35,14 @@ window.onscroll = () =>{
     }
 };
 
-//function to get groups using AJAX
+// Function to get groups using AJAX
 function getGroups(){
     if(getMoreFlag == false){
         return;
     }
     getMoreFlag = false;
 
-    //Open the request
+    // Open the request
     request = new XMLHttpRequest;
     request.open('POST', '/groups/');
 
@@ -51,18 +51,18 @@ function getGroups(){
 
     request.onload = () => {
 
-        //if status is not 200, print to console
+        // If status is not 200, print to console
         if(request.status != 200){
             console.log("Some problem occurred while loading the groups");
             return;           
         }
 
-        //Get response
+        // Get response
         response = JSON.parse(request.responseText);
         addGroups(response);
     }
 
-    //append the data to a form and send the request
+    // Append the data to a form and send the request
     data = new FormData();
     data.append('start', start);
     data.append('count', count);
@@ -72,16 +72,16 @@ function getGroups(){
 
 
 var firstId;
-//function to add the response groups to the web page
+// Function to add the response groups to the web page
 function addGroups(response){
     firstId = -1;
 
-    //Iterate through all the groups in response
+    // Iterate through all the groups in response
     response.forEach( group => {
         if(firstId == -1){
             firstId = group.id;
         }
-        //create data
+        // Create data
         data = {
             'group': {
                 'name' : group.name,
@@ -96,28 +96,28 @@ function addGroups(response){
             }
         }
 
-        //Get content from template and add it to the document
+        // Get content from template and add it to the document
         content = groupTemplate(data);
         document.querySelector(`#groupList`).innerHTML += content;
         getMoreFlag = true;       
     });
 }
 
-//function to send request to join a group
+// Function to send request to join a group
 function sendRequest(id){
     
-    //Get the button, disable it and change text to 'sending request'
+    // Get the button, disable it and change text to 'sending request'
     button = document.getElementById("btn"+id);
     button.disabled = true;
     button.innerHTML = "Sending request";
 
-    //Open request
+    // Open request
     request = new XMLHttpRequest();
     request.open('POST', `${id}/request`);
     csrftoken = getCookie('csrftoken');
     request.setRequestHeader('X-CSRFToken', csrftoken);
 
-    //What happens when the response comes
+    // What happens when the response comes
     request.onload= () =>{
         
         if(request.status != 200){
@@ -125,10 +125,10 @@ function sendRequest(id){
             return;            
         }
 
-        //Parse the response
+        // Parse the response
         response = JSON.parse(request.responseText);
 
-        //If the request did not succeed
+        // If the request did not succeed
         if(response.success == false){
             groupCard = document.getElementById(id);
             errorMessage = document.createElement('div');
@@ -141,44 +141,44 @@ function sendRequest(id){
             return;
         }
 
-        //If the request succeeds
+        // If the request succeeds
         button.innerHTML = "Request sent";
 
     }
 
-    //Send the request
+    // Send the request
     request.send();
     
 }
 
         
-//Function to Filter groups
+// Function to Filter groups
 filterGroups = () => {
 
-    //Get the keyword
+    // Get the keyword
     keyword = filter_keyword.value;
 
-    //If the length is 0 then do nothing
+    // If the length is 0 then do nothing
     if(keyword.length === 0){
         document.querySelector('#groupList').innerHTML = "";
 
-        //Set start = 0 to start loading from the beginning
+        // Set start = 0 to start loading from the beginning
         start = 0;
 
-        //loadFlag = true to allow loading more groups when hitting the bottom while scrolling
+        // loadFlag = true to allow loading more groups when hitting the bottom while scrolling
         loadFlag = true;
         
         getGroups();
         return;
     }
 
-    //Open the request
+    // Open the request
     request = new XMLHttpRequest();
     request.open('POST', 'filter');
     csrftoken = getCookie('csrftoken');
     request.setRequestHeader('X-CSRFToken', csrftoken);
 
-    //When the response comes, clear the group list and add the new groups
+    // When the response comes, clear the group list and add the new groups
     request.onload = () =>{
 
         loadFlag = false;
@@ -188,15 +188,15 @@ filterGroups = () => {
             return;            
         }
 
-        //Clear the current groups from the group list
+        // Clear the current groups from the group list
         document.querySelector('#groupList').innerHTML = '';
 
-        //Get response and add them
+        // Get response and add them
         response = JSON.parse(request.responseText);
         addGroups(response);
     }
 
-    //Send the request
+    // Send the request
     data = new FormData();
     data.append('keyword', keyword);
     request.send(data);
