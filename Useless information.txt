@@ -1,0 +1,7 @@
+At 5k LOC
+python: 835
+html: 837
+css(.css file): 649
+javascript: 1033
+_______________________
+Total: 3354

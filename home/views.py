@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from .models import *
-from groups.helper import get_json_events
+from home.helper import *
 
 # Create your views here.
 
@@ -48,7 +48,10 @@ def get_events(request):
     # Sort all the events in ascending order by start_time
     events = events.order_by('start_time')
     for event in events:
-        events_to_send.append(event)
+
+        now = get_current_timezone_aware_datetime()
+        if event.end_time > now: # Only add those events whose endtime is in future
+            events_to_send.append(event)
     
     events_to_send = get_json_events(events_to_send)
     return JsonResponse({'success': True, 'events': events_to_send})

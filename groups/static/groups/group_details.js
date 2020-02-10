@@ -1,7 +1,15 @@
 const groupId = document.querySelector("#data-items").dataset.group_id; //Get group id
 const csrftoken = getCookie('csrftoken');
 
-ReactDOM.render(<EventsContainer groupId={groupId} showGroupName={false}/>, document.querySelector("#active_events_container"));
+/**Render the active events container */
+ReactDOM.render(
+    <EventsContainer 
+        showGroupName={false} 
+        groupId={groupId} 
+        active={true}
+    />, document.querySelector("#active_events_container")
+);
+
 
 // Change background color of admins
 set_admins();   
@@ -10,11 +18,13 @@ set_admins();
 const deleteOrLeaveMessage = document.querySelector('#delete_or_leave_message');
 
 const deleteHeading = "Delete this group permanently?";
-const deleteBody = "Deleting will remove all the group members and group requests permanently. This can't be reversed.";
+const deleteBody = "Deleting will remove all the group members, requests and events belonging to this group permanently. This can't be reversed.";
 
 try{ // Gotta put this in try block because delete_group_btn may not always be present
     document.querySelector('#delete_group_btn').onclick = () =>{
-        displayPopupMessage(deleteHeading, deleteBody, () =>{
+        displayPopupMessage(deleteHeading, deleteBody, () =>{ 
+
+            window.location.href = `/groups/${groupId}/delete_group`;         
 
         });
     }
@@ -59,12 +69,12 @@ try{ // Gotta put this in try block because leave_group_btn may not always be pr
 catch(e){}
 
 
-//Set onclick listener for make event button
+// Set onclick listener for make event button
 document.querySelector("#make_event").onclick = () =>{
-    //Get the message div in a variable. Used for setMessage function
+    // Get the message div in a variable. Used for setMessage function
     const message = document.querySelector("#event_maker_message");
 
-    //Name of the event must not be empty
+    // Name of the event must not be empty
     if (document.querySelector("#name").value.length == 0){
         setMessage(message, "Name can't be empty!", "red");
         return false;
@@ -73,7 +83,7 @@ document.querySelector("#make_event").onclick = () =>{
         setMessage(message, "", "white");
     }
 
-    //Date and time must not be empty
+    // Date and time must not be empty
     const startDate = document.querySelector("#start_datetime").value;
     const endDate = document.querySelector("#end_datetime").value;
     if(startDate === "" || endDate === ""){
@@ -84,17 +94,18 @@ document.querySelector("#make_event").onclick = () =>{
         setMessage(message, "", "white");
     }
 
-    //Start date must not be greater or equal to end date
-    if(Date(startDate) >= Date(endDate)){
+    // Start date must not be greater or equal to end date
+    if(new Date(startDate) >= new Date(endDate)){
+        console.log(startDate + " " + endDate)
         setMessage(message, "Start date can't be same as or after the end date. How do you feel being stupider than a machine?", "red");
-        //return false;
+        return false;
     }
 
 
-    //Disable the create event button
+    // Disable the create event button
     document.querySelector("#make_event").disabled = true;
 
-    //Send request to the server to create event
+    // Send request to the server to create event
     const request = new XMLHttpRequest();
     request.open('POST', `/groups/${groupId}/create_event`);
     request.setRequestHeader('X-CSRFToken', csrftoken);
@@ -110,13 +121,13 @@ document.querySelector("#make_event").onclick = () =>{
             setMessage(eventMakerMessage, "There was problem while creating event :(", "red");
         }
         else{
-            //If request was successful, set message that the event was successfully created                  
+            // If request was successful, set message that the event was successfully created                  
             setMessage(eventMakerMessage, "Event created successfully! Please reload to see the newly created event", "black");                
         }
         eventMakerGoUp();
     }
 
-    //setup the request and send
+    // Setup the request and send
     const data = new FormData();
 
     data.append('name', document.querySelector("#name").value);
@@ -129,7 +140,7 @@ document.querySelector("#make_event").onclick = () =>{
     return false; // So that the page doesn't refresh because of form submission
 }
 
-//Function to set the message
+// Function to set the message
 function setMessage(message, message_value, color){
     console.log(message);
     message.innerHTML = message_value;
@@ -137,7 +148,7 @@ function setMessage(message, message_value, color){
     
 }
 
-//Make clicking on add event button display the event maker menu
+// Make clicking on add event button display the event maker menu
 const event_maker = document.querySelector('#event_maker')
 
 function eventMakerComeDown(){
@@ -163,13 +174,26 @@ try{ // add_event button will not be present if the user is not a member of the 
 catch(e){}
 
 
-//Make clicking on close_event_maker button to close the menu
+// Make clicking on close_event_maker button to close the menu
 document.querySelector('#close_event_maker').onclick = ()=>{
     eventMakerGoUp();
 }
 
+// Set onclick listener for load_past_events
+document.querySelector('#load_past_events').onclick = () => {
+    document.querySelector('#load_past_events').style.display = "none"; // Make the button disappear
+    /**Render the inactive events container */
+    ReactDOM.render(
+        <EventsContainer
+            showGroupName={false}
+            groupId={groupId}
+            active={false}
+        />, document.querySelector("#inactive_events_container")
+    );
+}
 
-//Function to change background color of admins
+
+// Function to change background color of admins
 function set_admins(){
     const elements = document.getElementsByClassName("element");
 
@@ -181,30 +205,30 @@ function set_admins(){
 }
 
 
-//Function when someone accepts some one
+// Function when someone accepts some one
 function accept(request_id, group_id, action){
 
-    //Make the request
+    // Make the request
     const request = new XMLHttpRequest();
     request.open('POST', `/groups/${group_id}/accept`);
     request.setRequestHeader('X-CSRFToken', csrftoken);
 
-    //When the request is loaded
+    // When the request is loaded
     request.onload = ()=>{
         const response = JSON.parse(request.responseText);
         console.log(response.success);        
         
-        //If request was successful, get the correct html element and delete it
+        // If request was successful, get the correct html element and delete it
         if(response.success){
             var div = document.getElementById(request_id);            
             div = div.parentElement.parentElement;
 
-            //animate
+            // Animate
             animate_and_remove(div);
         }
     }
 
-    //setup the request and send
+    // Setup the request and send
     const data = new FormData();
     data.append('request_id', request_id);
     data.append('action', action);    
@@ -212,10 +236,10 @@ function accept(request_id, group_id, action){
 
 }
 
-//Function to deal with member actions like adminify and removing
+// Function to deal with member actions like adminify and removing
 function member_action(membership_id, action){
 
-    //Make the AJAX request
+    // Make the AJAX request
     const request = new XMLHttpRequest();
     request.open('POST', `/groups/member_action`);
     const csrftoken = getCookie('csrftoken');
@@ -224,19 +248,19 @@ function member_action(membership_id, action){
     request.onload = ()=>{
         const response = JSON.parse(request.responseText);
 
-        //If request was successful
+        // If request was successful
         if(response.success){
-            //if action was remove then get the correct html element and delete it
+            // If action was remove then get the correct html element and delete it
             if(action==='remove'){
                 var div = document.getElementById(membership_id).parentElement;
             }
-            //action was adminify so hide the adminify button and change background color
+            // Action was adminify so hide the adminify button and change background color
             else{
                 div = document.getElementById(membership_id);
                 div.parentElement.style.backgroundColor = color_admin_background;
             }
 
-            //animate
+            // Animate
             animate_and_remove(div);
         }
         else{
@@ -245,7 +269,7 @@ function member_action(membership_id, action){
         }
     }
 
-    //Setup request and send
+    // Setup request and send
     const data = new FormData();
     data.append('membership_id', membership_id);
     data.append('action', action);    
@@ -253,24 +277,24 @@ function member_action(membership_id, action){
 }
 
 
-//Function to animate and remove the requests and members
+// Function to animate and remove the requests and members
 function animate_and_remove(div){
 
-    //First run the fadeout animation
+    // First run the fadeout animation
     div.style.animationName = 'fadeout';
     div.style.animationPlayState = 'running';
 
-    //When fadeout is done
+    // When fadeout is done
     div.addEventListener('animationend', ()=>{
 
-        //Make a dummy division physically similar to the element division which has to be removed
+        // Make a dummy division physically similar to the element division which has to be removed
         var div2 = "<div class='element circular-corners' id='dummy_div'></div>";
 
-        //Insert the dummy division after the element which has to be removed and remove element div
+        // Insert the dummy division after the element which has to be removed and remove element div
         div.insertAdjacentHTML('afterend', div2);
         div.remove();
 
-        //Get the dummy division which was added, play the animation and remove the dummy div
+        // Get the dummy division which was added, play the animation and remove the dummy div
         div2 = document.querySelector('#dummy_div');
         div2.style.opacity = '0';
 

@@ -5,9 +5,6 @@ class EventCard extends React.Component{
 
     constructor(props){
         super(props);
-        
-        const str = 'startTime'
-        //console.log(this.props[str]);
 
         // Convert the datetime in the appropriate format
         const startTime = this.convertDatetime(this.props.startTime);
@@ -22,12 +19,8 @@ class EventCard extends React.Component{
             createTime,
             timing,
         }
-        
-        
 
-    }
-
-    
+    }    
     
 
     render(){

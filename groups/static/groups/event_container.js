@@ -109,7 +109,7 @@ class EventsContainer extends React.Component{
         
         //Setup and send the request
         const data = new FormData();
-        data.append('active', true);
+        data.append('active', this.props.active);
         request.send(data);
     }
 

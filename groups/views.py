@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from .models import *
 from django.http import JsonResponse, HttpResponse
-from .helper import *
+from home.helper import *
 
 import sys # To see exception details
 
@@ -218,8 +218,15 @@ def create_event(request, group_id):
     if request.method != "POST":
         return HttpResponse(status=404)
     
+    # Get the group, required for next operation
+    try:
+        group = Group.objects.get(id=group_id)
+    except Exception as e:
+        print(e)
+        return JsonResponse({'success': False})
+    
     # If user is not even logged in or if user is not a member of the group
-    if not request.user.is_authenticated or not is_member(request, group_id):
+    if not request.user.is_authenticated or not is_member(request, group):
         return JsonResponse({'success':False, 'message': 'Unfortunately, I am smart enough to have thought about people like you!'})
 
     # Get the data
@@ -236,7 +243,6 @@ def create_event(request, group_id):
     # Insert into the database
     try:
         creator = request.user 
-        group = Group.objects.get(id=group_id)
         new_event = Event(name=event_name, creator=creator, start_time=start_datetime, end_time=end_datetime, description=description, group=group)
         new_event.save()
     except Exception as e:
@@ -249,7 +255,6 @@ def create_event(request, group_id):
 # To get events AJAXically
 def get_events(request, group_id):
 
-    time.sleep(1)
     # If the request is not post
     if request.method != 'POST':
         return JsonResponse({'success': False})
@@ -257,14 +262,18 @@ def get_events(request, group_id):
     active = request.POST['active']
 
     try:
-        if active: # Return the active events only
-            events = Group.objects.get(id=group_id).events.order_by('start_time').values()
+        if active == 'true': # Return the active/current events only
+            events = Group.objects.get(id=group_id).events.filter(end_time__gt=get_current_timezone_aware_datetime()).order_by('start_time').values()
         
+        else: # Return the inactive/past events only
+            events = Group.objects.get(id=group_id).events.filter(end_time__lte=get_current_timezone_aware_datetime()).order_by('start_time').values()
+                    
         response = {'success':True, 'events': list(events)}
     except Exception as e:
         print(e)
         response = {'success': False}
 
+    print(response)
     return JsonResponse(response)
 
 # To create a new group
@@ -352,6 +361,27 @@ def leave_group(request, group_id):
     except Exception as e:
         print(e)
         return JsonResponse({'success': False})
+
+
+# To delete the whole group
+def delete_group(request, group_id):
+
+    try:
+        group = Group.objects.get(id=group_id) 
+    except Exception as e:
+        print(e)
+
+    # User must be authenticated and an admin of the group
+    if request.user.is_authenticated is False or is_admin(request, group) is False:
+        return render(request, 'error.html', {'message': "An error occurred. Are you sure you are doing only what you are supposed to do?"})
+    
+    try:
+        group.delete()
+    except Exception as e:
+        print(e)
+    
+    return render(request, 'success.html', {'message': "The group was successfully deleted"})
+
 
 # To display the groups which the user is part of
 def my_groups(request):

@@ -1,4 +1,6 @@
 from .models import Group, Membership, Request
+import pytz
+from datetime import datetime
 
 # Function to return whether the current user is admin of the given group or not
 def is_admin(request, group):
@@ -79,3 +81,12 @@ def get_json_events(events_list):
         })
     
     return data
+
+
+# To get the current timezone aware datetime UTC
+def get_current_timezone_aware_datetime():
+
+    now = datetime.now() # Because I imported the datetime class and not the whole module
+    timezone = pytz.timezone("UTC")
+    now = timezone.localize(now)
+    return now;

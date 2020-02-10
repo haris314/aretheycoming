@@ -31,6 +31,9 @@ urlpatterns = [
     # To create a new group
     path("create_group", views.create_group, name="create_group"),
 
+    # To delete a group
+    path("<int:group_id>/delete_group", views.delete_group, name="delete_group"),
+
     # To show the current user his/her groups
     path("my_groups", views.my_groups, name="my_groups"),
 
