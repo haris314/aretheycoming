@@ -38,8 +38,6 @@ def get_events(request):
     events_to_send = []
     # First, we get the user's memberships
     memberships = Membership.objects.filter(user=request.user).all()
-    print("Memberships")
-    print(memberships)
 
     events = Event.objects.none() # Empty query set
     for membership in memberships:
@@ -52,6 +50,7 @@ def get_events(request):
         now = get_current_timezone_aware_datetime()
         if event.end_time > now: # Only add those events whose endtime is in future
             events_to_send.append(event)
-    
-    events_to_send = get_json_events(events_to_send)
+        
+    # Convert into JSON and add some other required fields
+    events_to_send = get_json_events(events_to_send) 
     return JsonResponse({'success': True, 'events': events_to_send})

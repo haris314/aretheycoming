@@ -5,6 +5,8 @@ class EventCard extends React.Component{
 
     constructor(props){
         super(props);
+        console.log(this.props.groupLink);
+        
 
         // Convert the datetime in the appropriate format
         const startTime = this.convertDatetime(this.props.startTime);
@@ -24,13 +26,25 @@ class EventCard extends React.Component{
     
 
     render(){
-        const total = parseInt(this.state.yes) + parseInt(this.state.no) + parseInt(this.state.maybe);
+        const total = parseInt(this.state.yes) + parseInt(this.state.no) + parseInt(this.state.maybe); // Total votes
 
+        const votingArea = (
+            <div>
+                <hr />
+                Let others know about you? <br />
+
+                {/* The voting menu */}
+                <button data-number='1' onClick={this.sendVote} className={(this.state.activated == 1? "vote-btn-activated" : "vote-btn") + " btn"}>Yes</button>
+                <button data-number='2' onClick={this.sendVote} className={(this.state.activated == 2? "vote-btn-activated" : "vote-btn") + " btn"}>No</button>
+                <button data-number='3' onClick={this.sendVote} className={(this.state.activated == 3? "vote-btn-activated" : "vote-btn") + " btn"}>Maybe</button>
+            </div>
+        )
+        
         return (
         <div className="card event-card">
             {/* If groupName is undefined, this means the user is already accessing an event in a particular group
               * In this case, we leave the group name empty */}
-            {this.props.groupName !== undefined? this.props.groupName : "" } <br />
+            {this.props.groupName !== undefined? <a href={this.props.groupLink}>{this.props.groupName}</a> : "" } <br />
 
             {/* Event's name */}
             <span className="name">{this.props.eventName}</span> <br />
@@ -68,14 +82,9 @@ class EventCard extends React.Component{
                     </tr>
                 </tbody>
             </table>
-            <hr />
-            Let others know about you? <br />
-
-            {/* The voting menu */}
-            <button data-number='1' onClick={this.sendVote} className={(this.state.activated == 1? "vote-btn-activated" : "vote-btn") + " btn"}>Yes</button>
-            <button data-number='2' onClick={this.sendVote} className={(this.state.activated == 2? "vote-btn-activated" : "vote-btn") + " btn"}>No</button>
-            <button data-number='3' onClick={this.sendVote} className={(this.state.activated == 3? "vote-btn-activated" : "vote-btn") + " btn"}>Maybe</button>
-
+            {/*Show the voting menu only if it is an active event */}
+            {(this.props.active === true) && (this.props.memberFlag === true)? votingArea: this.props.active}
+            
         </div>
         );
     }

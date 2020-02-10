@@ -1,4 +1,5 @@
-const groupId = document.querySelector("#data-items").dataset.group_id; //Get group id
+const dataItems = document.querySelector("#data-items").dataset; // Get the data set from the html page
+const groupId = dataItems.group_id;
 const csrftoken = getCookie('csrftoken');
 
 /**Render the active events container */
@@ -6,7 +7,8 @@ ReactDOM.render(
     <EventsContainer 
         showGroupName={false} 
         groupId={groupId} 
-        active={true}
+        memberFlag = {dataItems.member_flag === 'True'? true: false}
+        active={true} // If user is a member of the group, show them
     />, document.querySelector("#active_events_container")
 );
 

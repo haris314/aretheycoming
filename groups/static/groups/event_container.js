@@ -49,13 +49,14 @@ class EventsContainer extends React.Component{
                 return(
                     <div className="container">
                     <div className="row">
-                        <div style = {{ color: "green", marginLeft: "15px"}}>
+                        <div style = {{ color: "green", marginLeft: "15px", marginTop: "15px", fontSize: "20px"}}>
                             No events to show right now...
                         </div>
                     </div>
                 </div>
                 )
             }
+            // If everything else doesn't return anything, return the events
             return (
                 <div className="container">
                     <div className="row flex-row">
@@ -63,12 +64,19 @@ class EventsContainer extends React.Component{
                             <div className="col-sm-12 col-lg-6">
                                 <EventCard key = {i} 
                                     eventName = {event.name}
-                                    groupName= {this.props.showGroupName? event.group_name: undefined}
+                                    groupName = {this.props.showGroupName? event.group_name: undefined}
                                     createTime = {event.create_time}
+                                    active = {this.props.active}
                                     //creator = {event.creator_id}
                                     startTime = {event.start_time}
                                     endTime = {event.end_time}
                                     description = {event.description}
+
+                                    // Extra stuff required for logic
+                                    memberFlag = {this.props.memberFlag}
+                                    groupLink = {`/groups/${event.group_id}`}
+
+                                    //Votes
                                     yes="10"
                                     no="2"
                                     maybe="13"
@@ -93,7 +101,7 @@ class EventsContainer extends React.Component{
 
         request.onload = () =>{
             const response = JSON.parse(request.responseText);
-            console.log(response);
+            // console.log(response);
             if(response.success === false){
                 this.setState(() => ({
                     loaded: false,
@@ -124,7 +132,7 @@ class EventsContainer extends React.Component{
 
         request.onload = () =>{
             const response = JSON.parse(request.responseText);
-            console.log(response);
+            // console.log(response);
             if(response.success === false){
                 this.setState(() => ({
                     loaded: false,

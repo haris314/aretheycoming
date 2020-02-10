@@ -70,7 +70,6 @@ def filter_groups(request):
     
     # Search the keyword in names
     groups = Group.objects.filter(name__icontains= f'{keyword}').all()
-    print(groups.count())
     group_list.append(groups)
 
     return JsonResponse(get_json_groups(group_list), safe=False)
@@ -232,7 +231,6 @@ def create_event(request, group_id):
     # Get the data
     event_name = request.POST['name']
     start_datetime = (request.POST['start_datetime'])
-    print(datetime)
     end_datetime = (request.POST['end_datetime'])
     description = request.POST['description']
 
@@ -273,7 +271,7 @@ def get_events(request, group_id):
         print(e)
         response = {'success': False}
 
-    print(response)
+    # print(events, "\n", response)
     return JsonResponse(response)
 
 # To create a new group

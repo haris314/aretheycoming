@@ -77,6 +77,7 @@ def get_json_events(events_list):
             'start_time': event.start_time,
             'end_time': event.end_time,
             'description': event.description,
+            'group_id': event.group.id,
             'group_name': event.group.name,
         })
     
