@@ -29,11 +29,16 @@
             </div>
             <br>
             <!--Filter Groups bar-->
-            <input id="filter_keyword" type="text" class="form-control search_bar" placeholder="Filter groups">
+            <form style="text-align: right; margin-bottom: 50px;">
+                <input id="filter_keyword" type="text" class="search_bar" placeholder="Search for groups">
+                <button id="filter_btn" class="btn circular-corners" style="height:50px">Go</button>
+            </form>
             
+            <div id="group_list_message" class="medium-text"></div>
+
         </div>
            
-        <div class="row flex-row" id="groupList">
+        <div class="row flex-row" id="group_list">
             <!--Groups will be inserted AJAXically here-->
         </div>
     </div>

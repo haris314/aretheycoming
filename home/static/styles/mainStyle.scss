@@ -92,6 +92,12 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
         margin: 20px;
         animation: spin 0.3s linear infinite;
     }
+
+    .fancy-heading{        
+        padding: 5px 20px 5px 20px;
+        color: white;
+        font-size: 30px;
+    }
         
     @keyframes spin {
         0% { transform: rotate(0deg); }
@@ -338,6 +344,21 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
             outline: solid rgb(62, 240, 7) 1px;
         }
     }
+
+    .small-group-card{
+        background: $groupBackgroundColor;
+        color: white;
+        font-size: 20px;
+        border: solid rgb(255, 255, 255) 5px;
+
+        .w10{
+            width: 10%;
+        }
+        .w30{
+            width: 30%;
+        }
+
+    }
     
 
     //make the pre-formatted text look normal
@@ -448,19 +469,20 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
     }
 
     //search bars
-    .search_bar{
-        width: 300px;
+    .search_bar {
+        width: 250px;
         height: 50px;
-
-        margin-bottom: 50px;
-        margin-left: auto;
-        margin-right:20px;
-
         font-size: 20px;
-        box-shadow: 0px 0px 3px grey;
-
+        padding-left: 10px;
+        box-shadow: 0px 0px 5px grey;
         border-radius: 100px 100px 100px 100px;
-    }
+        border: none;
+      }
+      
+      .search_bar:focus{
+        outline: none;
+        border: solid $backgroundDark 2px;
+      }
 
 
     //To make the height of all rows equal

@@ -17,13 +17,82 @@
     <!--Include the group card template-->
     {% include 'groups/group_card.html' %}
 
-    <div class="normal-page">
+    <div class="container">
         
-        <div class="large-text">My groups</div>
+        <div class="row large-text">My groups</div>
 
-        <!--Groups which are created by this user-->
-        <div class="medium-text">Admin of</div>
-        <table id="admin_of" class='table table-hover'>
+        <!--Groups for which the user is either an admin or the creator-->
+        <div class="row fancy-heading" style="background-color: darkgreen;">Admin of</div>
+
+        <div class="row">
+            {% for group in admin_groups %}
+            <a href="{% url 'group_details' id=group.id %}">
+                <div class="card small-group-card col-lg-3 col-md-4 col-xs-10">
+                
+                    <table class="table">
+                        <tr>
+                            <td>Name</td>
+                            <td>{{group.name}}</td>
+                        </tr>
+                        <tr>
+                            <td>#</td>
+                            <td>{{group.id}}</td>
+                        </tr>
+                        <tr>
+                            <td>Members</td>
+                            <td>{{group.members_count}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </a>         
+            {% endfor %}
+        </div>
+        <br>
+        <!--Groups which the user is part of-->
+        <div class="row fancy-heading" style="background-color: darkorange;">Member of</div>
+        <div class="row">
+            {% for group in member_groups %}
+            <a href="{% url 'group_details' id=group.id %}">
+                <div class="card small-group-card col-lg-3 col-md-4 col-xs-10">
+                
+                    <table class="table">
+                        <tr>
+                            <td>Name</td>
+                            <td>{{group.name}}</td>
+                        </tr>
+                        <tr>
+                            <td>#</td>
+                            <td>{{group.id}}</td>
+                        </tr>
+                        <tr>
+                            <td>Members</td>
+                            <td>{{group.members_count}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </a>         
+            {% endfor %}
+        </div>
+        
+
+        <!-- <table id="admin_of" class='table table-hover medium-text'>
+            <tr>
+                <th>Name</th>
+                <th>#</th>
+                <th>Members</th>
+            </tr>
+            {% for group in admin_groups %}
+            <tr>
+                <td><a href="{% url 'group_details' id=group.id %}">{{group.name}}</a></td>
+                <td>{{group.id}}</td>
+                <td>{{group.members_count}}</td>
+            </a></tr>
+            {% endfor %}
+        </table> -->
+
+        <!--Groups for which the user is either an admin or the creator-->
+        <!-- <div class="fancy-heading">Admin of</div>
+        <table id="admin_of" class='table table-hover medium-text'>
             <tr>
                 <th>Name</th>
                 <th>#</th>
@@ -38,8 +107,10 @@
             {% endfor %}
         </table>
 
-        <div class="medium-text">Member of</div>
-        <table id="member_of" class='table table-hover'>
+        <br>
+
+        <div class="fancy-heading">Member of</div>
+        <table id="member_of" class='table table-hover medium-text'>
                 </a><tr>
                     <th>Name</th>
                     <th>#</th>
@@ -52,7 +123,7 @@
                     <td>{{group.members_count}}</td>
                 </a></tr>
                 {% endfor %}
-            </table>
+            </table> -->
     </div>
 
 {% endblock %}

@@ -83,6 +83,12 @@ html {
   animation: spin 0.3s linear infinite;
 }
 
+.fancy-heading {
+  padding: 5px 20px 5px 20px;
+  color: white;
+  font-size: 30px;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -288,6 +294,19 @@ a.nostyle:visited {
   outline: solid #3ef007 1px;
 }
 
+.small-group-card {
+  background: linear-gradient(90deg, black 0%, #0a0039 89%, #060022 100%);
+  color: white;
+  font-size: 20px;
+  border: solid white 5px;
+}
+.small-group-card .w10 {
+  width: 10%;
+}
+.small-group-card .w30 {
+  width: 30%;
+}
+
 .pre {
   background: rgba(223, 223, 223, 0.2);
   border: none;
@@ -379,14 +398,18 @@ a.nostyle:visited {
 }
 
 .search_bar {
-  width: 300px;
+  width: 250px;
   height: 50px;
-  margin-bottom: 50px;
-  margin-left: auto;
-  margin-right: 20px;
   font-size: 20px;
-  box-shadow: 0px 0px 3px grey;
+  padding-left: 10px;
+  box-shadow: 0px 0px 5px grey;
   border-radius: 100px 100px 100px 100px;
+  border: none;
+}
+
+.search_bar:focus {
+  outline: none;
+  border: solid #0a0039 2px;
 }
 
 @media only screen and (min-width: 1200px) {

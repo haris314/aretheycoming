@@ -18,8 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     groupTemplate = Handlebars.compile(document.querySelector('#groupCardTemplate').innerHTML);
 
     // Get the filter_keyword filed and set the event listener
-    filter_keyword = document.querySelector('#filter_keyword');
-    filter_keyword.onkeyup = filterGroups;
+    document.querySelector("#filter_btn").onclick = filterGroups;
 
     // Get groups for the first time
     getGroups();
@@ -76,8 +75,15 @@ var firstId;
 function addGroups(response){
     firstId = -1;
 
+    /**If any group is ever added to the group list, the group_list_message get empties */
+    if(response.length !== 0){
+        document.querySelector("#group_list_message").innerHTML = ""; 
+    }
+
     // Iterate through all the groups in response
     response.forEach( group => {
+
+
         if(firstId == -1){
             firstId = group.id;
         }
@@ -98,7 +104,7 @@ function addGroups(response){
 
         // Get content from template and add it to the document
         content = groupTemplate(data);
-        document.querySelector(`#groupList`).innerHTML += content;
+        document.querySelector(`#group_list`).innerHTML += content;
         getMoreFlag = true;       
     });
 }
@@ -160,7 +166,7 @@ filterGroups = () => {
 
     // If the length is 0 then do nothing
     if(keyword.length === 0){
-        document.querySelector('#groupList').innerHTML = "";
+        document.querySelector('#group_list').innerHTML = "";
 
         // Set start = 0 to start loading from the beginning
         start = 0;
@@ -169,9 +175,10 @@ filterGroups = () => {
         loadFlag = true;
         
         getGroups();
-        return;
+        return false; // For form action
     }
 
+    // If the length is not zero, get groups based on filter keyword
     // Open the request
     request = new XMLHttpRequest();
     request.open('POST', 'filter');
@@ -189,10 +196,15 @@ filterGroups = () => {
         }
 
         // Clear the current groups from the group list
-        document.querySelector('#groupList').innerHTML = '';
+        document.querySelector('#group_list').innerHTML = '';
 
         // Get response and add them
         response = JSON.parse(request.responseText);
+
+        if (response.length === 0){
+            document.querySelector("#group_list_message").innerHTML = "No matching groups!";
+        }
+
         addGroups(response);
     }
 
@@ -200,6 +212,8 @@ filterGroups = () => {
     data = new FormData();
     data.append('keyword', keyword);
     request.send(data);
+
+    return false; // For form action
 }    
         
 

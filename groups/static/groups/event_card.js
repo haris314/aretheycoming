@@ -1,12 +1,11 @@
-/** React component which show a single event
+/** React component which shows a single event
  * 
  */
 class EventCard extends React.Component{
 
     constructor(props){
         super(props);
-        console.log(this.props.groupLink);
-        
+        console.log(this.props.groupLink);        
 
         // Convert the datetime in the appropriate format
         const startTime = this.convertDatetime(this.props.startTime);
@@ -63,22 +62,33 @@ class EventCard extends React.Component{
             {/* Votes */}
             <table className="vote-table">
                 <thead>
-                    <tr>
+                    <tr> 
                         <th>Yes</th>
                         <th>No</th>
                         <th>Maybe</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr> 
                         <td>{parseInt(this.state.yes)}</td>
                         <td>{parseInt(this.state.no)}</td>
                         <td>{parseInt(this.state.maybe)}</td>
                     </tr>
-                    <tr>
+                    <tr> 
                         <td>{(parseInt(this.state.yes) / total) * 100}%</td>
                         <td>{(parseInt(this.state.no) / total) * 100}%</td>
                         <td>{(parseInt(this.state.maybe) / total) * 100}%</td>
+                    </tr>
+                    <tr>
+                        <td style={{'vertical-align': 'bottom',}}>
+                            <div style={ {'width': '40px', 'height': (parseInt(this.state.yes) / total)*100, 'backgroundColor': 'green', 'border': 'solid black 1px',} }></div>
+                        </td>
+                        <td style={{'vertical-align': 'bottom',}}>
+                            <div style={ {'width': '40px', 'height': (parseInt(this.state.no) / total)*100, 'backgroundColor': 'red', 'border': 'solid black 1px',} }></div>
+                        </td>
+                        <td style={{'vertical-align': 'bottom',}}>
+                            <div style={ {'width': '40px', 'height': (parseInt(this.state.maybe) / total)*100, 'backgroundColor': 'orange', 'border': 'solid black 1px',} }></div>
+                        </td>
                     </tr>
                 </tbody>
             </table>

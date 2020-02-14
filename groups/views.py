@@ -366,17 +366,15 @@ def delete_group(request, group_id):
 
     try:
         group = Group.objects.get(id=group_id) 
-    except Exception as e:
-        print(e)
 
-    # User must be authenticated and an admin of the group
-    if request.user.is_authenticated is False or is_admin(request, group) is False:
-        return render(request, 'error.html', {'message': "An error occurred. Are you sure you are doing only what you are supposed to do?"})
+        # User must be authenticated and an admin of the group
+        if request.user.is_authenticated is False or is_admin(request, group) is False:
+            return render(request, 'error.html', {'message': "An error occurred. Are you sure you are doing only what you are supposed to do?"})
     
-    try:
         group.delete()
+
     except Exception as e:
-        print(e)
+        return render(request, "error.html", {'message': "An error ocurred. Probably, this group does not exist anymore."})
     
     return render(request, 'success.html', {'message': "The group was successfully deleted"})
 
