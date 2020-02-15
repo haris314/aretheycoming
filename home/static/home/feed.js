@@ -9,6 +9,7 @@ const username = document.querySelector("#data-items").dataset.username;
 ReactDOM.render(
     <EventsContainer 
         showGroupName={true}
+        memberFlag = {true}
         active={true}
     />, document.querySelector("#active_events_container")
 );

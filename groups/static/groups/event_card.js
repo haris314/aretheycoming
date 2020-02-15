@@ -27,29 +27,29 @@ class EventCard extends React.Component{
     render(){
         const total = parseInt(this.state.yes) + parseInt(this.state.no) + parseInt(this.state.maybe); // Total votes
 
+        const voteColors =['lightgreen', 'pink', 'peachpuff'];
         const votingArea = (
             <div>
                 <hr />
                 Let others know about you? <br />
 
                 {/* The voting menu */}
-                <button data-number='1' onClick={this.sendVote} className={(this.state.activated == 1? "vote-btn-activated" : "vote-btn") + " btn"}>Yes</button>
-                <button data-number='2' onClick={this.sendVote} className={(this.state.activated == 2? "vote-btn-activated" : "vote-btn") + " btn"}>No</button>
-                <button data-number='3' onClick={this.sendVote} className={(this.state.activated == 3? "vote-btn-activated" : "vote-btn") + " btn"}>Maybe</button>
+                <button data-number='1' onClick={this.sendVote} className={(this.state.activated == 1? "vote-btn-activated" : "vote-btn") + " btn"} style={{'backgroundColor': voteColors[0]}}>Yes</button>
+                <button data-number='2' onClick={this.sendVote} className={(this.state.activated == 2? "vote-btn-activated" : "vote-btn") + " btn"} style={{'backgroundColor': voteColors[1]}}>No</button>
+                <button data-number='3' onClick={this.sendVote} className={(this.state.activated == 3? "vote-btn-activated" : "vote-btn") + " btn"} style={{'backgroundColor': voteColors[2]}}>Maybe</button>
             </div>
         )
 
         // Setting the description
-        let desc;
-        console.log(this.props.description);
-        
+        let desc;        
         if(this.props.description.length > 10){
             desc = (<div style={ {'color': 'grey',} }>{this.props.description}</div> )
         }
         else{
             desc = "";
         }
-        
+
+
         return (
         <div className="card event-card">
             {/* If groupName is undefined, this means the user is already accessing an event in a particular group
@@ -59,52 +59,44 @@ class EventCard extends React.Component{
             {/* Event's name */}
             <span className="name">{this.props.eventName}</span> <br />
             
-            <span style={ {"color": "grey",}}>
-                Created on <b> {this.state.createTime}  </b> <br />
+            <span style={ {"color": "grey", "marginTop": "0px"}}>
+               <h5 style={{"marginTop": "-10px", "marginBottom": "0px",}}> Created on <b> {this.state.createTime}  </b> <br /> </h5>
                 {/*Created by <b> {this.props.creator} </b> <br />*/}
             </span>
             <hr />
 
             {/* Timing of the event */}
-            <span className="name">{this.state.timing}</span> <br />
+            <span className="name" >{this.state.timing}</span > <br />
 
             {/* Description */}
             {desc}
             <hr />
             
             {/* Votes */}
-            <table className="vote-table">
-                <thead>
-                    <tr> 
-                        <th>Yes</th>
-                        <th>No</th>
-                        <th>Maybe</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr> 
-                        <td>{parseInt(this.state.yes)}</td>
-                        <td>{parseInt(this.state.no)}</td>
-                        <td>{parseInt(this.state.maybe)}</td>
-                    </tr>
-                    <tr> 
-                        <td>{(parseInt(this.state.yes) / total) * 100}%</td>
-                        <td>{(parseInt(this.state.no) / total) * 100}%</td>
-                        <td>{(parseInt(this.state.maybe) / total) * 100}%</td>
-                    </tr>
-                    <tr>
-                        <td style={{'vertical-align': 'bottom',}}>
-                            <div style={ {'width': '40px', 'height': (parseInt(this.state.yes) / total)*100, 'backgroundColor': 'green', 'border': 'solid black 1px',} }></div>
-                        </td>
-                        <td style={{'vertical-align': 'bottom',}}>
-                            <div style={ {'width': '40px', 'height': (parseInt(this.state.no) / total)*100, 'backgroundColor': 'red', 'border': 'solid black 1px',} }></div>
-                        </td>
-                        <td style={{'vertical-align': 'bottom',}}>
-                            <div style={ {'width': '40px', 'height': (parseInt(this.state.maybe) / total)*100, 'backgroundColor': 'orange', 'border': 'solid black 1px',} }></div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            
+                <div style={{'display':'flex'}}>
+                    <div style={ {'height': '25px', 'width': ((parseInt(this.state.yes) / total)*90) + "%", 'backgroundColor': 'lightgreen', 'border': 'solid white 1px', 'marginTop': 'auto'} }></div>
+                    <div style={ {'fontSize': '15px' }}>
+                            {parseInt(this.state.yes)} ({Math.round((parseInt(this.state.yes) / total) * 100)}%)
+                    </div>
+                </div>
+                <div style={{'display':'flex'}}>
+                    <div style={ {'height': '25px', 'width': ((parseInt(this.state.no) / total)*90) + "%", 'backgroundColor': 'pink', 'border': 'solid white 1px', 'marginTop': 'auto'} }></div>
+                    <div style={ {'fontSize': '15px' }}>
+                        {parseInt(this.state.no)} ({Math.round((parseInt(this.state.no) / total) * 100)}%)
+                    </div>
+                </div>
+                <div style={{'display':'flex'}}>
+                    <div style={ {'height': '25px', 'width': ((parseInt(this.state.maybe) / total)*90) + "%", 'backgroundColor': 'peachpuff', 'border': 'solid white 1px', 'marginTop': 'auto'} }></div>
+                    <div style={ {'fontSize': '15px' }}>
+                        {parseInt(this.state.maybe)} ({Math.round((parseInt(this.state.maybe) / total) * 100)}%)
+                    </div>
+                </div>
+
+            
+                
+               
+
             {/*Show the voting menu only if it is an active event */}
             {(this.props.active === true) && (this.props.memberFlag === true)? votingArea: this.props.active}
             
@@ -167,7 +159,7 @@ class EventCard extends React.Component{
             return `${st[3]}:${st[4]} ${st[5]}-${et[3]}:${et[4]} ${et[5]}, ${st[2]}/${st[1]}/${st[0]}`;
         }
         else{
-            return `${st[2]}/${st[1]}/${st[0]}, ${st[3]}:${st[4]} ${st[5]} to ${et[2]}/${et[1]}/${et[0]}, ${et[3]}:${et[4]} ${et[5]}`;
+            return `${st[2]}/${st[1]}/${st[0]}, ${st[3]}:${st[4]} ${st[5]} - ${et[2]}/${et[1]}/${et[0]}, ${et[3]}:${et[4]} ${et[5]}`;
         }
     }
 }

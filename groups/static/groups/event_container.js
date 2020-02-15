@@ -77,9 +77,9 @@ class EventsContainer extends React.Component{
                                     groupLink = {`/groups/${event.group_id}`}
 
                                     //Votes
-                                    yes="10"
-                                    no="2"
-                                    maybe="13"
+                                    yes="50"
+                                    no="70"
+                                    maybe="250"
                                     />
                             </div>
                         ))}                          

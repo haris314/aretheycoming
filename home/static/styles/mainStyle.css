@@ -554,7 +554,7 @@ a.nostyle:visited {
   width: 40%;
 }
 .event-card .vote-btn {
-  color: grey;
+  color: black;
   text-align: center;
   box-shadow: none;
   margin: 5px;
@@ -569,8 +569,8 @@ a.nostyle:visited {
 }
 .event-card .vote-btn-activated {
   text-align: center;
-  background: #082e14;
-  background: linear-gradient(90deg, #082e14 0%, #2c604b 32%, #55b169 100%);
+  color: black;
+  font-weight: bold;
   font-size: 30px;
   width: 30%;
   min-width: 75px;
