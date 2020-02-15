@@ -38,6 +38,17 @@ class EventCard extends React.Component{
                 <button data-number='3' onClick={this.sendVote} className={(this.state.activated == 3? "vote-btn-activated" : "vote-btn") + " btn"}>Maybe</button>
             </div>
         )
+
+        // Setting the description
+        let desc;
+        console.log(this.props.description);
+        
+        if(this.props.description.length > 10){
+            desc = (<div style={ {'color': 'grey',} }>{this.props.description}</div> )
+        }
+        else{
+            desc = "";
+        }
         
         return (
         <div className="card event-card">
@@ -54,9 +65,11 @@ class EventCard extends React.Component{
             </span>
             <hr />
 
-            {/* Start and end time of the event */}
+            {/* Timing of the event */}
             <span className="name">{this.state.timing}</span> <br />
-            <span className="faded-text">{this.props.description}</span> 
+
+            {/* Description */}
+            {desc}
             <hr />
             
             {/* Votes */}

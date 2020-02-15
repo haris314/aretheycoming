@@ -74,56 +74,6 @@
             {% endfor %}
         </div>
         
-
-        <!-- <table id="admin_of" class='table table-hover medium-text'>
-            <tr>
-                <th>Name</th>
-                <th>#</th>
-                <th>Members</th>
-            </tr>
-            {% for group in admin_groups %}
-            <tr>
-                <td><a href="{% url 'group_details' id=group.id %}">{{group.name}}</a></td>
-                <td>{{group.id}}</td>
-                <td>{{group.members_count}}</td>
-            </a></tr>
-            {% endfor %}
-        </table> -->
-
-        <!--Groups for which the user is either an admin or the creator-->
-        <!-- <div class="fancy-heading">Admin of</div>
-        <table id="admin_of" class='table table-hover medium-text'>
-            <tr>
-                <th>Name</th>
-                <th>#</th>
-                <th>Members</th>
-            </tr>
-            {% for group in admin_groups %}
-            <tr>
-                <td><a href="{% url 'group_details' id=group.id %}">{{group.name}}</a></td>
-                <td>{{group.id}}</td>
-                <td>{{group.members_count}}</td>
-            </a></tr>
-            {% endfor %}
-        </table>
-
-        <br>
-
-        <div class="fancy-heading">Member of</div>
-        <table id="member_of" class='table table-hover medium-text'>
-                </a><tr>
-                    <th>Name</th>
-                    <th>#</th>
-                    <th>Members</th>
-                </tr>
-                {% for group in member_groups %}
-                <tr>
-                    <td><a href="{% url 'group_details' id=group.id %}">{{group.name}}</a></td>
-                    <td>{{group.id}}</td>
-                    <td>{{group.members_count}}</td>
-                </a></tr>
-                {% endfor %}
-            </table> -->
     </div>
 
 {% endblock %}

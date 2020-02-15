@@ -119,14 +119,25 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
     }
     .home-logo-image{
         position: relative;
-         
-
         img{
             //background-color: $veryLightGreyBackground;
             //box-shadow: 0 10px 50px black;;
             height:100px;
             width: 100px;
         }
+    }
+    .intro-to-website{
+        position: absolute;
+        width: 80%;
+        height: 100%;
+        overflow-y: scroll;
+
+        background-color: rgba(0, 0, 0, 0.90);
+        color: white;
+
+        padding: 5%;
+        margin: 0% 10% 0% 10%;
+
     }
 
 //home.html without login end
@@ -137,7 +148,7 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
     .logo{
         color: white;
         font-size: 30px;
-        height: 50px;
+        padding-bottom: 5px;
         background: $themeBackground;
         //box-shadow: 0px 10px 20px black;
         box-shadow: 0px 5px 10px black;
@@ -153,6 +164,11 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
             text-align: right;
         }
     }
+    // @media(max-width:420px){
+    //     .logo{
+    //         height: 100px;
+    //     }
+    // }
 
     
 
@@ -389,6 +405,10 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
             
             .element{
                 height: 50px;
+                @media(max-width:357px) {
+                    height:90px;
+                    border-radius: none;
+                }
                 line-height:100%;
                 margin-top: 15px;
                 margin-bottom: 15px;
@@ -685,18 +705,15 @@ $veryLightGreyBackground: rgba(223, 223, 223, 0.2);
             background: rgba(255, 255, 255, 0.03); 
             height: 35px;
             margin-top:10px;
-            font-size: 15px;
-            
+            font-size: 15px;   
         }
-
         .btn:hover{
             background: rgba(255, 255, 255, 0.103);
         }
         .btn:focus{
             color: white;
             outline: solid white 1px;
-        }
-        
+        }        
     }
 //navigation bar end
 
