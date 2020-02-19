@@ -20,6 +20,33 @@ class EventCard extends React.Component{
             timing,
         }
 
+        /**An ajax request to set the activated. 
+         * Or we can say, to get the default vote of the user.
+         * Do this only if the user is allowed to vote in the event.
+         */
+        if((this.props.active === true) && (this.props.memberFlag === true)){
+            const request = new XMLHttpRequest();
+            request.open('POST', `/groups/get_user_vote`);
+            const csrftoken = getCookie('csrftoken');
+            request.setRequestHeader('X-CSRFToken', csrftoken);    
+
+            request.onload = () =>{
+                const response = JSON.parse(request.responseText);
+                // console.log(response);
+                if(response.success === true){
+                    this.setState(() => ({
+                        activated: response.vote,
+                    }))
+                }
+            }
+
+            //Setup and send the request
+            const data = new FormData();
+            data.append('event_id', this.props.eventId);
+            request.send(data);
+
+        }
+
         // Setup the websocket
         var loc = window.location        
         var wsStart = 'ws://';
@@ -30,12 +57,20 @@ class EventCard extends React.Component{
 
         this.socket.onmessage = (e) =>{
             console.log("message", e);
-            const voteCounts = JSON.parse(e.data);
+
+            const data = JSON.parse(e.data); // Convert the message data to JSON
+            const voteMap = ['', 'yes', 'no', 'maybe'] // Will be useful to convert 1, 2 and 3 to yes, no and maybe
+            const newVote = voteMap[parseInt(data.newVote)]; // Convert number to vote
+            const previousVote = voteMap[parseInt(data.previousVote)]; // Do the same with previous vote
+           
             this.setState(() => ({
-                yes: voteCounts['1'],
-                no: voteCounts['2'],
-                maybe: voteCounts['3'],
+                [newVote]: this.state[newVote] + 1,
             }))
+            if(previousVote !== '0'){
+                this.setState(() =>({
+                    [previousVote]: this.state[previousVote] - 1,
+                }))
+            }
         }
         this.socket.onopen = (e) =>{
             console.log("open", e);
@@ -144,11 +179,21 @@ class EventCard extends React.Component{
      */
     sendVote = (event) =>{
         const number = parseInt(event.target.dataset.number);
-        var toSend = JSON.stringify({'vote': number, 'eventId': this.props.eventId})
+        var toSend = JSON.stringify({
+            'vote': number,
+            'previousVote': this.getCurrentVoteNumber(),
+            'eventId': this.props.eventId
+        })
         this.socket.send(toSend); // Send vote
+
+        // Set the activated vote button to the right vote
         this.setState(() => ({
             activated: number,
         }));
+    }
+
+    getCurrentVoteNumber = () =>{
+        return this.state.activated;
     }
 
     /* To convert a datetime into and array

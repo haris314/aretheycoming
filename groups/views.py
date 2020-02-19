@@ -274,6 +274,21 @@ def get_events(request, group_id):
     # print(events, "\n", response)
     return JsonResponse(response)
 
+
+# AJAX request to return the vote of the user
+def get_user_vote(request):
+    try:
+        event_id = request.POST['event_id']
+        event = Event.objects.get(id=event_id)
+        vote = Vote.objects.get(user=request.user, event=event)
+        
+        if(vote is None):
+            return JsonResponse({'success': True, 'vote': 0})
+        else:
+            return JsonResponse({'success': True, 'vote': vote.vote})
+    except:
+        return JsonResponse({'success': False})
+
 # To create a new group
 def create_group(request):
 

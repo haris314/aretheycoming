@@ -17,18 +17,20 @@ class EventConsumer(AsyncConsumer):
     async def websocket_receive(self, event):
 
         # Convert the string to json object
-        event = json.loads(event['text']) 
+        data = json.loads(event['text']) 
 
         # Update the vote in the database
-        await self.update_vote(event['eventId'], event['vote']) 
+        await self.update_vote(data['eventId'], data['vote']) 
+        print(data)
+        # Send back the vote
+        to_send = {
+            'newVote': data['vote'],
+            'previousVote': data['previousVote'],
+        }
         
-        # Send back the votes
-        votes = await self.get_votes(event['eventId'])
-        print(votes)
-
         await self.send({
             'type': 'websocket.send',
-            'text': json.dumps(votes),
+            'text': json.dumps(to_send)
         })
 
 
