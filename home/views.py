@@ -41,7 +41,7 @@ def get_events(request):
 
     events = Event.objects.none() # Empty query set
     for membership in memberships:
-        events = events | membership.group.events.all()
+        events = events | membership.group.events.all() # Union
 
     # Sort all the events in ascending order by start_time
     events = events.order_by('start_time')

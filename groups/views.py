@@ -261,12 +261,12 @@ def get_events(request, group_id):
 
     try:
         if active == 'true': # Return the active/current events only
-            events = Group.objects.get(id=group_id).events.filter(end_time__gt=get_current_timezone_aware_datetime()).order_by('start_time').values()
+            events = Group.objects.get(id=group_id).events.filter(end_time__gt=get_current_timezone_aware_datetime()).order_by('start_time').all()
         
         else: # Return the inactive/past events only
-            events = Group.objects.get(id=group_id).events.filter(end_time__lte=get_current_timezone_aware_datetime()).order_by('start_time').values()
+            events = Group.objects.get(id=group_id).events.filter(end_time__lte=get_current_timezone_aware_datetime()).order_by('start_time').all()
                     
-        response = {'success':True, 'events': list(events)}
+        response = {'success':True, 'events': get_json_events((events))}
     except Exception as e:
         print(e)
         response = {'success': False}

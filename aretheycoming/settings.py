@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'home',
     'users',
     'groups',
@@ -71,6 +72,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'aretheycoming.wsgi.application'
+ASGI_APPLICATION = 'aretheycoming.routing.application'
 
 
 # Database

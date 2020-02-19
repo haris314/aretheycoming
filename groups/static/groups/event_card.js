@@ -4,8 +4,7 @@
 class EventCard extends React.Component{
 
     constructor(props){
-        super(props);
-        console.log(this.props.groupLink);        
+        super(props);      
 
         // Convert the datetime in the appropriate format
         const startTime = this.convertDatetime(this.props.startTime);
@@ -21,6 +20,34 @@ class EventCard extends React.Component{
             timing,
         }
 
+        // Setup the websocket
+        var loc = window.location        
+        var wsStart = 'ws://';
+        if (loc.protocol === 'https:')
+            wsStart = 'wss://';
+        var endpoint = wsStart + loc.host +  '/ws/event';
+        this.socket = new ReconnectingWebSocket(endpoint)
+
+        this.socket.onmessage = (e) =>{
+            console.log("message", e);
+            const voteCounts = JSON.parse(e.data);
+            this.setState(() => ({
+                yes: voteCounts['1'],
+                no: voteCounts['2'],
+                maybe: voteCounts['3'],
+            }))
+        }
+        this.socket.onopen = (e) =>{
+            console.log("open", e);
+        }
+        this.socket.onerror = (e) =>{
+            console.log('error', e);
+        }
+        this.socket.onclose = (e) =>{
+            console.log('close', e);
+        }
+
+        
     }    
     
 
@@ -43,12 +70,21 @@ class EventCard extends React.Component{
         // Setting the description
         let desc;        
         if(this.props.description.length > 10){
-            desc = (<div style={ {'color': 'grey',} }>{this.props.description}</div> )
+            desc = (<div style={ {'color': 'grey',} }>{this.props.description}</div> );
         }
         else{
             desc = "";
         }
-
+        
+        // CSS
+        const sideways = {
+            'fontSize': '10px',
+            'lineHeight': '10px',
+            'height': '25px',
+            'width': '20px',
+            'writingMode': 'tb-rl',
+            'transform': 'rotate(-180deg)',            
+        };
 
         return (
         <div className="card event-card">
@@ -59,7 +95,7 @@ class EventCard extends React.Component{
             {/* Event's name */}
             <span className="name">{this.props.eventName}</span> <br />
             
-            <span style={ {"color": "grey", "marginTop": "0px"}}>
+            <span style={{"color": "grey", "marginTop": "0px"}}>
                <h5 style={{"marginTop": "-10px", "marginBottom": "0px",}}> Created on <b> {this.state.createTime}  </b> <br /> </h5>
                 {/*Created by <b> {this.props.creator} </b> <br />*/}
             </span>
@@ -74,28 +110,27 @@ class EventCard extends React.Component{
             
             {/* Votes */}
             
-                <div style={{'display':'flex'}}>
-                    <div style={ {'height': '25px', 'width': ((parseInt(this.state.yes) / total)*90) + "%", 'backgroundColor': 'lightgreen', 'border': 'solid white 1px', 'marginTop': 'auto'} }></div>
-                    <div style={ {'fontSize': '15px' }}>
-                            {parseInt(this.state.yes)} ({Math.round((parseInt(this.state.yes) / total) * 100)}%)
-                    </div>
+            <div style={{'display':'flex'}}>
+                <div style={sideways}>Yes</div>
+                <div style={ {'height': '25px', 'width': ((parseInt(this.state.yes) / total)*90) + "%", 'backgroundColor': 'lightgreen', 'border': 'solid white 1px', 'marginTop': 'auto'} }></div>
+                <div style={ {'fontSize': '10px' }}>
+                        {parseInt(this.state.yes)} <br /> ({total === 0? 0: Math.round((parseInt(this.state.yes) / total) * 100)}%)
                 </div>
-                <div style={{'display':'flex'}}>
-                    <div style={ {'height': '25px', 'width': ((parseInt(this.state.no) / total)*90) + "%", 'backgroundColor': 'pink', 'border': 'solid white 1px', 'marginTop': 'auto'} }></div>
-                    <div style={ {'fontSize': '15px' }}>
-                        {parseInt(this.state.no)} ({Math.round((parseInt(this.state.no) / total) * 100)}%)
-                    </div>
+            </div>
+            <div style={{'display':'flex'}}>
+                <div style={sideways}>No</div>
+                <div style={ {'height': '25px', 'width': ((parseInt(this.state.no) / total)*90) + "%", 'backgroundColor': 'pink', 'border': 'solid white 1px', 'marginTop': 'auto'} }></div>
+                <div style={ {'fontSize': '10px' }}>
+                    {parseInt(this.state.no)} <br /> ({total === 0? 0: Math.round((parseInt(this.state.no) / total) * 100)}%)
                 </div>
-                <div style={{'display':'flex'}}>
-                    <div style={ {'height': '25px', 'width': ((parseInt(this.state.maybe) / total)*90) + "%", 'backgroundColor': 'peachpuff', 'border': 'solid white 1px', 'marginTop': 'auto'} }></div>
-                    <div style={ {'fontSize': '15px' }}>
-                        {parseInt(this.state.maybe)} ({Math.round((parseInt(this.state.maybe) / total) * 100)}%)
-                    </div>
+            </div>
+            <div style={{'display':'flex'}}>
+                <div style={sideways}>May be</div>
+                <div style={ {'height': '25px', 'width': ((parseInt(this.state.maybe) / total)*90) + "%", 'backgroundColor': 'peachpuff', 'border': 'solid white 1px', 'marginTop': 'auto'} }></div>
+                <div style={ {'fontSize': '10px' }}>
+                    {parseInt(this.state.maybe)} <br /> ({total === 0? 0: Math.round((parseInt(this.state.maybe) / total) * 100)}%)
                 </div>
-
-            
-                
-               
+            </div>
 
             {/*Show the voting menu only if it is an active event */}
             {(this.props.active === true) && (this.props.memberFlag === true)? votingArea: this.props.active}
@@ -109,6 +144,8 @@ class EventCard extends React.Component{
      */
     sendVote = (event) =>{
         const number = parseInt(event.target.dataset.number);
+        var toSend = JSON.stringify({'vote': number, 'eventId': this.props.eventId})
+        this.socket.send(toSend); // Send vote
         this.setState(() => ({
             activated: number,
         }));

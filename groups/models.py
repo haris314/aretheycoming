@@ -90,5 +90,8 @@ class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='votes')
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='votes')
 
-    vote = models.CharField(max_length=20)
+    vote = models.IntegerField() # 1 for yes, 2 for no, 3 for maybe
     time = models.DateTimeField(default=datetime.now)
+
+    def __str__(self):
+        return f"{self.user} voted {self.vote} in {self.event}"

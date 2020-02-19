@@ -61,9 +61,10 @@ class EventsContainer extends React.Component{
                 <div className="container">
                     <div className="row flex-row">
                         {this.state.events.map( (event, i) => (
-                            <div className="col-sm-12 col-lg-6">
+                            <div className="col-sm-12 col-lg-6" key={i}>
                                 <EventCard key = {i} 
                                     eventName = {event.name}
+                                    eventId = {event.id}
                                     groupName = {this.props.showGroupName? event.group_name: undefined}
                                     createTime = {event.create_time}
                                     active = {this.props.active}
@@ -77,9 +78,9 @@ class EventsContainer extends React.Component{
                                     groupLink = {`/groups/${event.group_id}`}
 
                                     //Votes
-                                    yes="50"
-                                    no="70"
-                                    maybe="250"
+                                    yes={event.yes}
+                                    no={event.no}
+                                    maybe={event.maybe}
                                     />
                             </div>
                         ))}                          

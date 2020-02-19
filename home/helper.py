@@ -1,4 +1,4 @@
-from .models import Group, Membership, Request
+from .models import Group, Membership, Request, Vote, Event
 import pytz
 from datetime import datetime
 
@@ -69,6 +69,17 @@ def get_json_events(events_list):
     data = []
 
     for event in events_list:
+        votes = Vote.objects.filter(event=event).all()
+        print(votes)
+        # Dictionary to hold the count of votes
+        vote_counts = {
+            '1': 0,
+            '2': 0,
+            '3': 0,
+        } 
+        for vote in votes:
+            vote_counts[str(vote.vote)] += 1
+        
         data.append({
             'id': event.id,
             'name': event.name,
@@ -79,6 +90,9 @@ def get_json_events(events_list):
             'description': event.description,
             'group_id': event.group.id,
             'group_name': event.group.name,
+            'yes': vote_counts['1'],
+            'no': vote_counts['2'],
+            'maybe': vote_counts['3'],
         })
     
     return data
