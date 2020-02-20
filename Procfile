@@ -1,1 +1,1 @@
-web: daphne aretheycoming.asgi:application
+web: python manage.py runserver 0.0.0.0:$PORT
