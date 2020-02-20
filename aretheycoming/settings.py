@@ -1,3 +1,4 @@
+import django_heroku
 """
 Django settings for aretheycoming project.
 
@@ -142,3 +143,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
