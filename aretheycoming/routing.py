@@ -11,7 +11,10 @@ application = ProtocolTypeRouter({
         AuthMiddlewareStack(
             URLRouter(
                 [
-                    url('ws/event', EventConsumer),
+                    # url('ws/event/<int:event_id>', EventConsumer),
+                    url(r"^ws/event/(?P<event_id>\w+)$", EventConsumer),
+                    # url(r"^ws/event/(?P<event_id>\w+)/$", EventConsumer),
+
                 ]
             )
         )

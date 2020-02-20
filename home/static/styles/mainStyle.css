@@ -268,6 +268,12 @@ a.nostyle:visited {
   animation-duration: 500ms;
   animation-fill-mode: forwards;
 }
+@media (max-width: 425px) {
+  .card {
+    margin: 5px;
+    padding: 10px;
+  }
+}
 .card .name {
   font-size: 40px;
 }
@@ -541,8 +547,6 @@ a.nostyle:visited {
   background-color: white;
   color: black;
   font-size: 20px;
-  margin: 20px;
-  padding: 20px;
   border: solid #0a0039 2px;
   border-radius: 10px;
   box-shadow: -5px 5px 30px black;
@@ -575,7 +579,7 @@ a.nostyle:visited {
   width: 30%;
   min-width: 75px;
   height: 80px;
-  border: solid white 3px;
+  border: solid black 5px;
 }
 @media (max-width: 600px) {
   .event-card .vote-btn {
@@ -634,6 +638,13 @@ a.nostyle:visited {
     margin-right: 5%;
   }
 }
+.fade-in-animation {
+  animation-name: fadein;
+  animation-duration: 5000ms;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
 @keyframes fadein {
   0% {
     opacity: 0;

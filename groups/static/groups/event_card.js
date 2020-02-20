@@ -15,6 +15,7 @@ class EventCard extends React.Component{
             yes: this.props.yes,
             no: this.props.no,
             maybe: this.props.maybe,
+            sendingVote: false, // When the user votes and the response has not arrived
             activated: 0,
             createTime,
             timing,
@@ -44,7 +45,6 @@ class EventCard extends React.Component{
             const data = new FormData();
             data.append('event_id', this.props.eventId);
             request.send(data);
-
         }
 
         // Setup the websocket
@@ -52,7 +52,7 @@ class EventCard extends React.Component{
         var wsStart = 'ws://';
         if (loc.protocol === 'https:')
             wsStart = 'wss://';
-        var endpoint = wsStart + loc.host +  '/ws/event';
+        var endpoint = wsStart + loc.host +  `/ws/event/${this.props.eventId}`;
         this.socket = new ReconnectingWebSocket(endpoint)
 
         this.socket.onmessage = (e) =>{
@@ -65,6 +65,7 @@ class EventCard extends React.Component{
            
             this.setState(() => ({
                 [newVote]: this.state[newVote] + 1,
+                sendingVote: false,
             }))
             if(previousVote !== '0'){
                 this.setState(() =>({
@@ -99,6 +100,18 @@ class EventCard extends React.Component{
                 <button data-number='1' onClick={this.sendVote} className={(this.state.activated == 1? "vote-btn-activated" : "vote-btn") + " btn"} style={{'backgroundColor': voteColors[0]}}>Yes</button>
                 <button data-number='2' onClick={this.sendVote} className={(this.state.activated == 2? "vote-btn-activated" : "vote-btn") + " btn"} style={{'backgroundColor': voteColors[1]}}>No</button>
                 <button data-number='3' onClick={this.sendVote} className={(this.state.activated == 3? "vote-btn-activated" : "vote-btn") + " btn"} style={{'backgroundColor': voteColors[2]}}>Maybe</button>
+                {this.state.sendingVote? 
+                    <div className="small-text" style={{'display': 'flex'}}>
+                        Please wait..
+                        <div className="loader" style={{
+                            'width': '30px', 
+                            'height': '30px',
+                            'marginTop': '0px',
+                            'marginLeft': '0px',
+                        }}></div>
+                    </div>:
+                    ""
+                }
             </div>
         )
 
@@ -189,6 +202,7 @@ class EventCard extends React.Component{
         // Set the activated vote button to the right vote
         this.setState(() => ({
             activated: number,
+            sendingVote: true,
         }));
     }
 

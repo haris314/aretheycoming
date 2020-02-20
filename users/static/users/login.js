@@ -40,7 +40,7 @@ var letItBe = false;
 //To keep checking registration form
 function checkForm(){
 
-   //check if password and confirm passwrod match
+   //check if password and confirm password match
    if(confirmPassword.value.length >= 1 || letItBe==true){
       if(password.value == confirmPassword.value){
          setHTML(confirmPasswordMessage, "Passwords match", "green");
@@ -67,7 +67,7 @@ function checkFormOnSubmit(){
    else{
       setHTML(usernameMessage, "", "white");
    }
-   checkRegisterationUserName();
+   checkRegistrationUserName();
 
    //check password
    if (password.value.length < 1){
@@ -104,7 +104,7 @@ function checkLogin(){
 }
 
 //Another intermediate function to call the real function
-function checkRegisterationUserName(){
+function checkRegistrationUserName(){
    checkUsername(username, usernameMessage, false);
 }
 

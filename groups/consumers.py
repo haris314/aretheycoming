@@ -8,6 +8,13 @@ from groups.models import Vote, Event
 class EventConsumer(AsyncConsumer):
 
     async def websocket_connect(self, event):
+
+        event_id = self.scope['url_route']['kwargs']['event_id']
+        await self.channel_layer.group_add(
+            f'event_{event_id}', # Name of the group to which to add
+            self.channel_name # Which channel to add
+        )
+
         await self.send({
             'type': 'websocket.accept'
         })
@@ -28,16 +35,24 @@ class EventConsumer(AsyncConsumer):
             'previousVote': data['previousVote'],
         }
         
-        await self.send({
-            'type': 'websocket.send',
-            'text': json.dumps(to_send)
-        })
-
+        await self.channel_layer.group_send(
+            f'event_{data["eventId"]}',
+            {
+                'type': 'send_vote',
+                'text': json.dumps(to_send),
+            }
+        )
 
 
     async def websocket_disconnect(self, event):
         print("Disconnected")
 
+    # To actually send the vote to the members of the group
+    async def send_vote(self, event):
+        await self.send({
+            'type': 'websocket.send',
+            'text': event['text'],
+        })
 
     @database_sync_to_async
     def update_vote(self, event_id, vote):
