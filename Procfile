@@ -1,2 +1,1 @@
-web: daphne aretheycoming.asgi:application --port $port --bind 0.0.0.0
-worker: python runner.py
+web: daphne aretheycoming.asgi:application
