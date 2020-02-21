@@ -1,12 +1,15 @@
 from .models import Group, Membership, Request, Vote, Event
 import pytz
 from datetime import datetime
+from django import db
 
 # Function to return whether the current user is admin of the given group or not
 def is_admin(request, group):
+    db.connections.close_all()
 
     # If the user is not logged in return false
     if(request.user.is_authenticated is False):
+        db.connections.close_all()
         return False
     
     # Get Membership
@@ -14,28 +17,35 @@ def is_admin(request, group):
 
     # If User is not even a member, return false
     if(membership is None):
+        db.connections.close_all()
         return False
     
     # Now check if the member is admin
+    db.connections.close_all()
     return membership.admin;
 
 
 # To check whether the given user is the member of the given group or not
 def is_member(request, group):
+    db.connections.close_all()
 
     # If not even logged in, return false
     if request.user.is_authenticated == False:
+        db.connections.close_all()
         return False
     
     # Check
     for user in group.members.all():
         if request.user.username == user.username:
+            db.connections.close_all()
             return True
     
+    db.connections.close_all()
     return False
 
 # Function to return JSON response from a list of (Group objects)s
 def get_json_groups(group_list):
+    db.connections.close_all()
 
     data = []
 
@@ -60,11 +70,13 @@ def get_json_groups(group_list):
                 'batch': group.batch,
             })   
     
+    db.connections.close_all()
     return data
 
 
 # Function to return JSON response from a list of events
 def get_json_events(events_list):
+    db.connections.close_all()
 
     data = []
 
@@ -95,13 +107,16 @@ def get_json_events(events_list):
             'maybe': vote_counts['3'],
         })
     
+    db.connections.close_all()
     return data
 
 
 # To get the current timezone aware datetime UTC
 def get_current_timezone_aware_datetime():
+    db.connections.close_all()
 
     now = datetime.now() # Because I imported the datetime class and not the whole module
     timezone = pytz.timezone("UTC")
     now = timezone.localize(now)
+    db.connections.close_all()
     return now;
