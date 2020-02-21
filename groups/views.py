@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from .models import *
 from django.http import JsonResponse, HttpResponse
 from home.helper import *
+from django import db
 
 import sys # To see exception details
 
@@ -14,6 +15,7 @@ from datetime import datetime
 # index view to find groups
 # Shows all groups
 def groups(request):
+    db.connections.close_all()
 
      # If the method is GET, this means just return the html page
     if request.method == 'GET':
@@ -26,6 +28,7 @@ def groups(request):
             if len(group.description) > 68:
                 group.description = group.description[0 : 66] + ". ."
 
+        db.connections.close_all()
         return render(request, "groups/groups.html", {"groups":groups})
 
 
@@ -44,14 +47,17 @@ def groups(request):
 
         data = get_json_groups([groups])
 
+        db.connections.close_all()
         return JsonResponse(data, safe=False);
 
 
 # To filter groups (Only AJAX request)
 def filter_groups(request):
+    db.connections.close_all()
 
     # Housekeeping
     if(request.method != "POST"):
+        db.connections.close_all()
         return HttpResponse(status=404)
 
     # Get the filter keyword from the request
@@ -72,48 +78,54 @@ def filter_groups(request):
     groups = Group.objects.filter(name__icontains= f'{keyword}').all()
     group_list.append(groups)
 
+    db.connections.close_all()
     return JsonResponse(get_json_groups(group_list), safe=False)
 
 
 
 # Shows details of a specific group
 def group_details(request, id):
+    db.connections.close_all()
 
-        # get group
-        group = Group.objects.get(id=id)
+    # get group
+    group = Group.objects.get(id=id)
 
-        # get the memberships in the group
-        memberships = Membership.objects.filter(group=group).all()
+    # get the memberships in the group
+    memberships = Membership.objects.filter(group=group).all()
 
-        # get the requests to join the group
-        requests = Request.objects.filter(group=group).all()
+    # get the requests to join the group
+    requests = Request.objects.filter(group=group).all()
 
-        # Get whether the user is admin of this group or not
-        admin_flag = is_admin(request, group)
+    # Get whether the user is admin of this group or not
+    admin_flag = is_admin(request, group)
 
-        # Get whether the user is a member of this group or not
-        member_flag = is_member(request, group)
+    # Get whether the user is a member of this group or not
+    member_flag = is_member(request, group)
 
-        # Create the context object
-        context = {
-            "group": group,
-            "memberships": memberships,
-            "requests": requests,
-            "admin_flag": admin_flag,
-            "member_flag": member_flag,
-        }
-        return render(request, 'groups/group_details.html', context)
+    # Create the context object
+    context = {
+        "group": group,
+        "memberships": memberships,
+        "requests": requests,
+        "admin_flag": admin_flag,
+        "member_flag": member_flag,
+    }
+    db.connections.close_all()
+    return render(request, 'groups/group_details.html', context)
 
 
 # When someone requests to join a group
 def join_request(request, id):
+    db.connections.close_all()
 
     # Do not allow the user to send a join request without clicking on my button
     if(request.method != "POST"):
+        db.connections.close_all()
         return render(request, 'error.html', {"message": "You are not allowed to do this!"})
 
     # If user is not logged in
     if(not request.user.is_authenticated):
+        db.connections.close_all()
         return JsonResponse({'success': False, 'reason': "Not logged in"})
 
     # Get group
@@ -122,29 +134,35 @@ def join_request(request, id):
     # If request already exists
     exist = Request.objects.filter(group=group, user=request.user).first()
     if(exist is not None):
+        db.connections.close_all()
         return JsonResponse({'success': False, 'reason': "Already sent"})
 
     # If the user is already a member
     exist = group.members.filter(username=request.user.username).first()
     if(exist is not None):
+        db.connections.close_all()
         return JsonResponse({'success': False, 'reason': "Already a member"})
         
     # Process the request
     new_request = Request(group=group, user=request.user)
     new_request.save()
 
+    db.connections.close_all()
     return JsonResponse({'success': True})
 
 
 # To accept/reject a join request
 def accept(request, group_id):
+    db.connections.close_all()
 
     # If someone tries to access it via unfair means
     if request.method != "POST":
+        db.connections.close_all()
         return HttpResponse(status=404)
     
     # If user is not even logged in
     if not request.user.is_authenticated :
+        db.connections.close_all()
         return JsonResponse({'success': False})
 
     # Get group and user's membership
@@ -153,12 +171,14 @@ def accept(request, group_id):
 
     # If the given user is not admin of the group and still accesses it
     if membership.admin is False:
+        db.connections.close_all()
         return JsonResponse({'success':False})
 
     # If join request does not exist
     request_id = request.POST['request_id']
     join_request = Request.objects.filter(id = request_id).first()
     if join_request is None:
+        db.connections.close_all()
         return JsonResponse({'success': False})
 
     # Delete the join request from database if the action is 0. 0 means reject
@@ -174,17 +194,21 @@ def accept(request, group_id):
         join_request.delete()
 
     # Return success
+    db.connections.close_all()
     return JsonResponse({'success': True})
 
 
 # When a group admin takes action on a group member
 def member_action(request):
+    db.connections.close_all()
     # If someone tries to access it via unfair means
     if request.method != "POST":
+        db.connections.close_all()
         return HttpResponse(status=404)
     
     # If user is not even logged in
     if not request.user.is_authenticated :
+        db.connections.close_all()
         return JsonResponse({'success': False})
 
     # Get membership
@@ -197,24 +221,29 @@ def member_action(request):
     # the action taker is not an admin of the group to which the membership of the member belong to or
     # The user on whom the action was taken was hirself an admin
     if (membership is None) or (Membership.objects.filter(user=request.user, group=membership.group).first().admin is False) or (membership.admin):
+        db.connections.close_all()
         return JsonResponse({'success':False})
 
     # Take care of actions
     if request.POST['action'] == 'remove':
         membership.delete()
+        db.connections.close_all()
         return JsonResponse({'success': True})
 
     if request.POST['action'] == 'adminify':
         membership.admin = True;
         membership.save()
+        db.connections.close_all()
         return JsonResponse({'success': True})
 
 
 # To create a new event
 def create_event(request, group_id):
+    db.connections.close_all()
 
     # If someone tries to access it via unfair means
     if request.method != "POST":
+        db.connections.close_all()
         return HttpResponse(status=404)
     
     # Get the group, required for next operation
@@ -222,10 +251,12 @@ def create_event(request, group_id):
         group = Group.objects.get(id=group_id)
     except Exception as e:
         print(e)
+        db.connections.close_all()
         return JsonResponse({'success': False})
     
     # If user is not even logged in or if user is not a member of the group
     if not request.user.is_authenticated or not is_member(request, group):
+        db.connections.close_all()
         return JsonResponse({'success':False, 'message': 'Unfortunately, I am smart enough to have thought about people like you!'})
 
     # Get the data
@@ -236,6 +267,7 @@ def create_event(request, group_id):
 
     # start_datetime must be less than end_datetime
     if start_datetime >= end_datetime:
+        db.connections.close_all()
         return JsonResponse({'success': False})
 
     # Insert into the database
@@ -245,16 +277,20 @@ def create_event(request, group_id):
         new_event.save()
     except Exception as e:
         print(e)
+        db.connections.close_all()
         return JsonResponse({'success': False})
 
+    db.connections.close_all()
     return JsonResponse({'success': True})
 
 
 # To get events AJAXically
 def get_events(request, group_id):
+    db.connections.close_all()
 
     # If the request is not post
     if request.method != 'POST':
+        db.connections.close_all()
         return JsonResponse({'success': False})
     
     active = request.POST['active']
@@ -272,32 +308,40 @@ def get_events(request, group_id):
         response = {'success': False}
 
     # print(events, "\n", response)
+    db.connections.close_all()
     return JsonResponse(response)
 
 
 # AJAX request to return the vote of the user
 def get_user_vote(request):
+    db.connections.close_all()
     try:
         event_id = request.POST['event_id']
         event = Event.objects.get(id=event_id)
         vote = Vote.objects.get(user=request.user, event=event)
         
         if(vote is None):
+            db.connections.close_all()
             return JsonResponse({'success': True, 'vote': 0})
         else:
+            db.connections.close_all()
             return JsonResponse({'success': True, 'vote': vote.vote})
     except:
+        db.connections.close_all()
         return JsonResponse({'success': False})
 
 # To create a new group
 def create_group(request):
+    db.connections.close_all()
 
     # If the user is not logged in
     if request.user.is_authenticated is False:
+        db.connections.close_all()
         return render(request, 'error.html', {'message': "You are not logged in"})
 
     # If the method is get, just give the create group page
     if(request.method == "GET"):
+        db.connections.close_all()
         return render(request, 'groups/create_group.html')
 
     # If method is post, this means someone has submitted the form
@@ -321,19 +365,23 @@ def create_group(request):
         # Do the checks
         # Group name must not be empty
         if name is '':
+            db.connections.close_all()
             return render(request, 'error.html', {'message': "Empty group name"})
         
         # If batch or section is not empty then college and passing year must not be empty
         if (batch is not '') or (section is not ''):
             if (college is '') or (graduation_year is ''):
+                db.connections.close_all()
                 return render(request, 'error.html', {'message': "If batch or section is not empty then college and passing year must not be empty"})
         
         # Section must be 1 character and batch must be at most 2 long
         if (len(section) > 1) or (len(batch) > 2):
+            db.connections.close_all()
             return render(request, 'error.html', {'message': "Section must be 1 character and batch must be at most 2 characters long"})
         
         # Name must be at most 50 chars
         if len(name) > 50:
+            db.connections.close_all()
             return render(request, 'error.html', {'message': "Name must be at most 50 chars"})
 
         # Finally do the insertion in the database
@@ -348,57 +396,70 @@ def create_group(request):
 
         except (Exception):
             print("Oops! Something went wrong when creating a new group", sys.exc_info()[0], "occurred.")
+            db.connections.close_all()
             return render(request, 'error.html', {'message': "Something went wrong. Are you sure you are putting the right details? If yes then please contact admin"})
         
         # Successfully added
+        db.connections.close_all()
         return render(request, 'groups/group_created.html')
 
 
 # To leave a group (AJAX request)
 def leave_group(request, group_id):
+    db.connections.close_all()
 
     if request.method != 'POST':
+        db.connections.close_all()
         return JsonResponse({'success': False})
     
     try:
         group = Group.objects.get(id=group_id)
         # If user is not authenticated or not a member of the group
         if request.user.is_authenticated is False or is_member(request, group) is False:
+            db.connections.close_all()
             return JsonResponse({'success': False})
 
         # Delete the user's membership for the given group
         membership = Membership.objects.get(group=group, user=request.user)
         membership.delete()
 
+        db.connections.close_all()
         return JsonResponse({'success': True})
     except Exception as e:
         print(e)
+        db.connections.close_all()
         return JsonResponse({'success': False})
 
 
 # To delete the whole group
 def delete_group(request, group_id):
+    db.connections.close_all()
 
     try:
         group = Group.objects.get(id=group_id) 
 
         # User must be authenticated and an admin of the group
         if request.user.is_authenticated is False or is_admin(request, group) is False:
+            db.connections.close_all()
             return render(request, 'error.html', {'message': "An error occurred. Are you sure you are doing only what you are supposed to do?"})
     
         group.delete()
 
     except Exception as e:
+        db.connections.close_all()
         return render(request, "error.html", {'message': "An error ocurred. Probably, this group does not exist anymore."})
     
+    db.connections.close_all()
     return render(request, 'success.html', {'message': "The group was successfully deleted"})
 
 
 # To display the groups which the user is part of
 def my_groups(request):
+    db.connections.close_all()
 
     # If the user is not logged in, redirect to login page
     if not request.user.is_authenticated:
+        db.connections.close_all()
         return redirect('/login')
 
     # Get groups and render
@@ -429,4 +490,5 @@ def my_groups(request):
         'admin_groups': admin_groups,
         'member_groups': member_groups,
     }
+    db.connections.close_all()
     return render(request, 'groups/my_groups.html', context)
