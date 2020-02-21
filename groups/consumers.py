@@ -2,12 +2,14 @@ import json
 from django.contrib.auth import get_user_model
 from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
+from django import db
 
 from groups.models import Vote, Event
 
 class EventConsumer(AsyncConsumer):
 
     async def websocket_connect(self, event):
+        db.connections.close_all()
 
         event_id = self.scope['url_route']['kwargs']['event_id']
         await self.channel_layer.group_add(
@@ -18,10 +20,11 @@ class EventConsumer(AsyncConsumer):
         await self.send({
             'type': 'websocket.accept'
         })
-
+        db.connections.close_all()
 
 
     async def websocket_receive(self, event):
+        db.connections.close_all()
 
         # Convert the string to json object
         data = json.loads(event['text']) 
@@ -42,6 +45,7 @@ class EventConsumer(AsyncConsumer):
                 'text': json.dumps(to_send),
             }
         )
+        db.connections.close_all()
 
 
     async def websocket_disconnect(self, event):
@@ -49,13 +53,17 @@ class EventConsumer(AsyncConsumer):
 
     # To actually send the vote to the members of the group
     async def send_vote(self, event):
+        db.connections.close_all()
         await self.send({
             'type': 'websocket.send',
             'text': event['text'],
         })
+        db.connections.close_all()
+
 
     @database_sync_to_async
     def update_vote(self, event_id, vote):
+        db.connections.close_all()
 
         event = Event.objects.get(id=event_id) # Get the event object
 
@@ -67,10 +75,12 @@ class EventConsumer(AsyncConsumer):
             pass
         vote_obj = Vote(event=event, user=self.scope['user'], vote=int(vote))
         vote_obj.save()
+        db.connections.close_all()
 
 
     @database_sync_to_async
     def get_votes(self, event_id):
+        db.connections.close_all()
 
         event = Event.objects.get(id=event_id) # Get the event object
 
@@ -84,4 +94,5 @@ class EventConsumer(AsyncConsumer):
         for vote in votes:
             vote_counts[str(vote.vote)] += 1
         
+        db.connections.close_all()
         return vote_counts
