@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
    document.querySelector('#submit').onsubmit = checkFormOnSubmit;
 
    //set username checking
-   username.onkeyup = checkRegisterationUserName;
+   username.onkeyup = checkRegistrationUserName;
 });
 
 
