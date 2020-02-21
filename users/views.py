@@ -3,14 +3,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse, Http404
-from django.db import close_old_connections
 
 # Create your views here.
 
 
 #when the user clicks log in or wants to log in
 def login_view(request):
-    close_old_connections()
+
     #if user is already logged in
     if(request.user.is_authenticated):
         #return HttpResponseRedirect(request, reverse("feed"))
@@ -36,14 +35,12 @@ def login_view(request):
         login(request, user)
         return redirect("feed")
     
-    close_old_connections()
     #if the user is not logged in, show login/signup page
     return render(request, 'users/login.html')
 
 
 #When the user clicks sign up
 def sign_up(request):
-    close_old_connections()
 
     #if method is get, someone is trying to access it without submitting a form
     if(request.method == 'GET'):
@@ -58,7 +55,6 @@ def sign_up(request):
 
     #If something is still not right even after checks at frontend
     if (User.objects.filter(username=username).first() is not None) or (password != confirm_password) or (len(password) < 1) or (len(first_name) < 1):
-        close_old_connections()
         return render(request, 'error.html', {"message": "Something went wrong"})
 
     #Make another user and add to database
@@ -69,36 +65,30 @@ def sign_up(request):
     try:
         user.save()
     except Exception:
-        close_old_connections()
         return render(request, 'error.html', {"message": "Something went wrong"})
 
-    close_old_connections()
     return render(request, 'users/successfully_registered.html')
 
 
 #When someone clicks logout
 def logout_view(request):
     logout(request)
-    close_old_connections()
     return redirect('/login')
 
 
 #AJAX request to check if a user exists
 def check_username_ajax(request):
     if(request.method is 'GET'):
-        close_old_connections()
         return HttpResponse(status=404)
 
     #get username
     try:
         username = request.POST["username"].lower()
     except Exception:
-        close_old_connections()
         return HttpResponse(status=404)
 
     #If somehow someone sends a blank request
     if len(username) < 1:
-        close_old_connections()
         return JsonResponse({'exists': False, 'invalid': True})
 
     #Set exists = true if username exists else false
@@ -109,7 +99,6 @@ def check_username_ajax(request):
     data = {
         'exists': exists
     }
-    close_old_connections()
     return JsonResponse(data)
     
 

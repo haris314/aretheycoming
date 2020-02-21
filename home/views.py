@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from .models import *
 from home.helper import *
-from django.db import close_old_connections
 
 # Create your views here.
 
@@ -12,11 +11,9 @@ def home(request):
 
     # If the user is already logged in, send to feed
     if(request.user.is_authenticated):
-        close_old_connections()
         return redirect('/feed')
 
     # Else show home page
-    close_old_connections()
     return render(request, 'home/home.html')
 
 
@@ -24,21 +21,17 @@ def feed(request):
 
     # If not logged in, send to login page
     if(not request.user.is_authenticated):
-        close_old_connections()
         return redirect('/login')
     
     # Else show feed
-    close_old_connections()
     return render(request, 'home/feed.html')
 
 
-# close_old_connections()
 # Returns the active events for a user's feed (AJAX Request)
 def get_events(request):
 
     # If the user is not even logged in
     if request.user.is_authenticated != True:
-        close_old_connections()
         return JsonResponse({'success': False})
     
     # Get all the events of the users
@@ -60,5 +53,4 @@ def get_events(request):
         
     # Convert into JSON and add some other required fields
     events_to_send = get_json_events(events_to_send) 
-    close_old_connections()
     return JsonResponse({'success': True, 'events': events_to_send})

@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, reverse
 from .models import *
 from django.http import JsonResponse, HttpResponse
 from home.helper import *
-from django.db import close_old_connections
 
 import sys # To see exception details
 
@@ -16,7 +15,7 @@ from datetime import datetime
 # Shows all groups
 def groups(request):
 
-     # If the method is GET, this means just give the html page
+     # If the method is GET, this means just return the html page
     if request.method == 'GET':
 
         # get groups
@@ -27,7 +26,6 @@ def groups(request):
             if len(group.description) > 68:
                 group.description = group.description[0 : 66] + ". ."
 
-        close_Old_connections()
         return render(request, "groups/groups.html", {"groups":groups})
 
 
@@ -46,7 +44,6 @@ def groups(request):
 
         data = get_json_groups([groups])
 
-        close_Old_connections()
         return JsonResponse(data, safe=False);
 
 
@@ -55,7 +52,6 @@ def filter_groups(request):
 
     # Housekeeping
     if(request.method != "POST"):
-        close_Old_connections()
         return HttpResponse(status=404)
 
     # Get the filter keyword from the request
@@ -76,7 +72,6 @@ def filter_groups(request):
     groups = Group.objects.filter(name__icontains= f'{keyword}').all()
     group_list.append(groups)
 
-    close_Old_connections()
     return JsonResponse(get_json_groups(group_list), safe=False)
 
 
@@ -107,7 +102,6 @@ def group_details(request, id):
             "admin_flag": admin_flag,
             "member_flag": member_flag,
         }
-        close_Old_connections()
         return render(request, 'groups/group_details.html', context)
 
 
@@ -116,12 +110,10 @@ def join_request(request, id):
 
     # Do not allow the user to send a join request without clicking on my button
     if(request.method != "POST"):
-        close_Old_connections()
         return render(request, 'error.html', {"message": "You are not allowed to do this!"})
 
     # If user is not logged in
     if(not request.user.is_authenticated):
-        close_Old_connections()
         return JsonResponse({'success': False, 'reason': "Not logged in"})
 
     # Get group
@@ -130,20 +122,17 @@ def join_request(request, id):
     # If request already exists
     exist = Request.objects.filter(group=group, user=request.user).first()
     if(exist is not None):
-        close_Old_connections()
         return JsonResponse({'success': False, 'reason': "Already sent"})
 
     # If the user is already a member
     exist = group.members.filter(username=request.user.username).first()
     if(exist is not None):
-        close_Old_connections()
         return JsonResponse({'success': False, 'reason': "Already a member"})
         
     # Process the request
     new_request = Request(group=group, user=request.user)
     new_request.save()
 
-    close_Old_connections()
     return JsonResponse({'success': True})
 
 
@@ -152,12 +141,10 @@ def accept(request, group_id):
 
     # If someone tries to access it via unfair means
     if request.method != "POST":
-        close_Old_connections()
         return HttpResponse(status=404)
     
     # If user is not even logged in
     if not request.user.is_authenticated :
-        close_Old_connections()
         return JsonResponse({'success': False})
 
     # Get group and user's membership
@@ -166,14 +153,12 @@ def accept(request, group_id):
 
     # If the given user is not admin of the group and still accesses it
     if membership.admin is False:
-        close_Old_connections()
         return JsonResponse({'success':False})
 
     # If join request does not exist
     request_id = request.POST['request_id']
     join_request = Request.objects.filter(id = request_id).first()
     if join_request is None:
-        close_Old_connections()
         return JsonResponse({'success': False})
 
     # Delete the join request from database if the action is 0. 0 means reject
@@ -188,8 +173,7 @@ def accept(request, group_id):
         membership.save()
         join_request.delete()
 
-    # Success
-    close_Old_connections()
+    # Return success
     return JsonResponse({'success': True})
 
 
@@ -197,12 +181,10 @@ def accept(request, group_id):
 def member_action(request):
     # If someone tries to access it via unfair means
     if request.method != "POST":
-        close_Old_connections()
         return HttpResponse(status=404)
     
     # If user is not even logged in
     if not request.user.is_authenticated :
-        close_Old_connections()
         return JsonResponse({'success': False})
 
     # Get membership
@@ -215,19 +197,16 @@ def member_action(request):
     # the action taker is not an admin of the group to which the membership of the member belong to or
     # The user on whom the action was taken was hirself an admin
     if (membership is None) or (Membership.objects.filter(user=request.user, group=membership.group).first().admin is False) or (membership.admin):
-        close_Old_connections()
         return JsonResponse({'success':False})
 
     # Take care of actions
     if request.POST['action'] == 'remove':
         membership.delete()
-        close_Old_connections()
         return JsonResponse({'success': True})
 
     if request.POST['action'] == 'adminify':
         membership.admin = True;
         membership.save()
-        close_Old_connections()
         return JsonResponse({'success': True})
 
 
@@ -236,7 +215,6 @@ def create_event(request, group_id):
 
     # If someone tries to access it via unfair means
     if request.method != "POST":
-        close_Old_connections()
         return HttpResponse(status=404)
     
     # Get the group, required for next operation
@@ -244,12 +222,10 @@ def create_event(request, group_id):
         group = Group.objects.get(id=group_id)
     except Exception as e:
         print(e)
-        close_Old_connections()
         return JsonResponse({'success': False})
     
     # If user is not even logged in or if user is not a member of the group
     if not request.user.is_authenticated or not is_member(request, group):
-        close_Old_connections()
         return JsonResponse({'success':False, 'message': 'Unfortunately, I am smart enough to have thought about people like you!'})
 
     # Get the data
@@ -260,7 +236,6 @@ def create_event(request, group_id):
 
     # start_datetime must be less than end_datetime
     if start_datetime >= end_datetime:
-        close_Old_connections()
         return JsonResponse({'success': False})
 
     # Insert into the database
@@ -270,10 +245,8 @@ def create_event(request, group_id):
         new_event.save()
     except Exception as e:
         print(e)
-        close_Old_connections()
         return JsonResponse({'success': False})
 
-    close_Old_connections()
     return JsonResponse({'success': True})
 
 
@@ -282,16 +255,15 @@ def get_events(request, group_id):
 
     # If the request is not post
     if request.method != 'POST':
-        close_Old_connections()
         return JsonResponse({'success': False})
     
     active = request.POST['active']
 
     try:
-        if active == 'true': # The active/current events only
+        if active == 'true': # Return the active/current events only
             events = Group.objects.get(id=group_id).events.filter(end_time__gt=get_current_timezone_aware_datetime()).order_by('start_time').all()
         
-        else: # The inactive/past events only
+        else: # Return the inactive/past events only
             events = Group.objects.get(id=group_id).events.filter(end_time__lte=get_current_timezone_aware_datetime()).order_by('start_time').all()
                     
         response = {'success':True, 'events': get_json_events((events))}
@@ -300,11 +272,10 @@ def get_events(request, group_id):
         response = {'success': False}
 
     # print(events, "\n", response)
-    close_Old_connections()
     return JsonResponse(response)
 
 
-# AJAX request to give the vote of the user
+# AJAX request to return the vote of the user
 def get_user_vote(request):
     try:
         event_id = request.POST['event_id']
@@ -312,13 +283,10 @@ def get_user_vote(request):
         vote = Vote.objects.get(user=request.user, event=event)
         
         if(vote is None):
-            close_Old_connections()
             return JsonResponse({'success': True, 'vote': 0})
         else:
-            close_Old_connections()
             return JsonResponse({'success': True, 'vote': vote.vote})
     except:
-        close_Old_connections()
         return JsonResponse({'success': False})
 
 # To create a new group
@@ -326,12 +294,10 @@ def create_group(request):
 
     # If the user is not logged in
     if request.user.is_authenticated is False:
-        close_Old_connections()
         return render(request, 'error.html', {'message': "You are not logged in"})
 
     # If the method is get, just give the create group page
     if(request.method == "GET"):
-        close_Old_connections()
         return render(request, 'groups/create_group.html')
 
     # If method is post, this means someone has submitted the form
@@ -355,23 +321,19 @@ def create_group(request):
         # Do the checks
         # Group name must not be empty
         if name is '':
-            close_Old_connections()
             return render(request, 'error.html', {'message': "Empty group name"})
         
         # If batch or section is not empty then college and passing year must not be empty
         if (batch is not '') or (section is not ''):
             if (college is '') or (graduation_year is ''):
-                close_Old_connections()
                 return render(request, 'error.html', {'message': "If batch or section is not empty then college and passing year must not be empty"})
         
         # Section must be 1 character and batch must be at most 2 long
         if (len(section) > 1) or (len(batch) > 2):
-            close_Old_connections()
             return render(request, 'error.html', {'message': "Section must be 1 character and batch must be at most 2 characters long"})
         
         # Name must be at most 50 chars
         if len(name) > 50:
-            close_Old_connections()
             return render(request, 'error.html', {'message': "Name must be at most 50 chars"})
 
         # Finally do the insertion in the database
@@ -386,11 +348,9 @@ def create_group(request):
 
         except (Exception):
             print("Oops! Something went wrong when creating a new group", sys.exc_info()[0], "occurred.")
-            close_Old_connections()
             return render(request, 'error.html', {'message': "Something went wrong. Are you sure you are putting the right details? If yes then please contact admin"})
         
         # Successfully added
-        close_Old_connections()
         return render(request, 'groups/group_created.html')
 
 
@@ -398,25 +358,21 @@ def create_group(request):
 def leave_group(request, group_id):
 
     if request.method != 'POST':
-        close_Old_connections()
         return JsonResponse({'success': False})
     
     try:
         group = Group.objects.get(id=group_id)
         # If user is not authenticated or not a member of the group
         if request.user.is_authenticated is False or is_member(request, group) is False:
-            close_Old_connections()
             return JsonResponse({'success': False})
 
         # Delete the user's membership for the given group
         membership = Membership.objects.get(group=group, user=request.user)
         membership.delete()
 
-        close_Old_connections()
         return JsonResponse({'success': True})
     except Exception as e:
         print(e)
-        close_Old_connections()
         return JsonResponse({'success': False})
 
 
@@ -428,16 +384,13 @@ def delete_group(request, group_id):
 
         # User must be authenticated and an admin of the group
         if request.user.is_authenticated is False or is_admin(request, group) is False:
-            close_Old_connections()
             return render(request, 'error.html', {'message': "An error occurred. Are you sure you are doing only what you are supposed to do?"})
     
         group.delete()
 
     except Exception as e:
-        close_Old_connections()
         return render(request, "error.html", {'message': "An error ocurred. Probably, this group does not exist anymore."})
     
-    close_Old_connections()
     return render(request, 'success.html', {'message': "The group was successfully deleted"})
 
 
@@ -446,7 +399,6 @@ def my_groups(request):
 
     # If the user is not logged in, redirect to login page
     if not request.user.is_authenticated:
-        close_Old_connections()
         return redirect('/login')
 
     # Get groups and render
@@ -477,5 +429,4 @@ def my_groups(request):
         'admin_groups': admin_groups,
         'member_groups': member_groups,
     }
-    close_Old_connections()
     return render(request, 'groups/my_groups.html', context)
