@@ -72,6 +72,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'aretheycoming.wsgi.application'
+ASGI_APPLICATION = 'aretheycoming.routing.application'
 
 
 # Database
