@@ -20,6 +20,7 @@
     
 
     <body>
+        {% csrf_token %} <!--For AJAX requests-->
         <div class="logo">
             <div class="left">
                     <a href="{% url 'home' %}" class="nostyle">aretheycoming</a>

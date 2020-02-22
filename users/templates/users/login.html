@@ -42,13 +42,13 @@
                     <h1>Register</h1>
                     <h4>As a new user</h4><hr><br>
                     Username: 
-                    <input type="text" name="username" id="username" autocomplete="off">
+                    <input type="text" name="username" id="username" autocomplete="off" readonly="readonly" onfocus="javascript: this.removeAttribute('readonly')">
                     <br>
                     <div id="usernameMessage" class="white-text"></div>
                     <br>
 
                     Password: 
-                    <input type="password" name="password" id="password">
+                    <input type="password" name="password" id="password" readonly="readonly" onfocus="javascript: this.removeAttribute('readonly')">
                     <br>
                     <div id="passwordMessage" class="white-text"></div>
                     <br>

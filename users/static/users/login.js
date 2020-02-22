@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
    
-   //get all the relevant elements
+   // Get all the relevant elements
+   // For login
    var loginForm = document.querySelector('#loginForm');
    var loginUsername = document.querySelector('#loginUsername');
    var loginMessage = document.querySelector('#loginMessage');
 
+   // For Register
    var username = document.querySelector('#username');
    var usernameMessage = document.querySelector('#usernameMessage');
 
@@ -17,16 +19,16 @@ document.addEventListener('DOMContentLoaded', () => {
    var firstName = document.querySelector('#firstName');
    var firstNameMessage = document.querySelector('#firstNameMessage');
 
-   //Keep checking the registration form every second
+   // Keep checking the registration form every second
    setInterval(checkForm, 1000);
 
-   //set the sunmit action for login
+   // Set the sunmit action for login
    loginForm.onsubmit = checkLogin;
 
-   //set form submit action for registration
+   // Set form submit action for registration
    document.querySelector('#submit').onsubmit = checkFormOnSubmit;
 
-   //set username checking
+   // Set username checking
    username.onkeyup = checkRegistrationUserName;
 });
 
@@ -36,9 +38,19 @@ document.addEventListener('DOMContentLoaded', () => {
  *when form is submitted and passwords don't match.
 */
 var letItBe = false;
+var passwordMessageSetByForm = false;
 
 //To keep checking registration form
 function checkForm(){
+
+   // Check the strength which is just length
+   if (password.value.length > 0)
+      if(password.value.length <= 5){
+         setHTML(passwordMessage, "A baby can hack you", "red");
+      }
+      else{
+         setHTML(passwordMessage, "", "white");
+      }
 
    //check if password and confirm password match
    if(confirmPassword.value.length >= 1 || letItBe==true){
@@ -69,9 +81,15 @@ function checkFormOnSubmit(){
    }
    checkRegistrationUserName();
 
-   //check password
+   // Check password
+   // Emptiness
    if (password.value.length < 1){
+      passwordMessageSetByForm = true;
       setHTML(passwordMessage, "Password can't be empty", "red");
+      return false;
+   }
+   // Length
+   if (password.value.length <= 5){
       return false;
    }
    else{

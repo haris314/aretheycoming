@@ -62,7 +62,7 @@ def sign_up(request):
     last_name = request.POST["last_name"].capitalize()
 
     #If something is still not right even after checks at frontend
-    if (User.objects.filter(username=username).first() is not None) or (password != confirm_password) or (len(password) < 1) or (len(first_name) < 1):
+    if (User.objects.filter(username=username).first() is not None) or (password != confirm_password) or (len(password) <= 5) or (len(first_name) < 1):
         db.connections.close_all()
         return render(request, 'error.html', {"message": "Something went wrong"})
 

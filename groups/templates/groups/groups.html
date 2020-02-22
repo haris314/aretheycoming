@@ -18,6 +18,8 @@
     <!--Include the group card template-->
     {% include 'groups/group_card.html' %}
     
+    <!--Set csrf token so that it is available in document.cookies for javascript ajax request-->
+    {% csrf_token %} 
     <br><br>
     <!--Display the groups-->
     <div class="container">

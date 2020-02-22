@@ -14,7 +14,7 @@ function getCookie(name) {
                 break;
             }
         }
-    }
+    }    
     return cookieValue;
  }
 
