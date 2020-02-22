@@ -72,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'aretheycoming.wsgi.application'
+# WSGI_APPLICATION = 'aretheycoming.wsgi.application'
 ASGI_APPLICATION = 'aretheycoming.routing.application'
 
 CHANNEL_LAYERS = {
