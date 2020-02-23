@@ -184,15 +184,14 @@ def accept(request, group_id):
     # Delete the join request from database if the action is 0. 0 means reject
     
     if request.POST['action'] == '0':
-        #join_request.delete()
-        pass
+        join_request.delete()
     
     else:
         # Finally process the accept request
         # Make membership and delete join request
         membership = Membership(group=group, user=join_request.user, admin=False)
-        #membership.save()
-        #join_request.delete()
+        membership.save()
+        join_request.delete()
 
     # Return success
     db.connections.close_all()
