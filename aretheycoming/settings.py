@@ -151,6 +151,7 @@ STATICFILES_DIRS = [
 # db_from_env = dj_database_url.config()
 # DATABASES['default'].update(db_from_env)
 
+# Comment these two lines if running on a local server
 # Activate Django-Heroku.
 django_heroku.settings(locals())
 del DATABASES['default']['OPTIONS']['sslmode'] # For PgBouncer to work
