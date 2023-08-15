@@ -1,31 +1,31 @@
 <div class="event_maker" id="event_maker">
-    <button class="close-btn" id="close_event_maker">
-        {% load staticfiles %}
-        <img src="{% static 'wrong.png' %}" height="60px">
+  <button class="close-btn" id="close_event_maker">
+    {% load static %}
+    <img src="{% static 'wrong.png' %}" height="60px" />
+  </button>
+
+  <h1>Create a new event</h1>
+  <hr />
+  <form class="form-group">
+    Name* <br />
+    <input type="text" id="name" class="form-control" />
+    <br />
+    Event date and time* <br />
+    <input type="datetime-local" id="start_datetime" class="form-control" />
+    <br />
+    Event end date and time* <br />
+    <input type="datetime-local" id="end_datetime" class="form-control" />
+    <br />
+    Event description<br />
+    <textarea id="description" class="form-control"></textarea>
+    <br />
+    <div id="event_maker_message"></div>
+    <button
+      id="make_event"
+      class="wide-btn btn"
+      style="box-shadow: none; background-color: white; color: black"
+    >
+      Create event
     </button>
-
-    <h1>Create a new event</h1>
-    <hr>
-    <form class="form-group">
-        Name* <br>
-        <input type="text" id="name" class="form-control">
-        <br>
-        Event date and time* <br>
-        <input type="datetime-local" id="start_datetime" class="form-control">
-        <br>
-        Event end date and time* <br>
-        <input type="datetime-local" id="end_datetime" class="form-control">
-        <br>
-        Event description<br>
-        <textarea id="description" class="form-control"></textarea>
-        <br>
-        <div id="event_maker_message" ></div>
-        <button id="make_event" class="wide-btn btn" style="
-            box-shadow: none; 
-            background-color:white; 
-            color:black">
-            Create event
-        </button>
-
-    </form>
+  </form>
 </div>
