@@ -45,14 +45,24 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True  # For development only
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",  # Example frontend URL
+]
+
+CORS_ALLOW_WS_ORIGIN = True
+
 
 ROOT_URLCONF = 'aretheycoming.urls'
 
@@ -74,6 +84,8 @@ TEMPLATES = [
 
 # WSGI_APPLICATION = 'aretheycoming.wsgi.application'
 ASGI_APPLICATION = 'aretheycoming.routing.application'
+# ASGI_APPLICATION = 'aretheycoming.asgi.application' # For Daphne
+
 
 CHANNEL_LAYERS = {
     'default': {
@@ -155,3 +167,25 @@ STATICFILES_DIRS = [
 # Activate Django-Heroku.
 # django_heroku.settings(locals())
 # del DATABASES['default']['OPTIONS']['sslmode'] # For PgBouncer to work
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django.channels': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

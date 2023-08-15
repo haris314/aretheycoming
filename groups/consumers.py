@@ -9,6 +9,7 @@ from groups.models import Vote, Event
 class EventConsumer(AsyncConsumer):
 
     async def websocket_connect(self, event):
+        print("websocket_connect called for: ", event)
         db.connections.close_all()
 
         event_id = self.scope['url_route']['kwargs']['event_id']
@@ -24,6 +25,7 @@ class EventConsumer(AsyncConsumer):
 
 
     async def websocket_receive(self, event):
+        print("websocket_receive called for: ", event)
         db.connections.close_all()
 
         # Convert the string to json object
