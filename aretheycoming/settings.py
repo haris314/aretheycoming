@@ -93,8 +93,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'aretheycomingdb',
-        'USER': 'haris',
-        'PASSWORD': 'haris@1999',
+        'USER': 'postgres',
+        'PASSWORD': 'Haris@1999',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -139,7 +139,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
 
@@ -153,5 +153,5 @@ STATICFILES_DIRS = [
 
 # Comment these two lines if running on a local server
 # Activate Django-Heroku.
-django_heroku.settings(locals())
-del DATABASES['default']['OPTIONS']['sslmode'] # For PgBouncer to work
+# django_heroku.settings(locals())
+# del DATABASES['default']['OPTIONS']['sslmode'] # For PgBouncer to work
