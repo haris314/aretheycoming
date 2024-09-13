@@ -1,2 +1,15 @@
 venv\Scripts\activate
 python manage.py runserver
+
+
+
+Use PowerShell
+.\venv\Scripts\activate
+python manage.py runserver
+
+
+
+
+Test Users
+haris1 to haris6
+123456

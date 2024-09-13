@@ -1,6 +1,3 @@
-cd .batches
-start /min start_server.bat
-start /min start_sass.bat
+call venv\Scripts\activate
 
-cd.. 
-cmd /k
+python manage.py runserver
