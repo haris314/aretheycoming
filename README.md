@@ -1,7 +1,11 @@
 # aretheycoming
+
 (Demo Video)
+
 https://drive.google.com/file/d/1uw45H8wqtXat7zmRBVjiIMFwIZZc_-7W/view?usp=sharing
+
 (Link to website: Heroku stopped giving the free tier)
+
 https://aretheycoming.herokuapp.com/
 
 A mobile responsive website to organize events. People join groups. People can then make events in the groups and vote in events. They can see other group members’ votes updated in real-time. Admins of groups can accept/reject other people's requests, make new admins, and remove existing members. Users can see their active events on their feed.
